@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import SplashCursor from './SplashCursor';
 import "./Hero.css";
 
@@ -16,6 +16,18 @@ export function Hero() {
     "/icons/badge10.png",
   ];
 
+  // Memoize icon positions to avoid random repositioning on every render
+  const iconPositions = useMemo(() => {
+    return icons.map((_, i) => {
+      const angle = (360 / icons.length) * i;
+      const radius = 180 + Math.random() * 30;
+      const radian = (angle * Math.PI) / 180;
+      const x = Math.cos(radian) * radius + (Math.random() - 0.5) * 40;
+      const y = Math.sin(radian) * radius + (Math.random() - 0.5) * 40;
+      return { x, y };
+    });
+  }, []);
+
   return (
     <div id="hero" className="relative bg-black text-white overflow-hidden">
       <SplashCursor />
@@ -24,14 +36,19 @@ export function Hero() {
         {/* Left Content */}
         <div className="w-full md:w-1/2 flex justify-center items-center p-6">
           <div className="space-y-6 w-full max-w-xl">
-            <h2 className="text-2xl md:text-4xl lg:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-500 via-violet-500 to-pink-500 drop-shadow">
-              Hi, I’m Vettrivel U
+            <h2 className="text-2xl md:text-4xl lg:text-6xl font-bold text-transparent text-white">
+              <span className="text-xl md:text-2xl lg:text-3xl font-semibold mr-2">Hi, I’m</span>
+              Vettrivel U
             </h2>
-            <p className="text-base md:text-xl">
-             Cyber Security Researcher | Vulnerability Assessment & Penetration Tester | Offensive Security Operations
-            </p>
-            <p className="text-base md:text-xl">
-              HOFs | Bug Bounty | VAPT | CTF | Trainer
+
+            <h3 className="text-lg md:text-xl lg:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-purple-500 via-violet-500 to-pink-500 drop-shadow">
+  Cyber Security Researcher | Vulnerability Assessment & Penetration Tester | Offensive Security Operations
+</h3>
+
+
+
+            <p className="text-xs md:text-sm text-transparent bg-clip-text bg-gradient-to-r from-purple-500 via-violet-500 to-pink-500 drop-shadow">
+              Web | API | Network | Mobile | Cloud | LLM/AI | AD
             </p>
           </div>
         </div>
@@ -49,28 +66,18 @@ export function Hero() {
             </div>
 
             {/* Orbiting Icons */}
-            {icons.map((src, i) => {
-              const angle = (360 / icons.length) * i;
-              const radius = 180 + Math.random() * 30; // Randomized radius for irregularity
-              const radian = (angle * Math.PI) / 180;
-
-              // Adding random variations to the x and y positions to create irregular movement
-              const x = Math.cos(radian) * radius + (Math.random() - 0.5) * 40; // slight horizontal offset
-              const y = Math.sin(radian) * radius + (Math.random() - 0.5) * 40; // slight vertical offset
-
-              return (
-                <FloatingIcon
-                  key={i}
-                  src={src}
-                  delay={i * 0.5}
-                  style={{
-                    top: `calc(50% + ${y}px)`,
-                    left: `calc(50% + ${x}px)`,
-                    transform: 'translate(-50%, -50%)', // Centers the icon
-                  }}
-                />
-              );
-            })}
+            {iconPositions.map(({ x, y }, i) => (
+              <FloatingIcon
+                key={i}
+                src={icons[i]}
+                delay={i * 0.5}
+                style={{
+                  top: `calc(50% + ${y}px)`,
+                  left: `calc(50% + ${x}px)`,
+                  transform: 'translate(-50%, -50%)',
+                }}
+              />
+            ))}
           </div>
         </div>
       </div>
