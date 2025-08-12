@@ -28,7 +28,7 @@ export function Hero() {
               Hi, I’m Vettrivel U
             </h2>
             <p className="text-base md:text-xl">
-              Offensive Security Specialist | Red Teamer | AI/LLM Security
+             Cyber Security Researcher | Vulnerability Assessment & Penetration Tester | Offensive Security Operations
             </p>
             <p className="text-base md:text-xl">
               HOFs | Bug Bounty | VAPT | CTF | Trainer
