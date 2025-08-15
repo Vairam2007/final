@@ -1,67 +1,92 @@
-// SkillsSection.jsx
 import React from "react";
 
-// Sample assets — you can add more icons/images
 const tools = [
-  { name: "Burp Suite", icon: "/tools/burp.png" },
-  { name: "Metasploit", icon: "/tools/metasploit.png" },
-  { name: "ZAP", icon: "/tools/zap.png" },
-  { name: "SQLmap", icon: "/tools/sqlmap.png" },
-  { name: "BloodHound", icon: "/tools/bloodhound.png" },
-  // Add more as needed
+  { name: "Burp Suite", icon: "/ALL IMAGES/LOGO/3246741_burpsuite_security_software_icon.png" },
+  { name: "Metasploit", icon: "/ALL IMAGES/LOGO/icons8-metasploit-48.png" },
+  { name: "ZAP", icon: "/ALL IMAGES/LOGO/pngaaa.com-6931009.png" },
+  { name: "SQLmap", icon: "/ALL IMAGES/LOGO/MySQL.png" },
+  { name: "BloodHound", icon: "/ALL IMAGES/LOGO/BloodHound.png" },
+  { name: "Nmap", icon: "/ALL IMAGES/LOGO/icons8-nmap-48.png" },
+  { name: "Postman", icon: "/ALL IMAGES/LOGO/Postman.png" },
+  { name: "Hydra", icon: "/ALL IMAGES/LOGO/pngaaa.com-4042958.png" },
+  { name: "Amass", icon: "/ALL IMAGES/LOGO/Amass.png" },
+  { name: "Empire", icon: "/ALL IMAGES/LOGO/Empire.png" },
 ];
 
 export function Skills() {
   return (
-    <section id="skills" className="bg-black text-white py-16 px-6 md:px-12">
-      <div className="max-w-6xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-green-400 mb-8">Skills</h2>
+    <section id="skills" className="bg-black text-white py-20 px-6 md:px-12 font-mono">
+      <div className="max-w-7xl mx-auto">
+        <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-cyan-400 to-blue-400 mb-12 text-center">
+          🧠 Skills & Expertise
+        </h2>
 
-        {/* Core Skills */}
-        <div className="mb-8">
-          <h3 className="text-xl font-semibold mb-2 text-gray-200">Core Focus Areas</h3>
-          <ul className="list-disc ml-6 text-lg text-gray-300">
-            <li>VAPT, Red Teaming, LLM Security, Cloud Pentesting</li>
-            <li>Scripting: Python & Bash</li>
-            <li>Mentoring, Writeups, and Security Research</li>
+        {/* Core Cybersecurity Skills */}
+        <div className="mb-12">
+          <h3 className="text-2xl font-semibold text-green-400 mb-4">🛡️ Core Cybersecurity Skills</h3>
+          <ul className="list-disc list-inside space-y-2 text-lg text-gray-300 leading-relaxed pl-4">
+            <li>VAPT for Web, API, Network, Mobile, and LLM/AI systems</li>
+            <li>Red Team Operations, Threat Emulation & Post Exploitation (Linux/Windows)</li>
+            <li>Bug Bounty Hunting & CTF Simulations</li>
+            <li>SAST/DAST Security Testing & Secure Code Review</li>
+            <li>Network Exploitation, Privilege Escalation & Lateral Movement</li>
+            <li>Strong knowledge of OWASP Top 10, MITRE ATT&CK, NIST & CVEs</li>
           </ul>
         </div>
 
-        {/* Tools Grid */}
-        <div className="mb-12">
-          <h3 className="text-xl font-semibold mb-4 text-gray-200">Tools & Frameworks</h3>
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
-            {tools.map((tool, index) => (
+        {/* Tools & Frameworks - Marquee style */}
+        <div className="mb-12 overflow-hidden relative">
+          <h3 className="text-2xl font-semibold text-green-400 mb-6">🧰 Tools & Frameworks Mastery</h3>
+          <div
+            className="flex space-x-6"
+            style={{
+              animation: "marquee 25s linear infinite",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {[...tools, ...tools].map((tool, index) => (
               <div
                 key={index}
-                className="flex flex-col items-center p-4 bg-gray-900 rounded-lg hover:scale-105 transition"
+                className="inline-flex flex-col items-center p-4 bg-gray-900 border border-gray-700 rounded-xl min-w-[96px] flex-shrink-0 transition-transform duration-300 hover:scale-105 hover:shadow-[-8px_8px_0px_#22c55e] cursor-pointer"
               >
                 <img
                   src={tool.icon}
                   alt={tool.name}
                   className="w-12 h-12 object-contain mb-2"
                 />
-                <p className="text-sm text-center">{tool.name}</p>
+                <p className="text-sm text-center text-gray-300">{tool.name}</p>
               </div>
             ))}
           </div>
         </div>
 
-        {/* Optional Code Snippets */}
+        {/* Scripting & Automation */}
+        <div className="mb-12">
+          <h3 className="text-2xl font-semibold text-green-400 mb-4">⚙️ Scripting & Automation</h3>
+          <ul className="list-disc list-inside space-y-2 text-lg text-gray-300 leading-relaxed pl-4">
+            <li>Bash scripting for enumeration, automation, and payloads</li>
+            <li>Python for tool development, automation, exploit writing</li>
+            <li>Tool chaining & internal scripts to accelerate VAPT processes</li>
+          </ul>
+        </div>
+
+        {/* Sample Scripts */}
         <div>
-          <h3 className="text-xl font-semibold mb-4 text-gray-200">Sample Scripts</h3>
+          <h3 className="text-2xl font-semibold text-green-400 mb-6">📜 Sample Scripts</h3>
           <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-gray-900 p-4 rounded-lg border border-green-500 shadow">
+            {/* Bash Script */}
+            <div className="bg-gray-900 p-4 rounded-lg border border-green-600 transition-transform duration-300 hover:scale-105 hover:shadow-[-8px_8px_0px_#22c55e] cursor-pointer">
               <p className="text-sm text-green-400 mb-2">🔧 Bash Script</p>
-              <pre className="text-sm text-gray-300 overflow-x-auto">
+              <pre className="text-sm text-gray-300 whitespace-pre-wrap overflow-x-auto">
 {`#!/bin/bash
 echo "Starting recon..."
 nmap -sC -sV -oN scan.txt $1`}
               </pre>
             </div>
-            <div className="bg-gray-900 p-4 rounded-lg border border-green-500 shadow">
+            {/* Python Script */}
+            <div className="bg-gray-900 p-4 rounded-lg border border-green-600 transition-transform duration-300 hover:scale-105 hover:shadow-[-8px_8px_0px_#22c55e] cursor-pointer">
               <p className="text-sm text-green-400 mb-2">🐍 Python Script</p>
-              <pre className="text-sm text-gray-300 overflow-x-auto">
+              <pre className="text-sm text-gray-300 whitespace-pre-wrap overflow-x-auto">
 {`import requests
 
 url = 'https://example.com'
@@ -72,6 +97,14 @@ print(res.text)`}
           </div>
         </div>
       </div>
+
+      {/* Inline keyframes animation */}
+      <style>{`
+        @keyframes marquee {
+          0% { transform: translateX(0%); }
+          100% { transform: translateX(-50%); }
+        }
+      `}</style>
     </section>
   );
 }

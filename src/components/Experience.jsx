@@ -1,118 +1,119 @@
-import React, { useState } from "react";
+import React from "react";
 
 export function Experience() {
-  const [isOpen, setIsOpen] = useState(false);
-  const [currentImage, setCurrentImage] = useState(null);
-
-  const experiences = [
+  const timelineItems = [
+    {
+      title: "Product Security Tool Development Intern",
+      company: "Abluva",
+      location: "Palo Alto, California (Remote)",
+      date: "October 2024 – Present",
+      description: (
+        <>
+          Abluva is a deep-research-driven cybersecurity company pioneering multi-layered data protection solutions. As an intern in the Product Security Tool Development team, I contributed to enhancing security automation and cloud security practices.
+        </>
+      ),
+    },
+    {
+      title: "Key Contributions",
+      description: (
+        <ul className="list-disc list-inside space-y-1 text-gray-300">
+          <li>Developed and optimized security tools to improve vulnerability detection for the Global Security Scanner program.</li>
+          <li>Worked on cloud security projects focused on IAM policy assessments, misconfiguration detection, and compliance checks.</li>
+          <li>Assisted in automating security assessment processes to strengthen data security across multi-layered environments.</li>
+          <li>Collaborated with engineering to integrate threat intelligence insights, enhancing real-time risk detection.</li>
+        </ul>
+      ),
+    },
+    {
+      title: "Summary",
+      description: (
+        <>This role provided hands-on experience in security automation, cloud security, and vulnerability assessment, aligning with Abluva’s mission of delivering cutting-edge data security solutions.</>
+      ),
+    },
     {
       title: "Cybersecurity Engineer",
-      company: "CubeAI",
-      date: "2024 - Present",
-      description: "Developing secure AI solutions and managing security assessments.",
-      certImages: ["/experience/cubeai-cert.png"],
-    },
-    {
-      title: "Product Security Intern",
-      company: "Abluva",
-      date: "2023 - 2024",
-      description: "Security testing, vulnerability analysis, and pen-testing.",
-      certImages: ["/experience/ablova-cert.png"],
-    },
-    {
-      title: "Offensive Security Intern",
-      company: "Cybrtekninja",
-      date: "2022 - 2023",
-      description: "Red team exercises and internal system vulnerability assessments.",
-      certImages: ["/experience/cybrtekninja-cert.png"],
+      company: "CubeAISolutions Tech Pvt Ltd",
+      date: "August 2024 – October 2024",
+      description: (
+        <ul className="list-disc list-inside space-y-1 text-gray-300">
+          <li>Conducted penetration testing and vulnerability assessments, identifying and mitigating critical security risks.</li>
+          <li>Assisted in risk analysis, incident response, and enhancing cybersecurity protocols.</li>
+          <li>Delivered strategic security insights and implemented measures to protect company assets.</li>
+        </ul>
+      ),
     },
   ];
-
-  const openModal = (img) => {
-    setCurrentImage(img);
-    setIsOpen(true);
-  };
-
-  const closeModal = () => {
-    setCurrentImage(null);
-    setIsOpen(false);
-  };
 
   return (
     <section id="experience" className="bg-[#0e0e0e] text-white py-20">
       <div className="max-w-6xl mx-auto px-4">
-        <h2 className="text-4xl font-bold text-center text-green-400 mb-16">Experience</h2>
+        <h2 className="text-4xl font-bold text-center text-green-400 mb-16">Work Experience</h2>
 
         <div className="relative">
-          {/* Vertical Timeline Line */}
-          <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-green-600 z-0" />
+          {/* Vertical timeline line - full height */}
+          <div className="absolute left-1/2 transform -translate-x-1/2 inset-y-0 w-1 bg-green-600"></div>
 
-          {/* Timeline Cards */}
+          {/* Timeline items */}
           <div className="flex flex-col space-y-16">
-            {experiences.map((exp, idx) => (
-              <div key={idx} className={`relative flex items-center justify-between w-full`}>
-                {/* Left Side Card */}
-                {idx % 2 === 0 ? (
-                  <div className="w-5/12 bg-gray-900 p-6 rounded-xl shadow-lg z-10 text-right">
-                    <h3 className="text-2xl font-bold text-green-400">{exp.title}</h3>
-                    <p className="text-sm text-gray-400 mb-2">{exp.company} — {exp.date}</p>
-                    <p className="text-gray-300">{exp.description}</p>
-                    <div className="mt-4 flex justify-end gap-4">
-                      {exp.certImages.map((img, i) => (
-                        <img
-                          key={i}
-                          src={img}
-                          alt="cert"
-                          onClick={() => openModal(img)}
-                          className="w-20 h-20 rounded-lg object-cover cursor-pointer hover:scale-105 transition"
-                        />
-                      ))}
-                    </div>
-                  </div>
-                ) : <div className="w-5/12" />}
+            {timelineItems.map((item, idx) => {
+              const isLeft = idx % 2 === 0;
 
-                {/* Timeline Dot */}
-                <div className="w-10 h-10 bg-green-400 rounded-full z-10 border-4 border-black mx-4" />
-
-                {/* Right Side Card */}
-                {idx % 2 !== 0 ? (
-                  <div className="w-5/12 bg-gray-900 p-6 rounded-xl shadow-lg z-10 text-left">
-                    <h3 className="text-2xl font-bold text-green-400">{exp.title}</h3>
-                    <p className="text-sm text-gray-400 mb-2">{exp.company} — {exp.date}</p>
-                    <p className="text-gray-300">{exp.description}</p>
-                    <div className="mt-4 flex gap-4">
-                      {exp.certImages.map((img, i) => (
-                        <img
-                          key={i}
-                          src={img}
-                          alt="cert"
-                          onClick={() => openModal(img)}
-                          className="w-20 h-20 rounded-lg object-cover cursor-pointer hover:scale-105 transition"
-                        />
-                      ))}
+              return (
+                <div
+                  key={idx}
+                  className="relative w-full flex items-start justify-between"
+                  style={{ minHeight: "140px" }}
+                >
+                  {/* Left content */}
+                  {isLeft ? (
+                    <div className="w-5/12 pr-8 text-right">
+                      <div className="inline-block bg-gray-900 border border-green-600 rounded-xl p-6 shadow-lg">
+                        <h3 className="text-xl font-semibold text-green-400 mb-2">
+                          {item.title}
+                          {item.company ? ` | ${item.company}` : ""}
+                        </h3>
+                        {item.location && (
+                          <p className="text-sm text-gray-400 mb-1">{item.location}</p>
+                        )}
+                        {item.date && (
+                          <p className="text-sm text-gray-400 italic mb-4">{item.date}</p>
+                        )}
+                        <div className="text-gray-300">{item.description}</div>
+                      </div>
                     </div>
-                  </div>
-                ) : <div className="w-5/12" />}
-              </div>
-            ))}
+                  ) : (
+                    <div className="w-5/12" />
+                  )}
+
+                  {/* Timeline dot */}
+                  <div className="z-10 flex justify-center items-center w-8 h-8 rounded-full bg-green-400 border-4 border-[#0e0e0e] absolute left-1/2 top-4 transform -translate-x-1/2"></div>
+
+                  {/* Right content */}
+                  {!isLeft ? (
+                    <div className="w-5/12 pl-8 text-left">
+                      <div className="inline-block bg-gray-900 border border-green-600 rounded-xl p-6 shadow-lg">
+                        <h3 className="text-xl font-semibold text-green-400 mb-2">
+                          {item.title}
+                          {item.company ? ` | ${item.company}` : ""}
+                        </h3>
+                        {item.location && (
+                          <p className="text-sm text-gray-400 mb-1">{item.location}</p>
+                        )}
+                        {item.date && (
+                          <p className="text-sm text-gray-400 italic mb-4">{item.date}</p>
+                        )}
+                        <div className="text-gray-300">{item.description}</div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="w-5/12" />
+                  )}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
-
-      {/* Lightbox Modal */}
-      {isOpen && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50"
-          onClick={closeModal}
-        >
-          <div className="max-w-xl w-full bg-white p-4 rounded-lg" onClick={(e) => e.stopPropagation()}>
-            <img src={currentImage} alt="Certificate" className="w-full rounded" />
-            <button onClick={closeModal} className="absolute top-2 right-4 text-black text-2xl">
-              &times;
-            </button>
-          </div>
-        </div>
-      )}
     </section>
   );
 }

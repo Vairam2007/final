@@ -1,62 +1,117 @@
-import React from "react";
-import CountUp from './CountUp'; // ✅ Your CountUp component
+import React, { useState } from "react";
+import CountUp from "./CountUp";
 
 function About() {
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const certificates = [
+    { src: "/ALL IMAGES/CERTIFICATES/u8ufqy3w_1746069080308_page-0001.jpg", alt: "eJPT Certificate" },
+    { src: "/ALL IMAGES/CERTIFICATES/Screenshot 2025-04-30 222811.png", alt: "Hackathon Certificate" },
+    { src: "/ALL IMAGES/CERTIFICATES/THM-CENLASOUBP_page-0001.jpg", alt: "TryHackMe Certificate" },
+    { src: "/ALL IMAGES/CERTIFICATES/Internship CyberDosti.jpg", alt: "Internship Certificate" },
+  ];
+
+  const closeModal = () => setSelectedImage(null);
+
   return (
     <section
       id="about"
-      className="bg-gray-950 text-white h-screen px-6 md:px-12 overflow-y-auto"
+      className="bg-gray-900 text-white px-6 md:px-16 py-20 font-sans"
+      style={{
+        fontFamily:
+          "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
+      }}
     >
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center md:items-start gap-12 h-full py-12">
-        
-        {/* Text and Achievements */}
-        <div className="flex-1 flex flex-col justify-center h-full">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6 text-green-400">About Me</h2>
-          <p className="text-xl mb-4">
-            Cybersecurity researcher & red teamer from India 🇮🇳 <br />
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-16">
+        {/* Left Text */}
+        <div className="flex-1">
+          <h2 className="text-4xl md:text-5xl font-extrabold mb-6 text-green-400">
+            About Me
+          </h2>
+
+          <p className="text-lg md:text-xl text-gray-300 mb-6 leading-relaxed">
+            Cybersecurity Researcher & Red Teamer from India 🇮🇳
+            <br />
             Specialized in VAPT, Bug Bounties, and AI Security.
           </p>
 
-          <ul className="space-y-2 mt-6 text-lg text-gray-300">
-            <li>🏆 10+ HOF Recognitions (Flipkart, Chime, Govt)</li>
+          <ul className="space-y-2 text-gray-400 text-md">
+            <li>🏆 10+ Hall of Fame Recognitions (Flipkart, Chime, Govt)</li>
             <li>🎓 eJPT Certified (94%)</li>
             <li>🎯 Finalist - National Hackathon x CTF</li>
             <li>💰 Earned payouts from multiple companies</li>
-            <li>📢 Cybersecurity mentor, writeups on Medium</li>
+            <li>📢 Cybersecurity mentor & writeups on Medium</li>
           </ul>
 
-          {/* CountUp Stats */}
-          <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-            <div>
-              <CountUp from={0} to={10} duration={2} className="text-4xl font-bold text-green-400" />
-              <p className="text-sm mt-1">HOFs</p>
-            </div>
-            <div>
-              <CountUp from={0} to={94} duration={2} className="text-4xl font-bold text-green-400" />
-              <p className="text-sm mt-1">eJPT Score</p>
-            </div>
-            <div>
-              <CountUp from={0} to={5} duration={2} className="text-4xl font-bold text-green-400" />
-              <p className="text-sm mt-1">Top % THM</p>
-            </div>
-            <div>
-              <CountUp from={0} to={50} duration={2} className="text-4xl font-bold text-green-400" />
-              <p className="text-sm mt-1">Writeups</p>
-            </div>
+          {/* Stats */}
+          <div className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-8 text-center">
+            <Stat number={10} label="HOFs" />
+            <Stat number={94} label="eJPT Score" />
+            <Stat number={5} label="Top % THM" />
+            <Stat number={50} label="Writeups" />
           </div>
         </div>
 
-        {/* Certificates / Images */}
-        <div className="flex-1 flex justify-center items-center h-full">
-          <div className="grid grid-cols-2 gap-4">
-            <img src="/certificates/ejpt.png" alt="eJPT" className="rounded-lg border border-green-600 shadow" />
-            <img src="/certificates/hackathon.png" alt="Hackathon" className="rounded-lg border border-green-600 shadow" />
-            <img src="/certificates/tryhackme.png" alt="TryHackMe" className="rounded-lg border border-green-600 shadow" />
-            <img src="/certificates/linkedin-top-voice.png" alt="LinkedIn" className="rounded-lg border border-green-600 shadow" />
-          </div>
+        {/* Right Certificates */}
+        <div className="flex-1 grid grid-cols-2 gap-6">
+          {certificates.map(({ src, alt }, i) => (
+            <div
+              key={i}
+              className="border border-purple-700 p-2 rounded cursor-pointer hover:scale-105 transition-transform"
+              onClick={() => setSelectedImage(src)}
+            >
+              <img
+                src={src}
+                alt={alt}
+                className="w-full h-auto object-contain rounded"
+                loading="lazy"
+              />
+            </div>
+          ))}
         </div>
       </div>
+
+      {/* Modal */}
+      {selectedImage && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50"
+          onClick={closeModal}
+        >
+          <div
+            className="relative max-w-4xl w-full px-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={selectedImage}
+              alt="Certificate Zoom"
+              className="w-full h-auto max-h-[90vh] object-contain rounded shadow-lg"
+            />
+
+            <button
+              onClick={closeModal}
+              className="absolute top-2 right-2 text-white bg-purple-700 hover:bg-purple-800 text-2xl w-10 h-10 rounded-full flex items-center justify-center"
+              aria-label="Close modal"
+            >
+              &times;
+            </button>
+          </div>
+        </div>
+      )}
     </section>
+  );
+}
+
+function Stat({ number, label }) {
+  return (
+    <div>
+      <CountUp
+        from={0}
+        to={number}
+        duration={2}
+        className="text-4xl font-extrabold text-green-400"
+      />
+      <p className="mt-1 text-sm text-gray-400">{label}</p>
+    </div>
   );
 }
 

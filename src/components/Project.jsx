@@ -1,74 +1,99 @@
-// ProjectsSection.jsx
 import React from "react";
 
 export function Project() {
+  const projects = [
+    {
+      title: "🔍 RepoVulnScan",
+      description: `RepoVulnScan is a security tool designed to scan GitHub repositories for known vulnerabilities 
+      in dependencies. It uses the OSV API and supports ecosystems like npm, PyPI, Go, Maven, Gradle, crates.io and more.`,
+      tags: ["Security Tool", "Python", "OSV API"],
+      image: "/ALL IMAGES/VULNS/Screenshot 2025-04-11 182048.png",
+      github: "https://github.com/vettrivel007/RepoVulnScan",
+    },
+    {
+      title: "🌊 DDoS-Wave",
+      description: `DDoS-Wave is a powerful network stress-testing tool used for red team simulations. 
+      It floods a target with spoofed TCP traffic, allowing realistic and customizable testing.`,
+      tags: ["Red Team", "Python", "PenTesting"],
+      image: "/ALL IMAGES/VULNS//Screenshot 2025-02-17 103445.png",
+      github: "https://github.com/vettrivel007/DDoS-Wave",
+    },
+  ];
+
+  // Tailwind doesn’t have built-in gradient animation, so use inline style for keyframes & animation
+  const gradientAnimation = {
+    backgroundSize: "400% 400%",
+    animation: "gradient 15s ease infinite",
+    backgroundImage:
+      "linear-gradient(270deg, #1f2937, #374151, #111827, #1f2937)",
+  };
+
   return (
-    <section id="projects" className="bg-gray-900 text-white py-16 px-6 md:px-12">
-      <div className="max-w-6xl mx-auto">
-        <h2 className="text-3xl md:text-4xl font-bold text-green-400 mb-8">Projects</h2>
+    <>
+      <style>
+        {`
+          @keyframes gradient {
+            0% {background-position: 0% 50%;}
+            50% {background-position: 100% 50%;}
+            100% {background-position: 0% 50%;}
+          }
+        `}
+      </style>
+      <section
+        id="projects"
+        className="text-white py-20 px-6 md:px-12"
+        style={gradientAnimation}
+      >
+        <div className="max-w-7xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-cyan-400 to-blue-400 mb-16 text-center">
+            🚀 My Projects
+          </h2>
 
-        {/* Project 1: RepoVulnScan */}
-        <div className="mb-12">
-          <h3 className="text-xl font-semibold text-gray-200 mb-4">RepoVulnScan</h3>
-          <p className="text-lg text-gray-300 mb-4">
-            GitHub repository scanner using OSV API to identify vulnerabilities in open-source packages.
-          </p>
-          
-          {/* Screenshot */}
-          <div className="mb-4">
-            <img
-              src="/projects/repovulnscan.png"
-              alt="RepoVulnScan"
-              className="w-full rounded-lg shadow-md"
-            />
-          </div>
+          <div className="grid gap-10 md:grid-cols-2">
+            {projects.map((project, idx) => (
+              <div
+                key={idx}
+                className="bg-gradient-to-br from-gray-800 via-gray-900 to-black p-6 rounded-xl shadow-lg border border-gray-700 transition-transform transform hover:-translate-y-1 hover:shadow-2xl"
+              >
+                {/* Image */}
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  className="rounded-md mb-4 w-full h-56 object-cover shadow"
+                />
 
-          {/* Project Badges & GitHub link */}
-          <div className="flex items-center gap-4">
-            <span className="bg-green-500 text-white px-4 py-1 rounded-full text-sm">Security Tool</span>
-            <span className="bg-blue-500 text-white px-4 py-1 rounded-full text-sm">Python</span>
-            <a
-              href="https://github.com/your-username/RepoVulnScan" // Update with your GitHub link
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-gray-800 text-white px-6 py-2 rounded-full mt-4 inline-block hover:bg-green-600"
-            >
-              View on GitHub
-            </a>
+                {/* Title */}
+                <h3 className="text-2xl font-semibold mb-3 text-green-400">{project.title}</h3>
+
+                {/* Description */}
+                <p className="text-gray-300 text-sm mb-4 leading-relaxed">{project.description}</p>
+
+                {/* Tags */}
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {project.tags.map((tag, tagIndex) => (
+                    <span
+                      key={tagIndex}
+                      className="text-xs bg-gray-700 text-white px-3 py-1 rounded-full tracking-wide"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                {/* GitHub Button */}
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block bg-green-500 hover:bg-green-600 transition px-6 py-2 text-sm font-medium rounded-full text-black"
+                >
+                  🔗 View on GitHub
+                </a>
+              </div>
+            ))}
           </div>
         </div>
-
-        {/* Project 2: DDoS-Wave */}
-        <div>
-          <h3 className="text-xl font-semibold text-gray-200 mb-4">DDoS-Wave</h3>
-          <p className="text-lg text-gray-300 mb-4">
-            Network stress testing tool designed for red team simulations to simulate DDoS attacks.
-          </p>
-
-          {/* Screenshot */}
-          <div className="mb-4">
-            <img
-              src="/projects/ddoswave.png"
-              alt="DDoS-Wave"
-              className="w-full rounded-lg shadow-md"
-            />
-          </div>
-
-          {/* Project Badges & GitHub link */}
-          <div className="flex items-center gap-4">
-            <span className="bg-red-500 text-white px-4 py-1 rounded-full text-sm">Red Team</span>
-            <span className="bg-blue-500 text-white px-4 py-1 rounded-full text-sm">Python</span>
-            <a
-              href="https://github.com/your-username/DDoS-Wave" // Update with your GitHub link
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-gray-800 text-white px-6 py-2 rounded-full mt-4 inline-block hover:bg-green-600"
-            >
-              View on GitHub
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

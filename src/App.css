@@ -23,27 +23,42 @@ html, body, #root {
 body {
   overflow-x: hidden;  /* Prevent horizontal scrollbar */
 }
-
-/* Scrollbar */
+/* Scrollbar width */
+/* Scrollbar Base */
 ::-webkit-scrollbar {
-  width: 12px;
+  width: 18px;
+  background-color: #0b0b0f; /* almost black */
 }
 
+/* Scrollbar Track */
 ::-webkit-scrollbar-track {
-  background: #1a1a1a;
-  border-radius: 10px;
+  background-color: #12121a; /* dark violet-black */
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.6);
+  border-left: 1px solid #1e1e2e;
 }
 
+/* Scrollbar Thumb */
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #00ffff, #007d7d);
-  border-radius: 10px;
-  border: 2px solid #0d0d1a;
-  box-shadow: 0 0 10px #00ffff;
+  background: linear-gradient(180deg, #4c2a85, #2f1c4d); /* deep violet gradient */
+  border: 2px solid #1c102b; /* dark inner border */
+  box-shadow:
+    inset 0 0 6px rgba(0, 0, 0, 0.8),
+    0 0 6px rgba(76, 42, 133, 0.25); /* subtle outer glow */
+  transition: all 0.3s ease;
 }
 
+/* On Hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #00e6e6, #00b3b3);
-  box-shadow: 0 0 14px #00ffff;
+  background: linear-gradient(180deg, #6a3dbf, #3a2373); /* brighter violet */
+  border-color: #26143d;
+  box-shadow:
+    inset 0 0 6px rgba(0, 0, 0, 0.8),
+    0 0 10px rgba(120, 60, 200, 0.35); /* enhanced glow */
+}
+
+/* Scrollbar Corner */
+::-webkit-scrollbar-corner {
+  background-color: #0b0b0f;
 }
 
 /* Other existing styles */

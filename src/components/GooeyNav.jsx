@@ -167,7 +167,7 @@ const GooeyNav = ({
             inset: -75px;
             z-index: -2;
             background: black;
-            transform: scaleY(0.5);
+            transform: scaleY(0.35);
 
           }
           .effect.filter::after {
@@ -262,7 +262,7 @@ const GooeyNav = ({
           }
           li.active::after {
             opacity: 1;
-            transform: scale(1);
+            transform: scale(01);
           }
           li::after {
             content: "";
@@ -279,7 +279,7 @@ const GooeyNav = ({
       </style>
       <div className="relative" ref={containerRef}>
         <nav
-          className="flex relative"
+          className="flex relative " 
           style={{ transform: "translate3d(0,0,0.01px)" }}
         >
           <ul
