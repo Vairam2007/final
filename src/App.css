@@ -1,105 +1,63 @@
-/* Global Styles */
+/* Global Resets */
 html {
   scroll-behavior: smooth;
-  overflow-x: hidden;  /* Ensures no horizontal overflow */
-  overflow-y: scroll;  /* Keeps vertical scrolling enabled */
-  direction: ltr; /* Scrollbar on the right */
+  overflow-x: hidden;
 }
-
-html, body, #root {
+body, html, #root {
   margin: 0;
   padding: 0;
-  width: 100%;
   cursor: pointer;
 }
 
-/* Ensure no horizontal overflow */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  overflow-x: hidden;  /* Prevent horizontal scrollbar */
-}
-/* Scrollbar width */
-/* Scrollbar Base */
+/* Scrollbar */
 ::-webkit-scrollbar {
   width: 18px;
-  background-color: #0b0b0f; /* almost black */
+  background-color: var(--scrollbar-bg, #0b0b0f);
 }
-
-/* Scrollbar Track */
 ::-webkit-scrollbar-track {
-  background-color: #12121a; /* dark violet-black */
-  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.6);
+  background-color: var(--scrollbar-track, #12121a);
+  box-shadow: inset 0 0 5px rgba(0,0,0,0.6);
   border-left: 1px solid #1e1e2e;
 }
-
-/* Scrollbar Thumb */
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #4c2a85, #2f1c4d); /* deep violet gradient */
-  border: 2px solid #1c102b; /* dark inner border */
-  box-shadow:
-    inset 0 0 6px rgba(0, 0, 0, 0.8),
-    0 0 6px rgba(76, 42, 133, 0.25); /* subtle outer glow */
-  transition: all 0.3s ease;
+  background: var(--scrollbar-thumb, linear-gradient(180deg, #4c2a85, #2f1c4d));
+  border: 2px solid #1c102b;
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.8), 0 0 6px rgba(76,42,133,0.25);
+  transition: 0.3s;
 }
-
-/* On Hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #6a3dbf, #3a2373); /* brighter violet */
+  background: var(--scrollbar-thumb-hover, linear-gradient(180deg, #6a3dbf, #3a2373));
   border-color: #26143d;
-  box-shadow:
-    inset 0 0 6px rgba(0, 0, 0, 0.8),
-    0 0 10px rgba(120, 60, 200, 0.35); /* enhanced glow */
+  box-shadow: inset 0 0 6px rgba(0,0,0,0.8), 0 0 10px rgba(120,60,200,0.35);
 }
-
-/* Scrollbar Corner */
 ::-webkit-scrollbar-corner {
   background-color: #0b0b0f;
 }
 
-/* Other existing styles */
-.bg-cyber-dark {
-  background-color: #0a0a23;
-}
-
-.neon-logo {
-  color: #00ffff;
-  text-shadow: 0 0 8px #00ffff, 0 0 12px #00ffff;
-}
-
+/* Other Global Styles */
 a {
-  transition: 0.3s ease-in-out;
+  transition: color 0.3s ease-in-out;
 }
-
 a:hover {
-  text-decoration: underline;
   color: #00ffff;
+  text-decoration: underline;
 }
-
 section h2 {
   border-left: 4px solid #00ffff;
   padding-left: 12px;
   margin-bottom: 1rem;
 }
-
 footer {
   background-color: #1a1a1a;
   color: #cccccc;
 }
-
 footer a {
   color: #00ffff;
 }
-
 footer a:hover {
   color: #ffffff;
 }
-
-button {
+button.scroll-top {
   position: fixed;
   bottom: 2.5rem;
   right: 2.5rem;
@@ -107,75 +65,38 @@ button {
   border-radius: 9999px;
   background-color: #06b6d4;
   color: white;
-  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+  box-shadow: 0 0 10px rgba(0,255,255,0.5);
   transition: transform 0.3s ease, background-color 0.3s ease;
 }
-
-button:hover {
+button.scroll-top:hover {
   background-color: #00b3b3;
   transform: scale(1.1);
 }
 
-.navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 20;
-  backdrop-filter: blur(12px);
-  background-color: rgba(10, 10, 35, 0.9);
+/* Light/Dark Scrollbar Variables */
+html.light {
+  --scrollbar-bg: #f0f0f0;
+  --scrollbar-track: #f0f0f0;
+  --scrollbar-thumb: linear-gradient(180deg, #8a2be2, #551a8b);
+  --scrollbar-thumb-hover: linear-gradient(180deg, #9a3cef, #662bab);
+}
+html.dark {
+  --scrollbar-bg: #12121a;
+  --scrollbar-track: #12121a;
+  --scrollbar-thumb: linear-gradient(180deg, #4c2a85, #2f1c4d);
+  --scrollbar-thumb-hover: linear-gradient(180deg, #6a3dbf, #3a2373);
 }
 
-.particles {
-  z-index: -1;
-}
-
-.navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 50;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background-color: rgba(10, 10, 35, 0.9);
+/* For backdrop blur on navbar */
+.navbar, .navbar-mobile {
   backdrop-filter: blur(10px);
 }
 
-.navbar-logo {
-  font-family: 'Orbitron', sans-serif;
-  letter-spacing: 2px;
-  text-shadow: 0 0 6px #00ffff, 0 0 12px #00ffff;
+/* Hide scrollbar for mobile nav */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
-
-.navbar-links {
-  display: flex;
-  list-style: none;
-  gap: 1.5rem;
-}
-
-.navbar-links a {
-  color: #ffffff;
-  text-decoration: none;
-  font-weight: 500;
-  position: relative;
-  transition: all 0.3s ease;
-}
-
-@media (max-width: 768px) {
-  .navbar-links {
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .navbar {
-    flex-direction: column;
-    padding: 1rem;
-  }
-}
-
-.neon-text {
-  text-shadow: 0 0 6px #00ffff, 0 0 12px #00ffff, 0 0 20px #00ffff;
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

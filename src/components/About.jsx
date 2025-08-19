@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import CountUp from "./CountUp";
 
 function About() {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -16,7 +15,7 @@ function About() {
   return (
     <section
       id="about"
-      className="bg-gray-900 text-white px-6 md:px-16 py-20 font-sans"
+      className="bg-gray-900 text-white px-6 md:px-16 py-20 font-sans min-h-screen"
       style={{
         fontFamily:
           "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
@@ -42,14 +41,6 @@ function About() {
             <li>💰 Earned payouts from multiple companies</li>
             <li>📢 Cybersecurity mentor & writeups on Medium</li>
           </ul>
-
-          {/* Stats */}
-          <div className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-8 text-center">
-            <Stat number={10} label="HOFs" />
-            <Stat number={94} label="eJPT Score" />
-            <Stat number={5} label="Top % THM" />
-            <Stat number={50} label="Writeups" />
-          </div>
         </div>
 
         {/* Right Certificates */}
@@ -98,20 +89,6 @@ function About() {
         </div>
       )}
     </section>
-  );
-}
-
-function Stat({ number, label }) {
-  return (
-    <div>
-      <CountUp
-        from={0}
-        to={number}
-        duration={2}
-        className="text-4xl font-extrabold text-green-400"
-      />
-      <p className="mt-1 text-sm text-gray-400">{label}</p>
-    </div>
   );
 }
 

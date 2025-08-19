@@ -34,26 +34,45 @@ export function Hero() {
         background: "linear-gradient(135deg, #0f172a 30%, #000000 70%)",
       }}
     >
-      <SplashCursor />
+      {/* <SplashCursor /> */}
       
 
       <div className="container mx-auto flex flex-col md:flex-row items-center px-6 md:px-12 lg:px-24 gap-12">
         {/* Left Content */}
         <div className="w-full md:w-1/2 flex flex-col justify-center max-w-xl space-y-6">
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight">
-            <span className="block text-lg md:text-xl font-semibold mb-2 text-gray-400">
-              Hi, I’m
-            </span>
-            <span className="text-white">Vettrivel U</span>
-          </h1>
+          <h1
+  className="text-5xl md:text-6xl lg:text-7xl font-extrabold leading-tight tracking-tight"
+  style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif", fontWeight: 800 }}
+>
+  <span
+    className="block text-lg md:text-xl font-semibold mb-2 text-gray-400"
+    style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif", fontWeight: 600 }}
+  >
+    Hi, I’m
+  </span>
+  <span
+    className="text-white"
+    style={{ fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif", fontWeight: 800, letterSpacing: '0.1em' }}
+  >
+    Vettrivel U
+  </span>
+</h1>
 
-          <h2 className="text-2xl md:text-3xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-600 to-blue-500 drop-shadow-lg leading-snug">
-            Cybersecurity Researcher | Penetration Tester | Offensive Security Ops
-          </h2>
 
-          <p className="text-base md:text-lg font-medium text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-yellow-400 to-red-400 drop-shadow-sm tracking-wide uppercase">
-            Web | API | Network | Mobile | Cloud | LLM/AI | Active Directory
-          </p>
+          <h2
+  className="text-2xl md:text-3xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-600 to-blue-500 drop-shadow-lg leading-snug"
+  style={{ fontFamily: "Calibri, Candara, Segoe, Segoe UI, Optima, sans-serif" }}
+>
+  Cyber Security Researcher | Vulnerability Assessment & Penetration Tester | Offensive Security Operations
+</h2>
+
+<p
+  className="text-base md:text-lg font-medium text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-yellow-400 to-red-400 drop-shadow-sm tracking-wide uppercase"
+  style={{ fontFamily: "Calibri, Candara, Segoe, Segoe UI, Optima, sans-serif" }}
+>
+  Web | API | Network | Mobile | Cloud | LLM/AI | AD
+</p>
+
         </div>
 
         {/* Right Content: Floating Icons & Profile */}
@@ -62,14 +81,14 @@ export function Hero() {
             {/* Profile Image */}
             <div className="absolute top-1/2 left-1/2 w-60 h-60 sm:w-72 sm:h-72 md:w-80 md:h-80 rounded-full overflow-hidden z-20 shadow-2xl transform -translate-x-1/2 -translate-y-1/2">
               <img
-                src="/mine-removebg-preview.png"
+                src="/mine.png"
                 alt="Portrait of Vettrivel U"
                 className="w-full h-full object-cover"
                 loading="lazy"
               />
             </div>
 
-            {/* Floating Icons */}
+            {/* Floating Icons
             {iconPositions.map(({ x, y }, i) => (
               <FloatingIcon
                 key={i}
@@ -80,8 +99,8 @@ export function Hero() {
                   left: `calc(50% + ${x}px)`,
                 }}
                 alt={`Floating Icon ${i + 1}`}
-              />
-            ))}
+              /> */}
+            {/* ))} */}
           </div>
         </div>
       </div>
