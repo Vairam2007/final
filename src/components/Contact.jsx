@@ -57,8 +57,7 @@ export function Contact() {
             Get in Touch
           </h2>
           <p className="text-lg text-gray-300 mb-4 leading-relaxed">
-            Whether you want to discuss a project, ask a question, or just say hi —
-            I'm always open to new conversations.
+            Whether you want to discuss a project, ask a question, or just say hi — I'm always open to new conversations.
           </p>
 
           <p className="text-md text-gray-400 mb-6">
@@ -82,7 +81,7 @@ export function Contact() {
                 href={social.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 bg-[#161b22] px-4 py-2 rounded-md hover:bg-[#1f2937] transition border border-gray-700"
+                className="flex items-center gap-2 bg-[#161b22] px-4 py-2 rounded-md border border-gray-700 transition-all duration-300 hover:bg-[#1f2937] hover:shadow-[0_0_15px_rgba(34,197,94,0.4)]"
               >
                 <img
                   src={social.icon}
@@ -96,7 +95,7 @@ export function Contact() {
         </div>
 
         {/* Right Section - Form */}
-        <div className="bg-[#161b22] p-8 rounded-xl shadow-lg border border-gray-700">
+        <div className="bg-[#161b22] p-8 rounded-xl border border-gray-700 shadow-lg transition-all duration-300  hover:shadow-[0_0_25px_rgba(34,197,224,0.3)] shadow-[0_0_25px_rgba(34,197,94,0.3)]">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label
@@ -153,7 +152,7 @@ export function Contact() {
 
             <button
               type="submit"
-              className="w-full bg-green-500 hover:bg-green-600 text-black font-semibold py-2 rounded-md transition"
+              className="w-full bg-green-500 hover:bg-blue-500 text-black font-semibold py-2 rounded-md transition-all duration-300 hover:shadow-[0_0_25px_rgba(34,197,194,0.3)] shadow-[0_0_15px_rgba(34,197,94,0.6)]"
             >
               Send Message
             </button>

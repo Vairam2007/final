@@ -22,7 +22,8 @@ export function HallOfFame() {
   const containerRef = useRef(null);
   const [flippedIndexes, setFlippedIndexes] = useState(new Set());
   const [selectedImage, setSelectedImage] = useState(null);
-  const [outerHover, setOuterHover] = useState(false);
+  const [isAutoScrolling, setIsAutoScrolling] = useState(true);
+  let userScrollTimeout;
 
   useEffect(() => {
     const container = containerRef.current;
@@ -38,14 +39,31 @@ export function HallOfFame() {
     };
 
     const autoScroll = () => {
-      container.scrollTop += scrollSpeed;
-      resetScroll();
+      if (isAutoScrolling) {
+        container.scrollTop += scrollSpeed;
+        resetScroll();
+      }
       rafId = requestAnimationFrame(autoScroll);
     };
 
     rafId = requestAnimationFrame(autoScroll);
-    return () => cancelAnimationFrame(rafId);
-  }, []);
+
+    const onUserScroll = () => {
+      setIsAutoScrolling(false);
+      clearTimeout(userScrollTimeout);
+      userScrollTimeout = setTimeout(() => {
+        setIsAutoScrolling(true);
+      }, 2000);
+    };
+
+    container.addEventListener("scroll", onUserScroll);
+
+    return () => {
+      cancelAnimationFrame(rafId);
+      container.removeEventListener("scroll", onUserScroll);
+      clearTimeout(userScrollTimeout);
+    };
+  }, [isAutoScrolling]);
 
   const toggleFlip = (index) => {
     setFlippedIndexes((prev) => {
@@ -59,29 +77,60 @@ export function HallOfFame() {
   return (
     <section
       id="halloffame"
-      className="text-gray-300 py-20 px-6 md:px-12"
+      className="text-gray-200 py-20 px-6 md:px-12"
       style={{
-        backgroundColor: "#0f172a",
-        borderRadius: "24px",
-        maxWidth: "88vw",
-        margin: "80px auto",
-        padding: "20px",
-        
+        minHeight: "100vh",
+        background:
+          "radial-gradient(circle at center, #121926 0%, #0a0e17 70%, #05080f 100%)",
+        position: "relative",
+        overflow: "hidden",
+        paddingTop: "100px",
+        paddingBottom: "100px",
       }}
-      onMouseEnter={() => setOuterHover(true)}
-      onMouseLeave={() => setOuterHover(false)}
     >
-      <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl md:text-5xl font-extrabold text-cyan-400 text-center mt-5 mb-16">
-          🏅 Hall of Fame
-        </h2>
+      {/* Vignette overlay */}
+      <div
+        style={{
+          pointerEvents: "none",
+          position: "absolute",
+          inset: 0,
+          borderRadius: "32px",
+          boxShadow:
+            "inset 0 0 150px 80px rgba(0, 0, 0, 0.85), inset 0 0 70px 30px #0e4e7f",
+          zIndex: 0,
+        }}
+      />
+
+      <div
+        className="max-w-7xl mx-auto relative z-10"
+        style={{
+          background: "rgba(15, 23, 42, 0.75)",
+          backdropFilter: "blur(16px)",
+          borderRadius: "24px",
+          boxShadow:
+            "0 10px 40px rgba(14, 165, 233, 0.25), 0 0 25px rgba(14, 165, 233, 0.15)",
+          padding: "40px 50px",
+        }}
+      >
+        {/* Centered Header */}
+        <div className="w-full flex justify-center mb-20">
+          <h2
+            className="text-5xl font-extrabold text-cyan-400 text-center select-none inline-block px-8 py-4 rounded-md"
+            style={{
+              backgroundColor: "#121926",
+            }}
+          >
+            🏅 Hall of Fame
+          </h2>
+        </div>
 
         <div
           ref={containerRef}
-          className="overflow-y-auto scrollbar-hide flex flex-col space-y-14"
+          className="overflow-y-auto scrollbar-hide flex flex-col space-y-16"
           style={{
-            maxHeight: "calc(100vh - 160px)",
+            maxHeight: "calc(100vh - 280px)",
             scrollBehavior: "smooth",
+            cursor: isAutoScrolling ? "default" : "grab",
           }}
         >
           {[...hofItems, ...hofItems].map((item, idx) => {
@@ -89,26 +138,26 @@ export function HallOfFame() {
             return (
               <div
                 key={idx}
-                className="relative max-w-4xl mx-auto w-full transition-transform duration-300 transform hover:scale-105"
-                style={{ perspective: "1000px", minHeight: "480px" }}
+                className="relative max-w-4xl mx-auto w-full transition-transform duration-300 transform hover:scale-[1.05] shadow-xl rounded-xl"
+                style={{ perspective: "1200px", minHeight: "500px" }}
               >
                 <div
-                  className={`relative transform-style-preserve-3d duration-700 ${
+                  className={`relative duration-700 ${
                     isFlipped ? "rotate-y-180" : ""
                   }`}
                   style={{
                     transformStyle: "preserve-3d",
-                    transition: "transform 0.7s",
+                    transition: "transform 0.7s cubic-bezier(0.4, 0, 0.2, 1)",
                     minHeight: "480px",
                     borderRadius: "16px",
                     boxShadow:
-                      "0 15px 30px rgba(0, 0, 0, 0.7), 0 0 0 2px rgba(14, 165, 233, 0.1)",
-                    backgroundColor: "#1e293b",
+                      "0 20px 50px rgba(0, 0, 0, 0.85), 0 0 0 2px rgba(14, 165, 233, 0.25)",
+                    backgroundColor: "#16203a",
                   }}
                 >
                   {/* Front Side */}
                   <div
-                    className="rounded-xl p-6 flex flex-col justify-between cursor-pointer transition-all duration-300"
+                    className="rounded-xl p-10 flex flex-col justify-between cursor-pointer select-none"
                     style={{
                       backfaceVisibility: "hidden",
                       position: "absolute",
@@ -116,35 +165,25 @@ export function HallOfFame() {
                       height: "100%",
                       top: 0,
                       left: 0,
-                      backgroundColor: "#1e293b",
+                      backgroundColor: "#16203a",
                       boxShadow:
-                        "0 6px 12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(14, 165, 233, 0.1)",
-                      color: "#cbd5e1",
+                        "0 12px 30px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(14, 165, 233, 0.2)",
+                      color: "#4dd0e1",
                     }}
                     onClick={() => toggleFlip(idx)}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = "#273449";
-                      e.currentTarget.style.boxShadow =
-                        "0 12px 30px rgba(14,165,233,0.4), 0 0 25px rgba(14,165,233,0.3)";
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = "#1e293b";
-                      e.currentTarget.style.boxShadow =
-                        "0 6px 12px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(14, 165, 233, 0.1)";
-                    }}
                   >
                     <div>
-                      <h3 className="text-2xl md:text-3xl font-semibold mb-3 text-cyan-400">
+                      <h3 className="text-3xl font-semibold mb-5 leading-tight">
                         {item.title}
                       </h3>
-                      <p className="whitespace-pre-line text-gray-300 text-lg md:text-xl leading-relaxed">
+                      <p className="whitespace-pre-line text-gray-300 text-lg md:text-xl leading-relaxed tracking-wide">
                         {item.description}
                       </p>
                     </div>
 
                     {item.image && (
                       <div
-                        className="mt-6 rounded-md overflow-hidden shadow-md border border-gray-700 hover:shadow-lg cursor-pointer"
+                        className="mt-10 rounded-lg overflow-hidden border border-gray-700 hover:shadow-lg cursor-pointer transition-shadow duration-300"
                         style={{ height: "260px" }}
                         onClick={(e) => {
                           e.stopPropagation();
@@ -155,6 +194,7 @@ export function HallOfFame() {
                           src={item.image}
                           alt={item.title}
                           className="w-full h-full object-cover"
+                          loading="lazy"
                         />
                       </div>
                     )}
@@ -162,33 +202,25 @@ export function HallOfFame() {
 
                   {/* Back Side */}
                   <div
-                    className="bg-slate-900 rounded-xl p-8 absolute top-0 left-0 w-full h-full text-gray-200 flex flex-col justify-center items-center text-center cursor-pointer"
+                    className="bg-slate-900 rounded-xl p-10 absolute top-0 left-0 w-full h-full text-gray-300 flex flex-col justify-center items-center text-center cursor-pointer select-none"
                     style={{
                       backfaceVisibility: "hidden",
                       transform: "rotateY(180deg)",
+                      userSelect: "none",
+                      boxShadow:
+                        "0 15px 40px rgba(14, 165, 233, 0.5), 0 0 25px rgba(14, 165, 233, 0.4)",
                     }}
                     onClick={() => toggleFlip(idx)}
                   >
-                    <h3 className="text-2xl font-bold mb-4 text-cyan-400">
+                    <h3 className="text-3xl font-bold mb-6 text-cyan-400">
                       More Info
                     </h3>
-                    <p className="text-base md:text-lg px-4">
-                      More details about this recognition or project could go
-                      here. Great spot for achievements, tools used, or security
-                      insights.
+                    <p className="text-lg md:text-xl max-w-xl px-6 tracking-wide leading-relaxed">
+                      More details about this recognition or project could go here.
+                      Great spot for achievements, tools used, or security insights.
                     </p>
                   </div>
                 </div>
-
-                {/* Flip Button */}
-                <button
-                  onClick={() => toggleFlip(idx)}
-                  className="absolute top-1/2 transform -translate-y-1/2 right-[-3rem] bg-cyan-500 text-black rounded-full p-4 shadow-lg hover:bg-cyan-400 transition"
-                  aria-label="Flip card"
-                  style={{ userSelect: "none" }}
-                >
-                  ↪️
-                </button>
               </div>
             );
           })}
@@ -202,12 +234,12 @@ export function HallOfFame() {
           onClick={() => setSelectedImage(null)}
         >
           <div
-            className="bg-gray-900 rounded-lg overflow-hidden max-w-4xl w-full p-4 relative"
+            className="bg-gray-900 rounded-lg overflow-hidden max-w-4xl w-full p-6 relative shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
             <button
               onClick={() => setSelectedImage(null)}
-              className="absolute top-2 right-2 h-10 w-10 text-black text-3xl font-bold bg-cyan-500 rounded-full hover:bg-cyan-400 transition flex items-center justify-center"
+              className="absolute top-3 right-3 h-10 w-10 text-black text-3xl font-bold bg-cyan-500 rounded-full hover:bg-cyan-400 transition flex items-center justify-center focus:outline-none focus:ring-4 focus:ring-cyan-300"
               aria-label="Close modal"
             >
               ×
@@ -217,6 +249,7 @@ export function HallOfFame() {
               src={selectedImage}
               alt="Selected Hall of Fame"
               className="w-full max-h-[80vh] object-contain rounded-md"
+              loading="lazy"
             />
           </div>
         </div>

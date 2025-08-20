@@ -30,9 +30,11 @@ export function Hero() {
     <section
       id="hero"
       className="relative text-white overflow-hidden min-h-screen flex items-center"
-      style={{
-        background: "linear-gradient(135deg, #0f172a 30%, #000000 70%)",
-      }}
+        style={{
+    background: "linear-gradient(135deg, #0f172a 0%, #000000 100%)",
+    color: "white",
+    padding: "100px 40px",
+  }}
     >
       {/* <SplashCursor /> */}
       

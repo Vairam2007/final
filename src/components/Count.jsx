@@ -3,17 +3,49 @@ import React from "react";
 function Count() {
   return (
     <main
-      className="bg-gradient-to-br from-[#0f172a] to-[#1e293b] text-white py-10 px-6 md:px-16 min-h-[25vh] flex items-center"
-      style={{
-        fontFamily:
-          "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
-      }}
-    >
-      <div className="max-w-6xl mx-auto text-center w-full grid grid-cols-2 sm:grid-cols-4 gap-10 justify-center">
-        <Stat number={10} label="HOFs" delay={100} />
-        <Stat number={94} label="eJPT Score" delay={300} />
-        <Stat number={5} label="Top % THM" delay={500} />
-        <Stat number={50} label="Writeups" delay={700} />
+  className="relative py-10 px-6 md:px-16 min-h-[25vh] flex items-center overflow-hidden"
+  style={{
+    fontFamily:
+      "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
+    backgroundColor: "#0f172a", // dark base
+    backgroundImage: `
+      linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px)
+    `,
+    backgroundSize: "40px 40px",
+    animation: "moveGrid 30s linear infinite",
+  }}
+>
+  <style>{`
+    @keyframes moveGrid {
+      0% {
+        background-position: 0 0, 0 0;
+      }
+      100% {
+        background-position: 40px 40px, 40px 40px;
+      }
+    }
+  `}</style>
+  {/* Your content here */}
+
+      {/* Outer full-width dark background container */}
+      <div
+        className="w-full"
+        style={{
+          background:
+            "linear-gradient(135deg, #0a0f1c 0%, #111827 100%)",
+          padding: "40px 0",
+        }}
+      >
+        {/* Inner container with max width and centered content */}
+        <div
+          className="max-w-6xl mx-auto w-full grid grid-cols-2 sm:grid-cols-4 gap-10 justify-center"
+        >
+          <Stat number={10} label="HOFs" delay={100} />
+          <Stat number={94} label="eJPT Score" delay={300} />
+          <Stat number={5} label="Top % THM" delay={500} />
+          <Stat number={50} label="Writeups" delay={700} />
+        </div>
       </div>
     </main>
   );
@@ -22,17 +54,17 @@ function Count() {
 function Stat({ number, label, delay }) {
   return (
     <div
-      className="flex flex-col items-center justify-center w-40 h-40 rounded-full bg-gradient-to-tr from-indigo-600 to-indigo-800 shadow-lg cursor-default transition-all duration-300 ease-in-out hover:scale-105"
+      className="flex flex-col items-center justify-center w-40 h-40 rounded-full bg-gradient-to-tr from-indigo-700 to-indigo-900 shadow-lg cursor-default transition-all duration-300 ease-in-out hover:scale-105"
       style={{
         animation: `fadeInScale 600ms ease forwards`,
         animationDelay: `${delay}ms`,
         opacity: 0,
         boxShadow:
-          "0 0 12px rgba(99, 102, 241, 0.6), 0 0 20px rgba(99, 102, 241, 0.3)", // initial glow
+          "0 0 12px rgba(99, 102, 241, 0.6), 0 0 20px rgba(99, 102, 241, 0.3)",
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.boxShadow =
-          "0 0 25px rgba(147, 197, 253, 0.8), 0 0 35px rgba(147, 197, 253, 0.6)"; // glow on hover
+          "0 0 25px rgba(147, 197, 253, 0.8), 0 0 35px rgba(147, 197, 253, 0.6)";
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.boxShadow =
