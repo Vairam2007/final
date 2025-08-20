@@ -1,38 +1,53 @@
 import React from "react";
 
+// Icon assets — ensure these exist in your /public/assets/logos/ folder
+const assets = {
+  Flipkart: "/assets/logos/flipkart.svg",
+  "Mina Protocol": "/assets/logos/mina.svg",
+  HACKEN: "/assets/logos/hacken.svg",
+  "Westpac Banking Corporation": "/assets/logos/westpac.svg",
+  Swaggle: "/assets/logos/swaggle.svg",
+  "U.S SBA": "/assets/logos/us_sba.svg",
+  "Chime U.S": "/assets/logos/chime.svg",
+  Roobet: "/assets/logos/roobet.svg",
+  "Indian Gov": "/assets/logos/india.svg",
+  "US Gov": "/assets/logos/us_gov.svg",
+};
+
 function Achievements() {
-  const stats = [
-    { number: 42, label: "Capture The Flag Wins" },
-    { number: 19, label: "Top 3 Bug Reports" },
-    { number: 83, label: "Writeups Published" },
-    { number: 12, label: "Community Talks" },
-  ];
+  const acknowledgements = Object.keys(assets);
 
   return (
     <section
       id="achievements"
-      className="bg-gradient-to-br from-[#0f172a] to-[#1e293b] text-white py-24 px-6 md:px-20 min-h-screen"
+      className="h-screen w-full bg-[#0f172a] text-white flex items-center justify-center relative overflow-hidden"
     >
-      <div className="max-w-6xl mx-auto text-center">
-        <h2 className="text-4xl md:text-5xl font-bold mb-10 text-teal-300">
-          My Cyber Journey in Numbers
+      {/* Subtle Tile Pattern */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none z-0" />
+
+      <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-12 text-center">
+        <h2 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 mb-6">
+          🏆 Achievements
         </h2>
-        <p className="text-gray-400 mb-16 max-w-2xl mx-auto">
-          These totally real and highly exaggerated achievements summarize a path of relentless curiosity and serious typing 👨‍💻
+        <p className="text-gray-400 text-lg mb-12 max-w-2xl mx-auto">
+          Recognized by top organizations worldwide for responsible vulnerability disclosure.
         </p>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-10">
-          {stats.map((stat, i) => (
+        {/* Cards Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+          {acknowledgements.map((org, index) => (
             <div
-              key={i}
-              className="w-40 h-40 mx-auto rounded-full bg-[#1f2937] flex flex-col items-center justify-center shadow-lg hover:shadow-teal-400/40 transition-shadow duration-300"
+              key={index}
+              className="bg-white/5 backdrop-blur-md border border-cyan-500/20 rounded-xl p-6 shadow-md transition-all duration-300 hover:shadow-cyan-400/40 hover:-translate-y-1"
             >
-              <span className="text-4xl font-bold text-teal-300">
-                {stat.number}+
-              </span>
-              <p className="mt-2 text-sm text-gray-300 text-center px-2">
-                {stat.label}
-              </p>
+              <img
+                src={assets[org]}
+                alt={`${org} logo`}
+                className="h-14 mx-auto object-contain mb-4"
+              />
+              <h3 className="text-teal-200 text-sm font-semibold tracking-wide">
+                {org}
+              </h3>
             </div>
           ))}
         </div>

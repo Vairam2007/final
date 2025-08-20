@@ -13,98 +13,74 @@ const tools = [
   { name: "Empire", icon: "/ALL IMAGES/LOGO/Empire.png" },
 ];
 
+const scriptingTools = [
+  { name: "Bash", icon: "/ALL IMAGES/LOGO/bash-icon.png" },       // Replace with actual bash icon path
+  { name: "Python", icon: "/ALL IMAGES/LOGO/python-icon.png" },   // Replace with actual python icon path
+];
+
 export function Skills() {
   return (
     <section id="skills" className="bg-black text-white py-20 px-6 md:px-12 font-mono">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-cyan-400 to-blue-400 mb-12 text-center">
-          🧠 Skills & Expertise
-        </h2>
 
-        {/* Core Cybersecurity Skills */}
-        <div className="mb-12">
-          <h3 className="text-2xl font-semibold text-green-400 mb-4">🛡️ Core Cybersecurity Skills</h3>
-          <ul className="list-disc list-inside space-y-2 text-lg text-gray-300 leading-relaxed pl-4">
-            <li>VAPT for Web, API, Network, Mobile, and LLM/AI systems</li>
-            <li>Red Team Operations, Threat Emulation & Post Exploitation (Linux/Windows)</li>
-            <li>Bug Bounty Hunting & CTF Simulations</li>
-            <li>SAST/DAST Security Testing & Secure Code Review</li>
-            <li>Network Exploitation, Privilege Escalation & Lateral Movement</li>
-            <li>Strong knowledge of OWASP Top 10, MITRE ATT&CK, NIST & CVEs</li>
-          </ul>
-        </div>
+        {/* Page Heading */}
+        <h1 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-cyan-400 to-blue-400 mb-16 text-center">
+          🧠 Skills 
+        </h1>
 
-        {/* Tools & Frameworks - Marquee style */}
-        <div className="mb-12 overflow-hidden relative">
-          <h3 className="text-2xl font-semibold text-green-400 mb-6">🧰 Tools & Frameworks Mastery</h3>
-          <div
-            className="flex space-x-6"
-            style={{
-              animation: "marquee 25s linear infinite",
-              whiteSpace: "nowrap",
-            }}
-          >
-            {[...tools, ...tools].map((tool, index) => (
-              <div
-                key={index}
-                className="inline-flex flex-col items-center p-4 bg-gray-900 border border-gray-700 rounded-xl min-w-[96px] flex-shrink-0 transition-transform duration-300 hover:scale-105 hover:shadow-[-8px_8px_0px_#22c55e] cursor-pointer"
-              >
+        {/* Topics Grid */}
+        <div className="grid md:grid-cols-3 gap-8">
+
+          {/* Core Cybersecurity Skills Box */}
+          <div className="bg-gray-900 border border-green-600 rounded-xl p-6 flex flex-col items-center space-y-6">
+            <h3 className="text-2xl font-semibold text-green-400 mb-4">🛡️ Core Cybersecurity Skills</h3>
+            <div className="flex flex-wrap justify-center gap-6">
+              {tools.slice(0, 6).map((tool) => (
                 <img
+                  key={tool.name}
                   src={tool.icon}
                   alt={tool.name}
-                  className="w-12 h-12 object-contain mb-2"
+                  title={tool.name}
+                  className="w-16 h-16 object-contain transition-transform duration-300 hover:scale-110 hover:shadow-[0_0_10px_#22c55e]"
                 />
-                <p className="text-sm text-center text-gray-300">{tool.name}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Scripting & Automation */}
-        <div className="mb-12">
-          <h3 className="text-2xl font-semibold text-green-400 mb-4">⚙️ Scripting & Automation</h3>
-          <ul className="list-disc list-inside space-y-2 text-lg text-gray-300 leading-relaxed pl-4">
-            <li>Bash scripting for enumeration, automation, and payloads</li>
-            <li>Python for tool development, automation, exploit writing</li>
-            <li>Tool chaining & internal scripts to accelerate VAPT processes</li>
-          </ul>
-        </div>
-
-        {/* Sample Scripts */}
-        <div>
-          <h3 className="text-2xl font-semibold text-green-400 mb-6">📜 Sample Scripts</h3>
-          <div className="grid md:grid-cols-2 gap-6">
-            {/* Bash Script */}
-            <div className="bg-gray-900 p-4 rounded-lg border border-green-600 transition-transform duration-300 hover:scale-105 hover:shadow-[-8px_8px_0px_#22c55e] cursor-pointer">
-              <p className="text-sm text-green-400 mb-2">🔧 Bash Script</p>
-              <pre className="text-sm text-gray-300 whitespace-pre-wrap overflow-x-auto">
-{`#!/bin/bash
-echo "Starting recon..."
-nmap -sC -sV -oN scan.txt $1`}
-              </pre>
-            </div>
-            {/* Python Script */}
-            <div className="bg-gray-900 p-4 rounded-lg border border-green-600 transition-transform duration-300 hover:scale-105 hover:shadow-[-8px_8px_0px_#22c55e] cursor-pointer">
-              <p className="text-sm text-green-400 mb-2">🐍 Python Script</p>
-              <pre className="text-sm text-gray-300 whitespace-pre-wrap overflow-x-auto">
-{`import requests
-
-url = 'https://example.com'
-res = requests.get(url)
-print(res.text)`}
-              </pre>
+              ))}
             </div>
           </div>
+
+          {/* Tools & Frameworks Box */}
+          <div className="bg-gray-900 border border-green-600 rounded-xl p-6 flex flex-col items-center space-y-6">
+            <h3 className="text-2xl font-semibold text-green-400 mb-4">🧰 Tools & Frameworks</h3>
+            <div className="flex flex-wrap justify-center gap-6">
+              {tools.slice(6).map((tool) => (
+                <img
+                  key={tool.name}
+                  src={tool.icon}
+                  alt={tool.name}
+                  title={tool.name}
+                  className="w-16 h-16 object-contain transition-transform duration-300 hover:scale-110 hover:shadow-[0_0_10px_#22c55e]"
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Scripting & Automation Box */}
+          <div className="bg-gray-900 border border-green-600 rounded-xl p-6 flex flex-col items-center space-y-6">
+            <h3 className="text-2xl font-semibold text-green-400 mb-4">⚙️ Scripting & Automation</h3>
+            <div className="flex flex-wrap justify-center gap-6">
+              {scriptingTools.map((tool) => (
+                <img
+                  key={tool.name}
+                  src={tool.icon}
+                  alt={tool.name}
+                  title={tool.name}
+                  className="w-16 h-16 object-contain transition-transform duration-300 hover:scale-110 hover:shadow-[0_0_10px_#22c55e]"
+                />
+              ))}
+            </div>
+          </div>
+
         </div>
       </div>
-
-      {/* Inline keyframes animation */}
-      <style>{`
-        @keyframes marquee {
-          0% { transform: translateX(0%); }
-          100% { transform: translateX(-50%); }
-        }
-      `}</style>
     </section>
   );
 }

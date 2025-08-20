@@ -22,11 +22,21 @@ function Count() {
 function Stat({ number, label, delay }) {
   return (
     <div
-      className="flex flex-col items-center justify-center w-40 h-40 rounded-full bg-gradient-to-tr from-indigo-600 to-indigo-800 shadow-lg cursor-default"
+      className="flex flex-col items-center justify-center w-40 h-40 rounded-full bg-gradient-to-tr from-indigo-600 to-indigo-800 shadow-lg cursor-default transition-all duration-300 ease-in-out hover:scale-105"
       style={{
         animation: `fadeInScale 600ms ease forwards`,
         animationDelay: `${delay}ms`,
         opacity: 0,
+        boxShadow:
+          "0 0 12px rgba(99, 102, 241, 0.6), 0 0 20px rgba(99, 102, 241, 0.3)", // initial glow
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.boxShadow =
+          "0 0 25px rgba(147, 197, 253, 0.8), 0 0 35px rgba(147, 197, 253, 0.6)"; // glow on hover
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.boxShadow =
+          "0 0 12px rgba(99, 102, 241, 0.6), 0 0 20px rgba(99, 102, 241, 0.3)";
       }}
     >
       <div className="flex items-baseline space-x-1">
