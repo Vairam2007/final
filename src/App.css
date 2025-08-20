@@ -64,7 +64,7 @@ button.scroll-top {
   padding: 1rem;
   border-radius: 9999px;
   background-color: #06b6d4;
-  color: white;
+  color: rgb(0, 132, 255);
   box-shadow: 0 0 10px rgba(0,255,255,0.5);
   transition: transform 0.3s ease, background-color 0.3s ease;
 }
@@ -73,19 +73,6 @@ button.scroll-top:hover {
   transform: scale(1.1);
 }
 
-/* Light/Dark Scrollbar Variables */
-html.light {
-  --scrollbar-bg: #f0f0f0;
-  --scrollbar-track: #f0f0f0;
-  --scrollbar-thumb: linear-gradient(180deg, #8a2be2, #551a8b);
-  --scrollbar-thumb-hover: linear-gradient(180deg, #9a3cef, #662bab);
-}
-html.dark {
-  --scrollbar-bg: #12121a;
-  --scrollbar-track: #12121a;
-  --scrollbar-thumb: linear-gradient(180deg, #4c2a85, #2f1c4d);
-  --scrollbar-thumb-hover: linear-gradient(180deg, #6a3dbf, #3a2373);
-}
 
 /* For backdrop blur on navbar */
 .navbar, .navbar-mobile {
