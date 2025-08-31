@@ -1,17 +1,19 @@
 import React, { useState } from "react";
-import GooeyNav from "./GooeyNav"; // Assuming this is your custom nav component
+import { Link } from "react-router-dom";
+import GooeyNav from "./GooeyNav"; // Your custom nav animation
 
 const items = [
-  { label: "Home", href: "#hero" },
-  { label: "About", href: "#about" },
-  { label: "HallOfFame", href: "#halloffame" },
-  { label: "Experience", href: "#experience" },
-  { label: "Skills", href: "#skills" },
-  { label: "Projects", href: "#projects" },
-  { label: "Certifications", href: "#certifications" },
-  { label: "Achievements", href: "#achievements" },
-  { label: "Contact", href: "#contact" },
+  { label: "Hero", to: "/#hero" },       // scroll to #hero section inside First.jsx
+  { label: "About", to: "/#about" },     // scroll to #about section inside First.jsx
+  { label: "HallOfFame", to: "/halloffame" },
+  { label: "Experience", to: "/experience" },
+  { label: "Skills", to: "/skills" },
+  { label: "Projects", to: "/projects" },
+  { label: "Certifications", to: "/certifications" },
+  { label: "Achievements", to: "/achievements" },
+  { label: "Contact", to: "/contact" },
 ];
+
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -54,13 +56,13 @@ const Navbar = () => {
           <ul className="flex flex-col gap-4">
             {items.map((item, index) => (
               <li key={index}>
-                <a
-                  href={item.href}
+                <Link
+                  to={item.to}
                   onClick={() => setMenuOpen(false)}
                   className="block py-2 px-4 rounded hover:bg-cyan-600 transition"
                 >
                   {item.label}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>

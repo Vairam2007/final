@@ -7,14 +7,11 @@ function About() {
     <section
       id="about"
       className="px-6 md:px-16 py-24 text-white"
-  style={{
-    background: "linear-gradient(-45deg, #1e1b4b 0%, #000000 100%)",
-    color: "white",
-    padding: "100px 40px",
-  }}
-
-
-
+      style={{
+        background: "linear-gradient(-45deg, #1e1b4b 0%, #000000 100%)",
+        color: "white",
+        padding: "100px 40px",
+      }}
     >
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-[60%_40%] gap-16 items-start">
         {/* Left Column - Text */}
@@ -27,8 +24,7 @@ function About() {
 
           <p>
             👋 Hi, I’m{" "}
-            <span className="text-green-400 font-semibold">VETTRIVEL U</span>,
-            an{" "}
+            <span className="text-green-400 font-semibold">VETTRIVEL U</span>, an{" "}
             <span className="text-cyan-400 font-semibold">
               Offensive Security Expert
             </span>{" "}
@@ -74,23 +70,19 @@ function About() {
 
         {/* Right Column - Images */}
         <div className="flex flex-col items-center gap-6">
-          {/* Main Image */}
-          <div
-            className="rounded-xl overflow-hidden shadow-xl border border-gray-700 w-[360px] cursor-pointer hover:scale-105 transition"
-            onClick={() =>
-              setSelectedImage(
-                "/ALL IMAGES/OTHER/Screenshot 2025-08-20 231458.png"
-              )
-            }
-          >
-            <img
-              src="/ALL IMAGES/OTHER/Screenshot 2025-08-20 231458.png"
-              alt="Vettrivel Profile"
-              className="w-full h-auto object-cover"
+          {/* Replaced Image with Iframe */}
+          <div className="rounded-xl overflow-hidden shadow-xl border border-gray-700 w-auto h-[80px] hover:scale-105 transition">
+            <iframe
+              src="https://tryhackme.com/api/v2/badges/public-profile?userPublicId=4840710"
+              title="TryHackMe Badge"
+              className="w-full h-full"
+              frameBorder="0"
+              scrolling="no"
+              sandbox="allow-scripts allow-same-origin"
             />
           </div>
 
-          {/* Badge */}
+          {/* Badge (text style) */}
           <div className="bg-[#1a1f2b] px-4 py-2 rounded-md flex items-center gap-2 shadow-md border border-gray-700">
             <img
               src="/ALL IMAGES/LOGO/tryhackme.png"
@@ -106,9 +98,7 @@ function About() {
           <div
             className="rounded-xl overflow-hidden shadow-xl border border-gray-700 w-[360px] cursor-pointer hover:scale-105 transition"
             onClick={() =>
-              setSelectedImage(
-                "/ALL IMAGES/OTHER/Screenshot 2024-09-10 194937.png"
-              )
+              setSelectedImage("/ALL IMAGES/OTHER/Screenshot 2024-09-10 194937.png")
             }
           >
             <img
