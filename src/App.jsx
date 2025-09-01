@@ -19,7 +19,6 @@ function App() {
         <Navbar />
         <Routes>
           <Route path="/" element={<First />} />
-          <Route path="/count" element={<Count />} />
           <Route path="/halloffame" element={<HallOfFame />} />
           <Route path="/experience" element={<Experience />} />
           <Route path="/skills" element={<Skills />} />

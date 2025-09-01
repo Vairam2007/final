@@ -49,7 +49,7 @@ export function Experience() {
   }, []);
 
   return (
-    <section className="bg-black text-white py-16 relative font-sans min-h-screen overflow-x-hidden">
+    <section className="bg-black text-white py-16 relative font-sans min-h-screen overflow-x-hidden mt-10">
       {/* Particles */}
       <Particles
         id="tsparticles"
@@ -68,7 +68,7 @@ export function Experience() {
               distance: 100,
               enable: true,
               opacity: 0.6,
-              width: 1,
+              width: 1, 
             },
             move: { enable: true, speed: 1 },
             number: { value: 120, density: { enable: true, area: 800 } },

@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import GooeyNav from "./GooeyNav"; // Your custom nav animation
 
 const items = [
-  { label: "Hero", to: "/#hero" },       // scroll to #hero section inside First.jsx
   { label: "About", to: "/#about" },     // scroll to #about section inside First.jsx
   { label: "HallOfFame", to: "/halloffame" },
   { label: "Experience", to: "/experience" },
