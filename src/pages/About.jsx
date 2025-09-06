@@ -31,9 +31,13 @@ function About() {
 
     const resizeCanvas = () => {
       canvas.width = window.innerWidth * dpr;
-      canvas.height = Math.max(window.innerHeight, document.body.scrollHeight) * dpr;
+      canvas.height =
+        Math.max(window.innerHeight, document.body.scrollHeight) * dpr;
       canvas.style.width = `${window.innerWidth}px`;
-      canvas.style.height = `${Math.max(window.innerHeight, document.body.scrollHeight)}px`;
+      canvas.style.height = `${Math.max(
+        window.innerHeight,
+        document.body.scrollHeight
+      )}px`;
       ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.scale(dpr, dpr);
     };
@@ -61,9 +65,18 @@ function About() {
       for (let i = 0; i < points.length; i++) {
         for (let j = i + 1; j < points.length; j++) {
           for (let k = j + 1; k < points.length; k++) {
-            const dist1 = Math.hypot(points[i].x - points[j].x, points[i].y - points[j].y);
-            const dist2 = Math.hypot(points[j].x - points[k].x, points[j].y - points[k].y);
-            const dist3 = Math.hypot(points[i].x - points[k].x, points[i].y - points[k].y);
+            const dist1 = Math.hypot(
+              points[i].x - points[j].x,
+              points[i].y - points[j].y
+            );
+            const dist2 = Math.hypot(
+              points[j].x - points[k].x,
+              points[j].y - points[k].y
+            );
+            const dist3 = Math.hypot(
+              points[i].x - points[k].x,
+              points[i].y - points[k].y
+            );
 
             if (dist1 < 180 && dist2 < 180 && dist3 < 180) {
               ctx.strokeStyle = `rgba(0,255,255,0.08)`;
@@ -115,7 +128,10 @@ function About() {
   return (
     <section className="relative text-white overflow-hidden min-h-screen">
       {/* Canvas Background */}
-      <canvas ref={canvasRef} className="fixed top-0 left-0 w-full h-full z-0" />
+      <canvas
+        ref={canvasRef}
+        className="fixed top-0 left-0 w-full h-full z-0"
+      />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-16 py-24 space-y-24">
         {/* About Text & Images */}
@@ -128,18 +144,36 @@ function About() {
             </h2>
 
             <p>
-              👋 Hi, I’m <span className="text-green-400 font-semibold">VETTRIVEL U</span>, an{" "}
-              <span className="text-cyan-400 font-semibold">Offensive Security Expert</span> based in India 🇮🇳...
+              👋 Hi, I’m{" "}
+              <span className="text-green-400 font-semibold">VETTRIVEL U</span>,
+              an{" "}
+              <span className="text-cyan-400 font-semibold">
+                Offensive Security Expert
+              </span>{" "}
+              based in India 🇮🇳...
             </p>
             <p>
-              🛡 I’ve gained <span className="text-purple-400 font-medium">root access</span> on high-value systems and uncovered{" "}
-              <span className="text-red-400 font-medium">business-critical flaws</span>...
+              🛡 I’ve gained{" "}
+              <span className="text-purple-400 font-medium">root access</span>{" "}
+              on high-value systems and uncovered{" "}
+              <span className="text-red-400 font-medium">
+                business-critical flaws
+              </span>
+              ...
             </p>
             <p>
-              👨‍💻 I freelance on <span className="text-emerald-400 font-medium">outsourced security projects</span> and mentor through workshops & webinars.
+              👨‍💻 I freelance on{" "}
+              <span className="text-emerald-400 font-medium">
+                outsourced security projects
+              </span>{" "}
+              and mentor through workshops & webinars.
             </p>
             <p>
-              💡 I actively support <span className="text-orange-400 font-semibold">bug bounty hunters</span> with content and community training.
+              💡 I actively support{" "}
+              <span className="text-orange-400 font-semibold">
+                bug bounty hunters
+              </span>{" "}
+              with content and community training.
             </p>
           </div>
 
@@ -156,13 +190,23 @@ function About() {
             </div>
 
             <div className="bg-[#1a1f2b] px-4 py-2 rounded-md flex items-center gap-2 shadow-md border border-gray-700">
-              <img src="/ALL IMAGES/LOGO/tryhackme.png" alt="TryHackMe" className="w-5 h-5 object-contain" />
-              <span className="text-sm text-cyan-300 font-semibold">Top 5% TryHackMe User</span>
+              <img
+                src="/ALL IMAGES/LOGO/tryhackme.png"
+                alt="TryHackMe"
+                className="w-5 h-5 object-contain"
+              />
+              <span className="text-sm text-cyan-300 font-semibold">
+                Top 5% TryHackMe User
+              </span>
             </div>
 
             <div
               className="rounded-xl overflow-hidden shadow-xl border border-gray-700 w-[360px] cursor-pointer hover:scale-105 transition"
-              onClick={() => setSelectedImage("/ALL IMAGES/OTHER/Screenshot 2024-09-10 194937.png")}
+              onClick={() =>
+                setSelectedImage(
+                  "/ALL IMAGES/OTHER/Screenshot 2024-09-10 194937.png"
+                )
+              }
             >
               <img
                 src="/ALL IMAGES/OTHER/Screenshot 2024-09-10 194937.png"
@@ -174,24 +218,46 @@ function About() {
         </div>
 
         {/* Stats Section */}
-        <div ref={statsRef} className="grid grid-cols-2 sm:grid-cols-4 gap-10 justify-center mt-16">
+        <div
+          ref={statsRef}
+          className="grid grid-cols-2 sm:grid-cols-4 gap-10 justify-center mt-16"
+        >
           {stats.map((stat) => (
-            <Stat key={stat.label} number={stat.number} label={stat.label} delay={stat.delay} animate={statsVisible} />
+            <Stat
+              key={stat.label}
+              number={stat.number}
+              label={stat.label}
+              delay={stat.delay}
+              animate={statsVisible}
+            />
           ))}
         </div>
+
+        {/* Yearly Activity Section */}
+        <YearlyActivity />
       </div>
 
       {/* Modal for Image */}
       {selectedImage && (
-        <div className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50" onClick={() => setSelectedImage(null)}>
-          <div className="relative max-w-4xl w-full px-4" onClick={(e) => e.stopPropagation()}>
+        <div
+          className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50"
+          onClick={() => setSelectedImage(null)}
+        >
+          <div
+            className="relative max-w-4xl w-full px-4"
+            onClick={(e) => e.stopPropagation()}
+          >
             <button
               onClick={() => setSelectedImage(null)}
               className="absolute top-2 right-2 h-10 w-10 text-black text-2xl font-bold bg-purple-500 hover:bg-purple-400 rounded-full flex items-center justify-center transition focus:outline-none"
             >
               ×
             </button>
-            <img src={selectedImage} alt="Selected" className="w-full max-h-[80vh] object-contain rounded-lg border border-purple-500 shadow-xl" />
+            <img
+              src={selectedImage}
+              alt="Selected"
+              className="w-full max-h-[80vh] object-contain rounded-lg border border-purple-500 shadow-xl"
+            />
           </div>
         </div>
       )}
@@ -204,16 +270,36 @@ function Stat({ number, label, delay, animate }) {
   return (
     <div
       className="flex flex-col items-center justify-center w-40 h-40 rounded-full bg-gradient-to-tr from-purple-700 to-indigo-900 shadow-lg cursor-default transition-all duration-300 ease-in-out hover:scale-105"
-      style={{ animation: `fadeInScale 600ms ease forwards`, animationDelay: `${delay}ms`, opacity: 0 }}
+      style={{
+        animation: `fadeInScale 600ms ease forwards`,
+        animationDelay: `${delay}ms`,
+        opacity: 0,
+      }}
     >
       <div className="flex items-baseline space-x-1">
-        {animate ? <CountUp from={0} to={number} duration={2} className="text-6xl font-extrabold text-white drop-shadow-md" /> : <span className="text-6xl font-extrabold text-white drop-shadow-md">0</span>}
-        <span className="text-6xl font-extrabold text-white drop-shadow-md">+</span>
+        {animate ? (
+          <CountUp
+            from={0}
+            to={number}
+            duration={2}
+            className="text-6xl font-extrabold text-white drop-shadow-md"
+          />
+        ) : (
+          <span className="text-6xl font-extrabold text-white drop-shadow-md">
+            0
+          </span>
+        )}
+        <span className="text-6xl font-extrabold text-white drop-shadow-md">
+          +
+        </span>
       </div>
       <p className="mt-3 text-xl font-semibold text-indigo-200">{label}</p>
 
       <style>{`
-        @keyframes fadeInScale {0% {opacity:0; transform:scale(0.85);} 100% {opacity:1; transform:scale(1);}}
+        @keyframes fadeInScale {
+          0% {opacity:0; transform:scale(0.85);}
+          100% {opacity:1; transform:scale(1);}
+        }
       `}</style>
     </div>
   );
@@ -236,6 +322,83 @@ function CountUp({ from = 0, to, duration = 2, className = "" }) {
   }, [from, to, duration]);
 
   return <span className={className}>{count}</span>;
+}
+
+// Yearly Activity component (GitHub-style grid)
+function YearlyActivity() {
+  const generateActivityData = () => {
+    const daysInYear = 365;
+    return Array.from({ length: daysInYear }, (_, i) => {
+      const level = Math.floor(Math.random() * 4); // 0–3 activity
+      return { day: i, level };
+    });
+  };
+
+  const activityData = generateActivityData();
+  const totalEvents = activityData.reduce((acc, d) => acc + d.level, 0);
+
+  const colors = {
+    0: "bg-gray-800", // No activity
+    1: "bg-yellow-400", // Low
+    2: "bg-green-400", // Medium
+    3: "bg-green-600", // High
+  };
+
+  // Split into weeks (each week = 7 days)
+  const weeks = [];
+  for (let i = 0; i < activityData.length; i += 7) {
+    weeks.push(activityData.slice(i, i + 7));
+  }
+
+  return (
+    <section className="bg-[#0d1117] text-white py-10 px-6 rounded-xl shadow-lg border border-gray-700 mt-20">
+      <div className="max-w-6xl mx-auto">
+        {/* Heading */}
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl md:text-3xl font-bold text-cyan-400">
+            📊 Yearly Activity
+          </h2>
+          <span className="text-gray-300 text-sm md:text-base">
+            Total events this year:{" "}
+            <span className="text-cyan-300 font-semibold">{totalEvents}</span>
+          </span>
+        </div>
+
+        {/* Heatmap Grid (weeks x days) */}
+        <div className="flex gap-1 overflow-x-auto pb-4">
+          {weeks.map((week, weekIdx) => (
+            <div key={weekIdx} className="flex flex-col gap-1">
+              {week.map((day, dayIdx) => (
+                <div
+                  key={dayIdx}
+                  className={`w-3 h-3 md:w-4 md:h-4 rounded-sm ${
+                    colors[Math.min(day.level, 3)]
+                  }`}
+                  title={`Day ${day.day + 1}: ${day.level} events`}
+                ></div>
+              ))}
+            </div>
+          ))}
+        </div>
+
+        {/* Legend */}
+        <div className="flex items-center gap-4 mt-6 text-sm text-gray-400 flex-wrap">
+          <div className="flex items-center gap-1">
+            <div className="w-4 h-4 rounded-sm bg-gray-800"></div> No activity
+          </div>
+          <div className="flex items-center gap-1">
+            <div className="w-4 h-4 rounded-sm bg-yellow-400"></div> Low
+          </div>
+          <div className="flex items-center gap-1">
+            <div className="w-4 h-4 rounded-sm bg-green-400"></div> Medium
+          </div>
+          <div className="flex items-center gap-1">
+            <div className="w-4 h-4 rounded-sm bg-green-600"></div> High
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 }
 
 export default About;

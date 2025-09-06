@@ -1,86 +1,44 @@
 import React from "react";
 
-const tools = [
-  { name: "Burp Suite", icon: "/ALL IMAGES/LOGO/3246741_burpsuite_security_software_icon.png" },
-  { name: "Metasploit", icon: "/ALL IMAGES/LOGO/icons8-metasploit-48.png" },
-  { name: "ZAP", icon: "/ALL IMAGES/LOGO/pngaaa.com-6931009.png" },
-  { name: "SQLmap", icon: "/ALL IMAGES/LOGO/MySQL.png" },
-  { name: "BloodHound", icon: "/ALL IMAGES/LOGO/BloodHound.png" },
-  { name: "Nmap", icon: "/ALL IMAGES/LOGO/icons8-nmap-48.png" },
-  { name: "Postman", icon: "/ALL IMAGES/LOGO/Postman.png" },
-  { name: "Hydra", icon: "/ALL IMAGES/LOGO/pngaaa.com-4042958.png" },
-  { name: "Amass", icon: "/ALL IMAGES/LOGO/Amass.png" },
-  { name: "Empire", icon: "/ALL IMAGES/LOGO/Empire.png" },
-];
-
-const scriptingTools = [
-  { name: "Bash", icon: "/ALL IMAGES/LOGO/bash-icon.png" },       // Replace with actual bash icon path
-  { name: "Python", icon: "/ALL IMAGES/LOGO/python-icon.png" },   // Replace with actual python icon path
+const skills = [
+  { name: "Python", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" },
+  { name: "JavaScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" },
+  { name: "Java", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" },
+  { name: "C++", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" },
+  { name: "Solidity", icon: "https://cryptologos.cc/logos/solidity-solidity-logo.svg" },
+  { name: "Ethereum", icon: "https://cryptologos.cc/logos/ethereum-eth-logo.svg" },
+  { name: "Node.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" },
+  { name: "React", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" },
+  { name: "Flask", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flask/flask-original.svg" },
+  { name: "Express", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" },
+  { name: "MongoDB", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" },
+  { name: "PHP", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg" },
 ];
 
 export function Skills() {
   return (
     <section id="skills" className="bg-black text-white py-20 px-6 md:px-12 font-mono">
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl mx-auto text-center">
+        {/* Section Title */}
+        <h2 className="text-4xl md:text-5xl font-bold mb-12">
+          Professional <span className="text-purple-400">Skillset</span>
+        </h2>
 
-        {/* Page Heading */}
-        <h1 className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-cyan-400 to-blue-400 mb-16 text-center">
-          🧠 Skills 
-        </h1>
-
-        {/* Topics Grid */}
-        <div className="grid md:grid-cols-3 gap-8">
-
-          {/* Core Cybersecurity Skills Box */}
-          <div className="bg-gray-900 border border-green-600 rounded-xl p-6 flex flex-col items-center space-y-6">
-            <h3 className="text-2xl font-semibold text-green-400 mb-4">🛡️ Core Cybersecurity Skills</h3>
-            <div className="flex flex-wrap justify-center gap-6">
-              {tools.slice(0, 6).map((tool) => (
-                <img
-                  key={tool.name}
-                  src={tool.icon}
-                  alt={tool.name}
-                  title={tool.name}
-                  className="w-16 h-16 object-contain transition-transform duration-300 hover:scale-110 hover:shadow-[0_0_10px_#22c55e]"
-                />
-              ))}
+        {/* Skills Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8">
+          {skills.map((skill) => (
+            <div
+              key={skill.name}
+              className="flex flex-col items-center justify-center p-6 bg-gradient-to-br from-gray-900 to-gray-800 border border-purple-600 rounded-xl shadow-lg hover:scale-105 hover:shadow-[0_0_20px_#a855f7] transition duration-300"
+            >
+              <img src={skill.icon} alt={skill.name} className="w-16 h-16 object-contain mb-4" />
+              <span className="text-lg font-semibold">{skill.name}</span>
             </div>
-          </div>
-
-          {/* Tools & Frameworks Box */}
-          <div className="bg-gray-900 border border-green-600 rounded-xl p-6 flex flex-col items-center space-y-6">
-            <h3 className="text-2xl font-semibold text-green-400 mb-4">🧰 Tools & Frameworks</h3>
-            <div className="flex flex-wrap justify-center gap-6">
-              {tools.slice(6).map((tool) => (
-                <img
-                  key={tool.name}
-                  src={tool.icon}
-                  alt={tool.name}
-                  title={tool.name}
-                  className="w-16 h-16 object-contain transition-transform duration-300 hover:scale-110 hover:shadow-[0_0_10px_#22c55e]"
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Scripting & Automation Box */}
-          <div className="bg-gray-900 border border-green-600 rounded-xl p-6 flex flex-col items-center space-y-6">
-            <h3 className="text-2xl font-semibold text-green-400 mb-4">⚙️ Scripting & Automation</h3>
-            <div className="flex flex-wrap justify-center gap-6">
-              {scriptingTools.map((tool) => (
-                <img
-                  key={tool.name}
-                  src={tool.icon}
-                  alt={tool.name}
-                  title={tool.name}
-                  className="w-16 h-16 object-contain transition-transform duration-300 hover:scale-110 hover:shadow-[0_0_10px_#22c55e]"
-                />
-              ))}
-            </div>
-          </div>
-
+          ))}
         </div>
       </div>
     </section>
   );
 }
+
+export default Skills;

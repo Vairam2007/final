@@ -15,7 +15,7 @@ import "./App.css";
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-gradient-to-br dark:from-gray-100 dark:via-gray-200 dark:to-gray-300 from-gray-900 via-gray-800 to-gray-700 text-white dark:text-gray-900 transition-colors duration-300">
+      <div className="min-h-screen ">
         <Navbar />
         <Routes>
           <Route path="/" element={<First />} />
