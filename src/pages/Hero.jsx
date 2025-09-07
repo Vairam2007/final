@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef } from "react";
-
+import cv from "../../public/VETTRIVEL U - VULNERABILITY ASSESSMENT AND PENETRATION TESTER.pdf";
 export function Hero() {
   const canvasRef = useRef(null);
 
@@ -120,7 +120,7 @@ export function Hero() {
               Hire Me
             </a>
             <a
-              href="/VettrivelU_CV.pdf"
+              href={cv}
               download
               className="px-6 py-3 border-2 border-cyan-500 hover:border-cyan-400 text-white font-semibold rounded-md hover:bg-cyan-500 hover:text-black shadow-md shadow-cyan-500/50 transition-all duration-300 transform hover:scale-105"
             >
