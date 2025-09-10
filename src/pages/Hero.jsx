@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef } from "react";
-import cv from "../../public/VETTRIVEL U - VULNERABILITY ASSESSMENT AND PENETRATION TESTER.pdf";
+
 export function Hero() {
   const canvasRef = useRef(null);
 
@@ -15,12 +15,11 @@ export function Hero() {
       canvas.height = window.innerHeight * dpr;
       canvas.style.width = `${window.innerWidth}px`;
       canvas.style.height = `${window.innerHeight}px`;
-      ctx.setTransform(1, 0, 0, 1, 0, 0); // reset transform
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.scale(dpr, dpr);
     };
     resizeCanvas();
 
-    // Create network nodes
     const nodes = [];
     const NODE_COUNT = 60;
 
@@ -35,14 +34,12 @@ export function Hero() {
     }
 
     const draw = () => {
-      // Dark gradient background
       const gradient = ctx.createLinearGradient(0, 0, window.innerWidth, window.innerHeight);
       gradient.addColorStop(0, "#0a0a0a");
       gradient.addColorStop(1, "#0d0d1a");
       ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
-      // Draw nodes
       nodes.forEach((node) => {
         ctx.beginPath();
         ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
@@ -58,7 +55,6 @@ export function Hero() {
         if (node.y < 0 || node.y > window.innerHeight) node.dy = -node.dy;
       });
 
-      // Connect nearby nodes
       for (let i = 0; i < nodes.length; i++) {
         for (let j = i + 1; j < nodes.length; j++) {
           const dx = nodes[i].x - nodes[j].x;
@@ -120,7 +116,7 @@ export function Hero() {
               Hire Me
             </a>
             <a
-              href={cv}
+              href="/vettrivel-vapt.pdf" // ✅ Direct path to file in public/
               download
               className="px-6 py-3 border-2 border-cyan-500 hover:border-cyan-400 text-white font-semibold rounded-md hover:bg-cyan-500 hover:text-black shadow-md shadow-cyan-500/50 transition-all duration-300 transform hover:scale-105"
             >
@@ -129,7 +125,7 @@ export function Hero() {
           </div>
         </div>
 
-        {/* Right Side (Profile Picture) */}
+        {/* Right Side */}
         <div className="w-full md:w-1/2 flex justify-center items-center relative max-w-lg md:max-w-none">
           <div className="relative w-[250px] h-[250px] sm:w-[350px] sm:h-[350px] md:w-[400px] md:h-[400px] rounded-full overflow-hidden border-4 border-cyan-500 shadow-cyan-500/50 shadow-lg">
             <img

@@ -10,7 +10,6 @@ const items = [
   { label: "Projects", to: "/projects" },
   { label: "Certifications", to: "/certifications" },
   { label: "Achievements", to: "/achievements" },
-  { label: "Contact", to: "/contact" },
 ];
 
 
@@ -19,7 +18,7 @@ const Navbar = () => {
 
   return (
     <header className="fixed top-0 left-0 w-full z-50 bg-black/80 text-white backdrop-blur">
-      <div className="max-w-screen-xl mx-auto px-4 md:px-8 py-4 flex justify-between items-center">
+      <div className="max-w-screen-xl mx-auto px-4 md:px-8 py-4 flex justify-center items-center">
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
           <GooeyNav items={items} />

@@ -1,11 +1,12 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 
+// Sample Hall of Fame data
 const hofItems = [
   {
     title: "Hall of Fame – Flipkart",
-    description: "🏆 Positioned First Place in Hall of Fame",
+    description: "🏆 First Place in Hall of Fame",
     image: "/ALL IMAGES/HALL OF FAME/Flipkart - Hall of Fame.png",
   },
   {
@@ -18,179 +19,185 @@ const hofItems = [
     description: "💥 Critical P1 Vulnerability & placed 1st",
     image: "/ALL IMAGES/HALL OF FAME/2025-05-27 06_27_25-Screenshot 2025-05-27 061454.png",
   },
+  // Add more images here
 ];
 
 export default function HallOfFamePage() {
   const canvasRef = useRef(null);
   const mouse = useRef({ x: 0, y: 0 });
-  const [modalImage, setModalImage] = useState(null);
 
-  // Parallax triangle background
+  // Particle background with connected lines
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
 
-    let width = canvas.width = window.innerWidth;
-    let height = canvas.height = window.innerHeight;
+    const particles = [];
+    const particleCount = 120;
+    const maxDistance = 150;
 
-    window.addEventListener("mousemove", (e) => {
+    for (let i = 0; i < particleCount; i++) {
+      particles.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        size: Math.random() * 2 + 1.5,
+        speedX: (Math.random() - 0.5) * 0.6,
+        speedY: (Math.random() - 0.5) * 0.6,
+      });
+    }
+
+    const handleMouseMove = (e) => {
       mouse.current.x = e.clientX;
       mouse.current.y = e.clientY;
-    });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
 
-    const points = [];
-    const cols = 5;
-    const rows = 4;
-    const spacingX = width / (cols - 1);
-    const spacingY = height / (rows - 1);
-
-    for (let y = 0; y < rows; y++) {
-      for (let x = 0; x < cols; x++) {
-        points.push({
-          x: x * spacingX,
-          y: y * spacingY,
-          offsetX: Math.random() * 200 - 100,
-          offsetY: Math.random() * 200 - 100,
-          speedX: (Math.random() - 0.5) * 0.3,
-          speedY: (Math.random() - 0.5) * 0.3,
-        });
-      }
-    }
-
-    function drawTriangles() {
-      ctx.fillStyle = "#000";
+    const draw = () => {
+      // Dark gradient background
+      const gradient = ctx.createLinearGradient(0, 0, width, height);
+      gradient.addColorStop(0, "#0a0a0a");
+      gradient.addColorStop(1, "#1c1c1c");
+      ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, width, height);
 
-      ctx.lineWidth = 2;
-      const getPoint = (col, row) => points[row * cols + col];
+      // Draw particles
+      particles.forEach((p) => {
+        const dx = (mouse.current.x - width / 2) * 0.02;
+        const dy = (mouse.current.y - height / 2) * 0.02;
 
-      for (let y = 0; y < rows - 1; y++) {
-        for (let x = 0; x < cols - 1; x++) {
-          const p1 = getPoint(x, y);
-          const p2 = getPoint(x + 1, y);
-          const p3 = getPoint(x, y + 1);
-          const p4 = getPoint(x + 1, y + 1);
+        ctx.fillStyle = "rgba(0, 255, 255, 0.6)";
+        ctx.beginPath();
+        ctx.arc(p.x + dx, p.y + dy, p.size, 0, Math.PI * 2);
+        ctx.fill();
 
-          const mx = (mouse.current.x - width / 2) / 50;
-          const my = (mouse.current.y - height / 2) / 50;
+        // Move particle
+        p.x += p.speedX;
+        p.y += p.speedY;
 
-          const applyParallax = (p) => ({
-            x: p.x + p.offsetX + mx,
-            y: p.y + p.offsetY + my,
-          });
+        if (p.x > width) p.x = 0;
+        if (p.x < 0) p.x = width;
+        if (p.y > height) p.y = 0;
+        if (p.y < 0) p.y = height;
+      });
 
-          const pp1 = applyParallax(p1);
-          const pp2 = applyParallax(p2);
-          const pp3 = applyParallax(p3);
-          const pp4 = applyParallax(p4);
+      // Connect particles
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const p1 = particles[i];
+          const p2 = particles[j];
+          const dx = (mouse.current.x - width / 2) * 0.02;
+          const dy = (mouse.current.y - height / 2) * 0.02;
 
-          ctx.strokeStyle = "rgba(255,255,255,0.6)";
-          ctx.beginPath();
-          ctx.moveTo(pp1.x, pp1.y);
-          ctx.lineTo(pp2.x, pp2.y);
-          ctx.lineTo(pp3.x, pp3.y);
-          ctx.closePath();
-          ctx.stroke();
-
-          ctx.beginPath();
-          ctx.moveTo(pp2.x, pp2.y);
-          ctx.lineTo(pp3.x, pp3.y);
-          ctx.lineTo(pp4.x, pp4.y);
-          ctx.closePath();
-          ctx.stroke();
-
-          [pp1, pp2, pp3, pp4].forEach((p) => {
-            const gradient = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 6);
-            gradient.addColorStop(0, "rgba(0,255,255,0.9)");
-            gradient.addColorStop(1, "rgba(0,255,255,0.1)");
-            ctx.fillStyle = gradient;
+          const dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
+          if (dist < maxDistance) {
+            ctx.strokeStyle = `rgba(0, 255, 255, ${0.2 * (1 - dist / maxDistance)})`;
+            ctx.lineWidth = 0.5;
             ctx.beginPath();
-            ctx.arc(p.x, p.y, 5, 0, Math.PI * 2);
-            ctx.fill();
-          });
+            ctx.moveTo(p1.x + dx, p1.y + dy);
+            ctx.lineTo(p2.x + dx, p2.y + dy);
+            ctx.stroke();
+          }
         }
       }
-    }
 
-    function animate() {
-      points.forEach((p) => {
-        p.offsetX += p.speedX;
-        p.offsetY += p.speedY;
-        if (p.offsetX > 200 || p.offsetX < -200) p.speedX *= -1;
-        if (p.offsetY > 200 || p.offsetY < -200) p.speedY *= -1;
-      });
-      drawTriangles();
-      requestAnimationFrame(animate);
-    }
+      requestAnimationFrame(draw);
+    };
 
-    animate();
+    draw();
 
-    window.addEventListener("resize", () => {
+    const handleResize = () => {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
-    });
+    };
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
   }, []);
 
   return (
-    <section className="relative min-h-screen text-white py-28 px-6 md:px-12 overflow-hidden">
-      {/* Background */}
-      <canvas ref={canvasRef} className="absolute inset-0 -z-10" />
+    <section className="relative w-full min-h-screen overflow-hidden text-white">
+      <canvas ref={canvasRef} className="fixed inset-0 -z-10" />
 
-      {/* Heading */}
+      {/* Header */}
       <motion.h2
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
-        className="text-5xl md:text-6xl font-extrabold text-center mb-20 bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent drop-shadow-xl"
+        className="fixed top-0 w-full text-center z-10 text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent drop-shadow-xl py-6"
       >
         🏅 Hall of Fame
       </motion.h2>
 
-      {/* Grid */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-10 max-w-7xl mx-auto">
+      {/* Hall of Fame grid */}
+      <div className="relative z-10 max-w-7xl mx-auto mt-32 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 px-6 pb-20">
         {hofItems.map((item, index) => (
-          <motion.div
-            key={item.title}
-            initial={{ opacity: 0, y: 80 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="bg-gradient-to-br from-gray-900 via-gray-800 to-black rounded-2xl p-6 border border-gray-500/30  cursor-pointer"
-            style={{ boxShadow: "none" }} // no shadow by default
-            whileHover={{ scale: 1.05, boxShadow: "5px 5px 10px rgba(115, 120, 118, 1)" }} // shadow on hover
-          >
-            <div className="flex flex-col h-full items-center text-center">
-              <img
-                src={item.image}
-                alt={item.title}
-                className="h-48 object-contain rounded-lg mb-6" // image stays clean
-                onClick={() => setModalImage(item.image)}
-              />
-              <h3 className="text-2xl font-bold text-gray-200 mb-4">{item.title}</h3>
-              <p className="text-gray-400 whitespace-pre-line">{item.description}</p>
-            </div>
-          </motion.div>
+          <FlipCard key={index} item={item} />
         ))}
       </div>
 
-      {/* Modal */}
-      {modalImage && (
-        <motion.div
-          className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 cursor-pointer"
-          onClick={() => setModalImage(null)}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-        >
-          <motion.img
-            src={modalImage}
-            alt="Full"
-            className="max-h-[90%] max-w-[90%] rounded-lg shadow-2xl"
-            initial={{ scale: 0.8 }}
-            animate={{ scale: 1 }}
-            transition={{ duration: 0.3 }}
-          />
-        </motion.div>
-      )}
+      <style>{`
+        html, body {
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+        }
+        html::-webkit-scrollbar, body::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
     </section>
+  );
+}
+
+// Flip Card Component
+function FlipCard({ item }) {
+  const [flipped, setFlipped] = React.useState(false);
+
+  return (
+    <div
+      className="w-full cursor-pointer perspective h-96"
+      onClick={() => setFlipped(!flipped)}
+    >
+      <motion.div
+        className="relative w-full h-full transition-transform duration-700 transform-style preserve-3d"
+        animate={{ rotateY: flipped ? 180 : 0 }}
+        style={{ transformStyle: "preserve-3d" }}
+      >
+        {/* Front - Image */}
+        <div className="absolute w-full h-full backface-hidden rounded-3xl flex items-center justify-center overflow-hidden border border-gray-600 shadow-2xl">
+          <img
+            src={item.image}
+            alt={item.title}
+            className="w-full h-full object-contain"
+          />
+        </div>
+
+        {/* Back - Text */}
+        <div className="absolute w-full h-full backface-hidden rotate-y-180 bg-gray-900 rounded-3xl flex flex-col items-center justify-center p-6 text-center">
+          <h3 className="text-2xl md:text-4xl font-bold text-gray-100 mb-4">
+            {item.title}
+          </h3>
+          <p className="text-gray-300 whitespace-pre-line text-lg md:text-xl">
+            {item.description}
+          </p>
+          <p className="mt-4 text-sm text-gray-400">(Click again to flip)</p>
+        </div>
+      </motion.div>
+
+      <style>{`
+        .perspective {
+          perspective: 1500px;
+        }
+        .backface-hidden {
+          backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+          transform: rotateY(180deg);
+        }
+      `}</style>
+    </div>
   );
 }

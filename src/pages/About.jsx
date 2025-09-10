@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 
+// About Component
 function About() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [statsVisible, setStatsVisible] = useState(false);
@@ -56,12 +57,9 @@ function About() {
 
     const draw = () => {
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-
-      // Black background
       ctx.fillStyle = "#000000";
       ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
-      // Draw triangles
       for (let i = 0; i < points.length; i++) {
         for (let j = i + 1; j < points.length; j++) {
           for (let k = j + 1; k < points.length; k++) {
@@ -77,7 +75,6 @@ function About() {
               points[i].x - points[k].x,
               points[i].y - points[k].y
             );
-
             if (dist1 < 180 && dist2 < 180 && dist3 < 180) {
               ctx.strokeStyle = `rgba(0,255,255,0.08)`;
               ctx.lineWidth = 0.5;
@@ -92,7 +89,6 @@ function About() {
         }
       }
 
-      // Draw points
       points.forEach((p) => {
         ctx.beginPath();
         ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
@@ -144,36 +140,16 @@ function About() {
             </h2>
 
             <p>
-              👋 Hi, I’m{" "}
-              <span className="text-green-400 font-semibold">VETTRIVEL U</span>,
-              an{" "}
-              <span className="text-cyan-400 font-semibold">
-                Offensive Security Expert
-              </span>{" "}
-              based in India 🇮🇳...
+              👋 Hi, I’m <span className="text-green-400 font-semibold">VETTRIVEL U</span>, an <span className="text-cyan-400 font-semibold">Offensive Security Expert</span> based in India 🇮🇳...
             </p>
             <p>
-              🛡 I’ve gained{" "}
-              <span className="text-purple-400 font-medium">root access</span>{" "}
-              on high-value systems and uncovered{" "}
-              <span className="text-red-400 font-medium">
-                business-critical flaws
-              </span>
-              ...
+              🛡 I’ve gained <span className="text-purple-400 font-medium">root access</span> on high-value systems and uncovered <span className="text-red-400 font-medium">business-critical flaws</span>...
             </p>
             <p>
-              👨‍💻 I freelance on{" "}
-              <span className="text-emerald-400 font-medium">
-                outsourced security projects
-              </span>{" "}
-              and mentor through workshops & webinars.
+              👨‍💻 I freelance on <span className="text-emerald-400 font-medium">outsourced security projects</span> and mentor through workshops & webinars.
             </p>
             <p>
-              💡 I actively support{" "}
-              <span className="text-orange-400 font-semibold">
-                bug bounty hunters
-              </span>{" "}
-              with content and community training.
+              💡 I actively support <span className="text-orange-400 font-semibold">bug bounty hunters</span> with content and community training.
             </p>
           </div>
 
@@ -190,22 +166,14 @@ function About() {
             </div>
 
             <div className="bg-[#1a1f2b] px-4 py-2 rounded-md flex items-center gap-2 shadow-md border border-gray-700">
-              <img
-                src="/ALL IMAGES/LOGO/tryhackme.png"
-                alt="TryHackMe"
-                className="w-5 h-5 object-contain"
-              />
-              <span className="text-sm text-cyan-300 font-semibold">
-                Top 5% TryHackMe User
-              </span>
+              <img src="/ALL IMAGES/LOGO/tryhackme.png" alt="TryHackMe" className="w-5 h-5 object-contain" />
+              <span className="text-sm text-cyan-300 font-semibold">Top 5% TryHackMe User</span>
             </div>
 
             <div
               className="rounded-xl overflow-hidden shadow-xl border border-gray-700 w-[360px] cursor-pointer hover:scale-105 transition"
               onClick={() =>
-                setSelectedImage(
-                  "/ALL IMAGES/OTHER/Screenshot 2024-09-10 194937.png"
-                )
+                setSelectedImage("/ALL IMAGES/OTHER/Screenshot 2024-09-10 194937.png")
               }
             >
               <img
@@ -233,6 +201,9 @@ function About() {
           ))}
         </div>
 
+        {/* Mac-style Terminal */}
+        <MacTerminal />
+
         {/* Yearly Activity Section */}
         <YearlyActivity />
       </div>
@@ -243,10 +214,7 @@ function About() {
           className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50"
           onClick={() => setSelectedImage(null)}
         >
-          <div
-            className="relative max-w-4xl w-full px-4"
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div className="relative max-w-4xl w-full px-4" onClick={(e) => e.stopPropagation()}>
             <button
               onClick={() => setSelectedImage(null)}
               className="absolute top-2 right-2 h-10 w-10 text-black text-2xl font-bold bg-purple-500 hover:bg-purple-400 rounded-full flex items-center justify-center transition focus:outline-none"
@@ -265,7 +233,7 @@ function About() {
   );
 }
 
-// Stat component
+// Stat Component
 function Stat({ number, label, delay, animate }) {
   return (
     <div
@@ -285,13 +253,9 @@ function Stat({ number, label, delay, animate }) {
             className="text-6xl font-extrabold text-white drop-shadow-md"
           />
         ) : (
-          <span className="text-6xl font-extrabold text-white drop-shadow-md">
-            0
-          </span>
+          <span className="text-6xl font-extrabold text-white drop-shadow-md">0</span>
         )}
-        <span className="text-6xl font-extrabold text-white drop-shadow-md">
-          +
-        </span>
+        <span className="text-6xl font-extrabold text-white drop-shadow-md">+</span>
       </div>
       <p className="mt-3 text-xl font-semibold text-indigo-200">{label}</p>
 
@@ -305,7 +269,7 @@ function Stat({ number, label, delay, animate }) {
   );
 }
 
-// CountUp component
+// CountUp Component
 function CountUp({ from = 0, to, duration = 2, className = "" }) {
   const [count, setCount] = React.useState(from);
 
@@ -324,12 +288,126 @@ function CountUp({ from = 0, to, duration = 2, className = "" }) {
   return <span className={className}>{count}</span>;
 }
 
-// Yearly Activity component (GitHub-style grid)
+// Mac-style Terminal Component
+function MacTerminal() {
+  const [logs, setLogs] = React.useState([
+    { type: "system", text: "Welcome! Type 'help' to see commands." },
+  ]);
+  const [currentInput, setCurrentInput] = React.useState("");
+  const [cursorVisible, setCursorVisible] = React.useState(true);
+  const terminalRef = React.useRef(null);
+
+  // Blinking cursor
+  React.useEffect(() => {
+    const interval = setInterval(() => setCursorVisible((prev) => !prev), 500);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Scroll to bottom
+  React.useEffect(() => {
+    terminalRef.current?.scrollTo({
+      top: terminalRef.current.scrollHeight,
+      behavior: "smooth",
+    });
+  }, [logs, currentInput]);
+
+  const handleKeyDown = (e) => {
+    e.preventDefault();
+    if (e.key === "Backspace") {
+      setCurrentInput((prev) => prev.slice(0, -1));
+    } else if (e.key === "Enter") {
+      executeCommand(currentInput.trim());
+      setCurrentInput("");
+    } else if (e.key.length === 1) {
+      setCurrentInput((prev) => prev + e.key);
+    }
+  };
+
+  const executeCommand = (cmd) => {
+    if (!cmd) return;
+    let response = "";
+    switch (cmd.toLowerCase()) {
+      case "help":
+        response = "Available commands: about, skills, contact, clear";
+        break;
+      case "ls":
+        response = " about  skills  contact  clear";
+        break;
+      case "cd about" :
+        response = "Hi! I'm VETTRIVEL U, Offensive Security Expert from India.";
+        break;
+      case "cd skills":
+        response = "Skills: Penetration Testing, Bug Bounty, Web Security, Linux";
+        break;
+      case "contact":
+        response = "Contact: vettrivel@example.com";
+        break;
+        case "about" :
+        response = "Hi! I'm VETTRIVEL U, Offensive Security Expert from India.";
+        break;
+      case "skills":
+        response = "Skills: Penetration Testing, Bug Bounty, Web Security, Linux";
+        break;
+      case "cd contact":
+        response = "Contact: vettrivel@example.com";
+        break;
+      case "clear":
+        setLogs([]);
+        return;
+      default:
+        response = `Command not found: ${cmd}`;
+    }
+    setLogs((prev) => [
+      ...prev,
+      { type: "command", text: cmd },
+      { type: "response", text: response },
+    ]);
+  };
+
+  return (
+    <div
+      className="mt-12 max-w-4xl mx-auto rounded-xl shadow-2xl border border-gray-700 bg-[#1e1e1e] font-mono text-green-400 focus:outline-none"
+      tabIndex={0}
+      onKeyDown={handleKeyDown}
+    >
+      {/* Mac-style terminal header */}
+      <div className="flex items-center gap-2 px-3 py-2 bg-gray-800 rounded-t-xl">
+        <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+        <div className="w-3 h-3 bg-yellow-300 rounded-full"></div>
+        <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+        <span className="ml-2 text-gray-300 text-sm">Terminal</span>
+      </div>
+
+      {/* Terminal body */}
+      <div
+        ref={terminalRef}
+        className="p-4 max-h-[400px] overflow-y-auto whitespace-pre-wrap"
+      >
+        {logs.map((log, idx) => (
+          <div key={idx}>
+            {log.type === "command" && <span>&gt; {log.text}</span>}
+            {log.type === "response" && <div className="ml-4 text-gray-300">{log.text}</div>}
+            {log.type === "system" && <div className="text-gray-400">{log.text}</div>}
+          </div>
+        ))}
+
+        {/* Current input */}
+        <div className="flex">
+          <span>&gt; </span>
+          <span>{currentInput}</span>
+          {cursorVisible && <span className="animate-pulse">█</span>}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Yearly Activity Component
 function YearlyActivity() {
   const generateActivityData = () => {
     const daysInYear = 365;
     return Array.from({ length: daysInYear }, (_, i) => {
-      const level = Math.floor(Math.random() * 4); // 0–3 activity
+      const level = Math.floor(Math.random() * 4);
       return { day: i, level };
     });
   };
@@ -338,13 +416,12 @@ function YearlyActivity() {
   const totalEvents = activityData.reduce((acc, d) => acc + d.level, 0);
 
   const colors = {
-    0: "bg-gray-800", // No activity
-    1: "bg-yellow-400", // Low
-    2: "bg-green-400", // Medium
-    3: "bg-green-600", // High
+    0: "bg-gray-800",
+    1: "bg-yellow-400",
+    2: "bg-green-400",
+    3: "bg-green-600",
   };
 
-  // Split into weeks (each week = 7 days)
   const weeks = [];
   for (let i = 0; i < activityData.length; i += 7) {
     weeks.push(activityData.slice(i, i + 7));
@@ -353,48 +430,32 @@ function YearlyActivity() {
   return (
     <section className="bg-[#0d1117] text-white py-10 px-6 rounded-xl shadow-lg border border-gray-700 mt-20">
       <div className="max-w-6xl mx-auto">
-        {/* Heading */}
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl md:text-3xl font-bold text-cyan-400">
             📊 Yearly Activity
           </h2>
           <span className="text-gray-300 text-sm md:text-base">
-            Total events this year:{" "}
-            <span className="text-cyan-300 font-semibold">{totalEvents}</span>
+            Total events this year: <span className="text-cyan-300 font-semibold">{totalEvents}</span>
           </span>
         </div>
-
-        {/* Heatmap Grid (weeks x days) */}
         <div className="flex gap-1 overflow-x-auto pb-4">
           {weeks.map((week, weekIdx) => (
             <div key={weekIdx} className="flex flex-col gap-1">
               {week.map((day, dayIdx) => (
                 <div
                   key={dayIdx}
-                  className={`w-3 h-3 md:w-4 md:h-4 rounded-sm ${
-                    colors[Math.min(day.level, 3)]
-                  }`}
+                  className={`w-3 h-3 md:w-4 md:h-4 rounded-sm ${colors[Math.min(day.level, 3)]}`}
                   title={`Day ${day.day + 1}: ${day.level} events`}
                 ></div>
               ))}
             </div>
           ))}
         </div>
-
-        {/* Legend */}
         <div className="flex items-center gap-4 mt-6 text-sm text-gray-400 flex-wrap">
-          <div className="flex items-center gap-1">
-            <div className="w-4 h-4 rounded-sm bg-gray-800"></div> No activity
-          </div>
-          <div className="flex items-center gap-1">
-            <div className="w-4 h-4 rounded-sm bg-yellow-400"></div> Low
-          </div>
-          <div className="flex items-center gap-1">
-            <div className="w-4 h-4 rounded-sm bg-green-400"></div> Medium
-          </div>
-          <div className="flex items-center gap-1">
-            <div className="w-4 h-4 rounded-sm bg-green-600"></div> High
-          </div>
+          <div className="flex items-center gap-1"><div className="w-4 h-4 rounded-sm bg-gray-800"></div> No activity</div>
+          <div className="flex items-center gap-1"><div className="w-4 h-4 rounded-sm bg-yellow-400"></div> Low</div>
+          <div className="flex items-center gap-1"><div className="w-4 h-4 rounded-sm bg-green-400"></div> Medium</div>
+          <div className="flex items-center gap-1"><div className="w-4 h-4 rounded-sm bg-green-600"></div> High</div>
         </div>
       </div>
     </section>
