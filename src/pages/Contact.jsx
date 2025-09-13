@@ -1,10 +1,8 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 
 export function Contact() {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
-  const canvasRef = useRef(null);
-  const mouse = useRef({ x: null, y: null });
 
   const socials = [
     { name: "LinkedIn", url: "https://www.linkedin.com/in/vettrivel2006", icon: "/ALL IMAGES/LOGO/LinkedIn.png" },
@@ -21,104 +19,8 @@ export function Contact() {
     setFormData({ name: "", email: "", message: "" });
   };
 
-  // Particle background
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-    let width = canvas.width = window.innerWidth;
-    let height = canvas.height = window.innerHeight;
-
-    const points = Array.from({ length: 80 }, () => ({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      vx: (Math.random() - 0.5) * 0.5,
-      vy: (Math.random() - 0.5) * 0.5,
-      radius: 1.5 + Math.random() * 2
-    }));
-
-    const animate = () => {
-      ctx.fillStyle = "#0f172a";
-      ctx.fillRect(0, 0, width, height);
-
-      points.forEach(p => {
-        p.x += p.vx;
-        p.y += p.vy;
-        if (p.x < 0 || p.x > width) p.vx *= -1;
-        if (p.y < 0 || p.y > height) p.vy *= -1;
-
-        // Draw particles
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(0,255,255,0.8)";
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = "rgba(0,255,255,0.4)";
-        ctx.fill();
-
-        // Draw lines between nearby points
-        points.forEach(other => {
-          const dx = p.x - other.x;
-          const dy = p.y - other.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 120) {
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(other.x, other.y);
-            ctx.strokeStyle = `rgba(0,255,255,${1 - dist / 120})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-          }
-        });
-
-        // Connect to mouse
-        if (mouse.current.x && mouse.current.y) {
-          const dx = p.x - mouse.current.x;
-          const dy = p.y - mouse.current.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 150) {
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(mouse.current.x, mouse.current.y);
-            ctx.strokeStyle = `rgba(0,255,255,${1 - dist / 150})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-          }
-        }
-      });
-
-      requestAnimationFrame(animate);
-    };
-    animate();
-
-    const handleResize = () => {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    };
-    const handleMouseMove = (e) => {
-      mouse.current.x = e.clientX;
-      mouse.current.y = e.clientY;
-    };
-    const handleMouseLeave = () => {
-      mouse.current.x = null;
-      mouse.current.y = null;
-    };
-
-    window.addEventListener("resize", handleResize);
-    window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("mouseout", handleMouseLeave);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("mouseout", handleMouseLeave);
-    };
-  }, []);
-
   return (
-    <section className="relative min-h-screen text-white flex items-center justify-center overflow-hidden">
-      {/* Canvas Background */}
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full -z-10" />
-      <div className="absolute inset-0 bg-black/30 backdrop-blur-sm -z-5" />
-
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-[#0f172a] to-black text-white">
       <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-12 py-24">
         <h1 className="text-5xl md:text-6xl font-extrabold text-cyan-400 mb-12 text-center drop-shadow-lg">
           Contact Me
@@ -156,7 +58,7 @@ export function Contact() {
           </div>
 
           {/* Right Section - Form */}
-          <div className="bg-[#000000]/70 p-8 rounded-xl border border-gray-700 shadow-lg transition-all duration-300 hover:shadow-[0_0_25px_rgba(0,255,255,0.5)] backdrop-blur-md">
+          <div className="bg-[#0c1323]/80 p-8 rounded-xl border border-gray-700 shadow-lg transition-all duration-300 hover:shadow-[0_0_25px_rgba(0,255,255,0.5)] backdrop-blur-md">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-400 mb-1">Name</label>

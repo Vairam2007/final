@@ -1,12 +1,11 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
-// Sample Hall of Fame data
 const hofItems = [
   {
     title: "Hall of Fame – Flipkart",
-    description: "🏆 First Place in Hall of Fame",
+    description: "🏆 Positioned First Place in Hall of Fame",
     image: "/ALL IMAGES/HALL OF FAME/Flipkart - Hall of Fame.png",
   },
   {
@@ -17,187 +16,100 @@ const hofItems = [
   {
     title: "Hall of Fame – Chime United States",
     description: "💥 Critical P1 Vulnerability & placed 1st",
-    image: "/ALL IMAGES/HALL OF FAME/2025-05-27 06_27_25-Screenshot 2025-05-27 061454.png",
+    image:
+      "/ALL IMAGES/HALL_OF_FAME/2025-05-27 06_27_25-Screenshot 2025-05-27 061454.png",
   },
-  // Add more images here
 ];
 
 export default function HallOfFamePage() {
-  const canvasRef = useRef(null);
-  const mouse = useRef({ x: 0, y: 0 });
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [flipped, setFlipped] = useState(false);
+  const [progressKey, setProgressKey] = useState(0);
 
-  // Particle background with connected lines
   useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-    let width = (canvas.width = window.innerWidth);
-    let height = (canvas.height = window.innerHeight);
-
-    const particles = [];
-    const particleCount = 120;
-    const maxDistance = 150;
-
-    for (let i = 0; i < particleCount; i++) {
-      particles.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        size: Math.random() * 2 + 1.5,
-        speedX: (Math.random() - 0.5) * 0.6,
-        speedY: (Math.random() - 0.5) * 0.6,
-      });
-    }
-
-    const handleMouseMove = (e) => {
-      mouse.current.x = e.clientX;
-      mouse.current.y = e.clientY;
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-
-    const draw = () => {
-      // Dark gradient background
-      const gradient = ctx.createLinearGradient(0, 0, width, height);
-      gradient.addColorStop(0, "#0a0a0a");
-      gradient.addColorStop(1, "#1c1c1c");
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, width, height);
-
-      // Draw particles
-      particles.forEach((p) => {
-        const dx = (mouse.current.x - width / 2) * 0.02;
-        const dy = (mouse.current.y - height / 2) * 0.02;
-
-        ctx.fillStyle = "rgba(0, 255, 255, 0.6)";
-        ctx.beginPath();
-        ctx.arc(p.x + dx, p.y + dy, p.size, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Move particle
-        p.x += p.speedX;
-        p.y += p.speedY;
-
-        if (p.x > width) p.x = 0;
-        if (p.x < 0) p.x = width;
-        if (p.y > height) p.y = 0;
-        if (p.y < 0) p.y = height;
-      });
-
-      // Connect particles
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const p1 = particles[i];
-          const p2 = particles[j];
-          const dx = (mouse.current.x - width / 2) * 0.02;
-          const dy = (mouse.current.y - height / 2) * 0.02;
-
-          const dist = Math.hypot(p1.x - p2.x, p1.y - p2.y);
-          if (dist < maxDistance) {
-            ctx.strokeStyle = `rgba(0, 255, 255, ${0.2 * (1 - dist / maxDistance)})`;
-            ctx.lineWidth = 0.5;
-            ctx.beginPath();
-            ctx.moveTo(p1.x + dx, p1.y + dy);
-            ctx.lineTo(p2.x + dx, p2.y + dy);
-            ctx.stroke();
-          }
-        }
-      }
-
-      requestAnimationFrame(draw);
-    };
-
-    draw();
-
-    const handleResize = () => {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    };
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
-  }, []);
+    setProgressKey((k) => k + 1); // restart progress when topic changes
+  }, [selectedIndex]);
 
   return (
-    <section className="relative w-full min-h-screen overflow-hidden text-white">
-      <canvas ref={canvasRef} className="fixed inset-0 -z-10" />
+    <section className="relative min-h-screen w-full bg-[#0b0b1f] text-white pt-32 px-6 md:px-12 lg:px-20 flex flex-col items-center">
+      {/* ===== Heading ===== */}
+      <h2 className="text-4xl md:text-5xl font-extrabold mb-12 text-center text-gray-200">
+        Hall of Fame
+      </h2>
 
-      {/* Header */}
-      <motion.h2
-        initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1 }}
-        className="fixed top-0 w-full text-center z-10 text-5xl md:text-6xl font-extrabold bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 bg-clip-text text-transparent drop-shadow-xl py-6"
-      >
-        🏅 Hall of Fame
-      </motion.h2>
+      {/* ===== Main Content ===== */}
+      <div className="flex flex-col md:flex-row w-full max-w-7xl gap-12">
+        {/* ---------- Left: Topics (25%) ---------- */}
+        <aside className="w-full md:w-1/4 flex flex-col gap-6">
+          {hofItems.map((item, index) => (
+            <div key={item.title} className="relative">
+              <motion.button
+                onClick={() => setSelectedIndex(index)}
+                whileHover={{ scale: 1.02 }}
+                className={`group w-full text-left px-5 py-4 rounded-lg border font-medium transition-all duration-300
+                  ${
+                    selectedIndex === index
+                      ? "bg-gray-800 text-white border-cyan-400 shadow"
+                      : "bg-gray-900 border-gray-700 text-gray-300 hover:bg-gray-800 hover:text-white"
+                  }`}
+              >
+                {item.title}
+              </motion.button>
 
-      {/* Hall of Fame grid */}
-      <div className="relative z-10 max-w-7xl mx-auto mt-32 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12 px-6 pb-20">
-        {hofItems.map((item, index) => (
-          <FlipCard key={index} item={item} />
-        ))}
+              {/* Active topic progress bar */}
+              {selectedIndex === index && (
+                <motion.div
+                  key={progressKey}
+                  className="absolute bottom-0 left-0 h-1 rounded-full"
+                  initial={{ width: 0 }}
+                  animate={{ width: "100%" }}
+                  transition={{ duration: 4, ease: "easeInOut", repeat: Infinity }}
+                  style={{ backgroundColor: "#22d3ee" }}
+                />
+              )}
+            </div>
+          ))}
+        </aside>
+
+        {/* ---------- Right: Flip Card (75%) ---------- */}
+        <main className="w-full md:w-3/4 flex justify-center">
+          <motion.div
+            className="relative w-full max-w-4xl h-[60vh] perspective cursor-pointer"
+            animate={{ rotateY: flipped ? 180 : 0 }}
+            transition={{ duration: 1, ease: "easeInOut" }}
+            style={{ transformStyle: "preserve-3d" }}
+            onClick={() => setFlipped(!flipped)}
+          >
+            {/* Front - Image */}
+            <div className="absolute inset-0 backface-hidden rounded-2xl overflow-hidden shadow-md border border-gray-700 bg-gray-900">
+              <img
+                src={hofItems[selectedIndex].image}
+                alt={hofItems[selectedIndex].title}
+                className="w-full h-full object-contain p-4"
+              />
+            </div>
+
+            {/* Back - Text */}
+            <div
+              className="absolute inset-0 backface-hidden rounded-2xl bg-gray-900 flex flex-col items-center justify-center px-8 text-center shadow-md border border-gray-700"
+              style={{ transform: "rotateY(180deg)" }}
+            >
+              <h3 className="text-2xl md:text-3xl font-semibold text-cyan-400 mb-4">
+                {hofItems[selectedIndex].title}
+              </h3>
+              <p className="text-md md:text-lg text-gray-300 whitespace-pre-line leading-relaxed">
+                {hofItems[selectedIndex].description}
+              </p>
+            </div>
+          </motion.div>
+        </main>
       </div>
 
+      {/* ===== Extra Styling ===== */}
       <style>{`
-        html, body {
-          scrollbar-width: none;
-          -ms-overflow-style: none;
-        }
-        html::-webkit-scrollbar, body::-webkit-scrollbar {
-          display: none;
-        }
+        .perspective { perspective: 1500px; }
+        .backface-hidden { backface-visibility: hidden; }
       `}</style>
     </section>
-  );
-}
-
-// Flip Card Component
-function FlipCard({ item }) {
-  const [flipped, setFlipped] = React.useState(false);
-
-  return (
-    <div
-      className="w-full cursor-pointer perspective h-96"
-      onClick={() => setFlipped(!flipped)}
-    >
-      <motion.div
-        className="relative w-full h-full transition-transform duration-700 transform-style preserve-3d"
-        animate={{ rotateY: flipped ? 180 : 0 }}
-        style={{ transformStyle: "preserve-3d" }}
-      >
-        {/* Front - Image */}
-        <div className="absolute w-full h-full backface-hidden rounded-3xl flex items-center justify-center overflow-hidden border border-gray-600 shadow-2xl">
-          <img
-            src={item.image}
-            alt={item.title}
-            className="w-full h-full object-contain"
-          />
-        </div>
-
-        {/* Back - Text */}
-        <div className="absolute w-full h-full backface-hidden rotate-y-180 bg-gray-900 rounded-3xl flex flex-col items-center justify-center p-6 text-center">
-          <h3 className="text-2xl md:text-4xl font-bold text-gray-100 mb-4">
-            {item.title}
-          </h3>
-          <p className="text-gray-300 whitespace-pre-line text-lg md:text-xl">
-            {item.description}
-          </p>
-          <p className="mt-4 text-sm text-gray-400">(Click again to flip)</p>
-        </div>
-      </motion.div>
-
-      <style>{`
-        .perspective {
-          perspective: 1500px;
-        }
-        .backface-hidden {
-          backface-visibility: hidden;
-        }
-        .rotate-y-180 {
-          transform: rotateY(180deg);
-        }
-      `}</style>
-    </div>
   );
 }

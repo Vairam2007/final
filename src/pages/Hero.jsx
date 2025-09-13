@@ -1,95 +1,12 @@
 "use client";
-import React, { useEffect, useRef } from "react";
+import React from "react";
+import { FaGithub, FaLinkedin } from "react-icons/fa";
 
 export function Hero() {
-  const canvasRef = useRef(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext("2d");
-    let animationFrameId;
-    const dpr = window.devicePixelRatio || 1;
-
-    const resizeCanvas = () => {
-      canvas.width = window.innerWidth * dpr;
-      canvas.height = window.innerHeight * dpr;
-      canvas.style.width = `${window.innerWidth}px`;
-      canvas.style.height = `${window.innerHeight}px`;
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.scale(dpr, dpr);
-    };
-    resizeCanvas();
-
-    const nodes = [];
-    const NODE_COUNT = 60;
-
-    for (let i = 0; i < NODE_COUNT; i++) {
-      nodes.push({
-        x: Math.random() * window.innerWidth,
-        y: Math.random() * window.innerHeight,
-        radius: Math.random() * 2 + 1,
-        dx: (Math.random() - 0.5) * 0.5,
-        dy: (Math.random() - 0.5) * 0.5,
-      });
-    }
-
-    const draw = () => {
-      const gradient = ctx.createLinearGradient(0, 0, window.innerWidth, window.innerHeight);
-      gradient.addColorStop(0, "#0a0a0a");
-      gradient.addColorStop(1, "#0d0d1a");
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
-
-      nodes.forEach((node) => {
-        ctx.beginPath();
-        ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(0,255,255,0.9)";
-        ctx.shadowBlur = 8;
-        ctx.shadowColor = "#0ff";
-        ctx.fill();
-
-        node.x += node.dx;
-        node.y += node.dy;
-
-        if (node.x < 0 || node.x > window.innerWidth) node.dx = -node.dx;
-        if (node.y < 0 || node.y > window.innerHeight) node.dy = -node.dy;
-      });
-
-      for (let i = 0; i < nodes.length; i++) {
-        for (let j = i + 1; j < nodes.length; j++) {
-          const dx = nodes[i].x - nodes[j].x;
-          const dy = nodes[i].y - nodes[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 150) {
-            ctx.strokeStyle = `rgba(0,255,255,${0.25 - dist / 600})`;
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(nodes[i].x, nodes[i].y);
-            ctx.lineTo(nodes[j].x, nodes[j].y);
-            ctx.stroke();
-          }
-        }
-      }
-
-      animationFrameId = requestAnimationFrame(draw);
-    };
-
-    draw();
-    window.addEventListener("resize", resizeCanvas);
-
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-      window.removeEventListener("resize", resizeCanvas);
-    };
-  }, []);
-
   return (
-    <section className="relative min-h-screen flex items-center text-white overflow-hidden">
-      {/* Canvas Background */}
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full z-0" />
-
-      {/* Content */}
-      <div className="container mx-auto relative z-10 flex flex-col md:flex-row items-center px-6 md:px-12 lg:px-24 gap-12">
+    <section className="relative min-h-screen flex items-center overflow-hidden bg-gradient-to-br from-[#0a0a2f] to-[#000000] px-6 md:px-12 lg:px-24">
+     
+      <div className="container relative z-10 mx-auto flex flex-col md:flex-row items-center gap-12">
         {/* Left Side */}
         <div className="w-full md:w-1/2 flex flex-col justify-center max-w-xl space-y-6">
           <h1 className="text-4xl md:text-6xl font-extrabold leading-tight tracking-tight">
@@ -99,11 +16,11 @@ export function Hero() {
             <span className="text-white tracking-wider">Vettrivel U</span>
           </h1>
 
-          <h2 className="text-lg md:text-2xl lg:text-3xl font-medium leading-snug text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-500 to-blue-500">
+          <h2 className="text-lg md:text-2xl lg:text-3xl font-medium leading-snug bg-gradient-to-r from-green-400 via-yellow-300 to-red-400 bg-clip-text text-transparent">
             Cyber Security Researcher · VAPT Specialist · Offensive Security Analyst
           </h2>
 
-          <p className="text-sm md:text-lg font-semibold uppercase tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-yellow-300 to-red-400">
+          <p className="text-sm md:text-lg font-semibold uppercase tracking-wide bg-gradient-to-r from-green-400 via-yellow-300 to-red-400 bg-clip-text text-transparent">
             Web · API · Network · Mobile · Cloud · LLM/AI · Active Directory
           </p>
 
@@ -111,16 +28,36 @@ export function Hero() {
           <div className="flex flex-wrap gap-4 mt-6">
             <a
               href="#contact"
-              className="px-6 py-3 text-black font-semibold rounded-md bg-cyan-500 hover:text-black hover:bg-cyan-400 shadow-lg shadow-cyan-500/50 transition duration-300 transform hover:scale-105"
+              className="px-6 py-3 text-white font-semibold rounded-md bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 shadow-lg hover:scale-105 transform transition duration-300"
             >
               Hire Me
             </a>
             <a
-              href="/vettrivel-vapt.pdf" // ✅ Direct path to file in public/
+              href="/vettrivel-vapt.pdf"
               download
-              className="px-6 py-3 border-2 border-cyan-500 hover:border-cyan-400 text-white font-semibold rounded-md hover:bg-cyan-500 hover:text-black shadow-md shadow-cyan-500/50 transition-all duration-300 transform hover:scale-105"
+              className="px-6 py-3 border-2 border-cyan-500 text-white font-semibold rounded-md hover:bg-cyan-500 hover:text-black shadow-md transform transition duration-300 hover:scale-105"
             >
               Download CV
+            </a>
+          </div>
+
+          {/* Social Icons - Next Line */}
+          <div className="flex gap-4 mt-4">
+            <a
+              href="https://github.com/username"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white p-3 rounded-full bg-gray-900 hover:bg-gray-800 transition shadow-md hover:scale-110 transform"
+            >
+              <FaGithub size={20} />
+            </a>
+            <a
+              href="https://linkedin.com/in/username"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-white p-3 rounded-full bg-gray-900 hover:bg-gray-800 transition shadow-md hover:scale-110 transform"
+            >
+              <FaLinkedin size={20} />
             </a>
           </div>
         </div>

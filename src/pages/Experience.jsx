@@ -1,3 +1,4 @@
+"use client";
 import React, { useCallback, useEffect, useState } from "react";
 import Particles from "react-tsparticles";
 import { loadSlim } from "tsparticles-slim";
@@ -40,7 +41,8 @@ export function Experience() {
   const [scrollProgress, setScrollProgress] = useState(0);
   useEffect(() => {
     const handleScroll = () => {
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const docHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
       const scrollTop = window.scrollY;
       setScrollProgress(Math.min((scrollTop / docHeight) * 85, 100));
     };
@@ -50,7 +52,7 @@ export function Experience() {
 
   return (
     <section className="bg-black text-white py-16 relative font-sans min-h-screen overflow-x-hidden mt-10">
-      {/* Particles */}
+      {/* Particle background */}
       <Particles
         id="tsparticles"
         init={particlesInit}
@@ -68,7 +70,7 @@ export function Experience() {
               distance: 100,
               enable: true,
               opacity: 0.6,
-              width: 1, 
+              width: 1,
             },
             move: { enable: true, speed: 1 },
             number: { value: 120, density: { enable: true, area: 800 } },
@@ -86,13 +88,13 @@ export function Experience() {
         </h2>
 
         <div className="relative">
-          {/* Shortened Vertical Line */}
+          {/* Main vertical line */}
           <div
             className="absolute left-1/2 w-1 bg-gray-700 rounded z-0"
             style={{ top: "0px", bottom: "200px" }}
           ></div>
 
-          {/* Scroll Progress */}
+          {/* Scroll progress indicator */}
           <div
             className="absolute left-1/2 w-1 rounded z-0"
             style={{
@@ -104,14 +106,17 @@ export function Experience() {
             }}
           ></div>
 
-          {/* Timeline Items with images */}
+          {/* Timeline Items */}
           {timelineItems.map((item, idx) => (
-            <div key={idx} className={`timeline-item ${item.side} relative mb-24 flex items-start`}>
-
-              {/* Timeline Box */}
+            <div
+              key={idx}
+              className={`timeline-item ${item.side} relative mb-24 flex items-start`}
+            >
               <div
                 className={`timeline-box mt-6 ${
-                  item.side === "left" ? "ml-auto text-right" : "mr-auto text-left"
+                  item.side === "left"
+                    ? "ml-auto text-right"
+                    : "mr-auto text-left"
                 } bg-gray-900 hover:bg-gray-800 transition-shadow shadow-lg p-8 rounded-3xl max-w-3xl`}
               >
                 <h3 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-400 mb-2">
@@ -128,34 +133,52 @@ export function Experience() {
             </div>
           ))}
 
-          {/* Freelance Root */}
+          {/* Freelance Section with alternating branches */}
           <div className="timeline-item center relative mt-20">
+            {/* top circle node */}
             <div className="absolute left-1/2 transform -translate-x-1/2 -top-3 w-6 h-6 rounded-full bg-white border-2 border-gray-400 z-20 shadow-lg"></div>
+
             <div className="timeline-box text-center bg-gray-900 hover:bg-gray-800 transition-shadow shadow-lg p-8 rounded-3xl mx-auto max-w-3xl">
               <h3 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-lime-400">
                 Freelance Penetration Tester | Self-Employed
               </h3>
-              <ul className="text-gray-300 text-left mt-4 space-y-2">
-                {freelanceBranches.map((branch, idx) => (
-                  <li key={idx}>{branch}</li>
-                ))}
-              </ul>
             </div>
 
-            {/* Tree Branches */}
-            <div className="flex flex-col items-center mt-8">
-              <div className="flex justify-center w-full relative mt-4">
-                <div className="h-px w-3/4 bg-white absolute top-1/2 mt-5 transform -translate-y-1/2"></div>
-              </div>
-              <div className="flex justify-center gap-12 mt-6">
-                {freelanceBranches.map((branch, idx) => (
-                  <div key={idx} className="flex flex-col items-center relative">
-                    <div className="absolute left-1/2 transform -translate-x-1/2 -top-3 w-5 h-5 rounded-full bg-white border-2 border-gray-400 z-20 shadow"></div>
-                    <div className="timeline-box mt-6 bg-gray-900 hover:bg-gray-800 transition-shadow shadow-md p-4 rounded-2xl w-64 text-center">
-                      <p>{branch}</p>
+            {/* Branch drawing */}
+            <div className="relative flex justify-center mt-16 w-full">
+              {/* vertical trunk down */}
+              <div className="absolute top-20 left-1/2 transform -translate-x-1/2 h-16 w-1 bg-white"></div>
+              {/* horizontal branch line */}
+              <div className="absolute top-16 left-1/2 transform -translate-x-1/2 w-3/4 h-1 bg-white"></div>
+
+              {/* branch nodes + alternating boxes */}
+              <div className="flex justify-between w-3/4">
+                {freelanceBranches.map((branch, idx) => {
+                  const isUp = idx % 2 === 0; // 0,2 -> up ; 1 -> down
+                  return (
+                    <div key={idx} className="flex flex-col items-center relative">
+                      {/* connector from branch line to box */}
+                      {isUp ? (
+                        <div className="absolute top-20 h-20 w-1 bg-white"></div>
+                      ) : (
+                        // <div className="absolute top-[-4rem] h-20 w-1 bg-white"></div>
+                        <div></div>
+                      )}
+
+                      {/* node on branch line */}
+                      <div className="absolute top-16 w-5 h-5 rounded-full bg-white border-2 border-gray-400 z-20 shadow"></div>
+
+                      {/* Box placed up or down */}
+                      <div
+                        className={`timeline-box bg-gray-900 hover:bg-gray-800 transition-shadow shadow-md unded-2xl w-64 text-center ${
+                          isUp ?  "mt-48" :"mt-[9rem]" 
+                        }`}
+                      >
+                        <p>{branch}</p>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>
