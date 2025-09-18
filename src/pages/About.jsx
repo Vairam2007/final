@@ -1,7 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 
-// Main About Page
 export default function About() {
   const [selectedImage, setSelectedImage] = useState(null);
 
@@ -24,6 +23,13 @@ export default function About() {
           </div>
 
           <div className="flex flex-col items-center gap-6">
+            {/* ✅ TryHackMe Badge iframe — height halved */}
+            <iframe
+              src="https://tryhackme.com/api/v2/badges/public-profile?userPublicId=4840710"
+              title="TryHackMe Badge"
+              className="w-[360px] h-[90px] border-0 rounded-lg shadow-lg mb-6 "
+            ></iframe>
+
             <div
               className="rounded-xl overflow-hidden shadow-xl border border-gray-700 w-[360px] cursor-pointer hover:scale-105 transition"
               onClick={() =>
@@ -75,7 +81,7 @@ export default function About() {
   );
 }
 
-// Company Banner / Scrolling Logos
+/* ✅ Improved Company Banner with perfectly spaced logos */
 export function CompanyBanner() {
   const logos = [
     "https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png",
@@ -87,49 +93,33 @@ export function CompanyBanner() {
   ];
 
   return (
-    <div className="w-full overflow-hidden relative py-6 bg-gray-900">
-      <div className="flex animate-marquee gap-12">
-        {logos.map((logo, idx) => (
+    <div className="w-full overflow-hidden relative py-10 bg-gray-900">
+      <div className="flex gap-20 animate-scroll hover:[animation-play-state:paused] justify-around items-center">
+        {[...logos, ...logos].map((logo, idx) => (
           <img
             key={idx}
             src={logo}
             alt={`Logo ${idx}`}
-            className="h-12 w-auto filter brightness-0 invert"
-          />
-        ))}
-        {logos.map((logo, idx) => (
-          <img
-            key={`repeat-${idx}`}
-            src={logo}
-            alt={`Logo repeat ${idx}`}
-            className="h-12 w-auto filter brightness-0 invert"
+            className="h-16 w-auto filter brightness-0 invert"
           />
         ))}
       </div>
-
-      <div className="flex animate-marquee-reverse gap-12 mt-6">
-        {logos.map((logo, idx) => (
-          <img
-            key={`row2-${idx}`}
-            src={logo}
-            alt={`Logo ${idx}`}
-            className="h-12 w-auto filter brightness-0 invert"
-          />
-        ))}
-        {logos.map((logo, idx) => (
-          <img
-            key={`row2-repeat-${idx}`}
-            src={logo}
-            alt={`Logo repeat ${idx}`}
-            className="h-12 w-auto filter brightness-0 invert"
-          />
-        ))}
-      </div>
+      <style jsx>{`
+        @keyframes scroll {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .animate-scroll {
+          display: flex;
+          width: calc(200%);
+          animation: scroll 25s linear infinite;
+        }
+      `}</style>
     </div>
   );
 }
 
-// Mac-style Terminal
+/* Mac-style Terminal (unchanged) */
 function MacTerminal() {
   const [logs, setLogs] = React.useState([{ type: "system", text: "Welcome! Type 'help' to see commands." }]);
   const [currentInput, setCurrentInput] = React.useState("");
@@ -213,17 +203,44 @@ function MacTerminal() {
   );
 }
 
-// Yearly Activity
+/* ✅ Yearly Activity — realistic GitHub-style 7x53 grid */
 function YearlyActivity() {
-  const generateActivityData = () => Array.from({ length: 53 }, () => ({ level: Math.floor(Math.random() * 4) }));
-  const activityData = generateActivityData();
-  const colors = { 0: "bg-gray-800", 1: "bg-green-900", 2: "bg-green-600", 3: "bg-green-400" };
+  const weeks = 53;
+  const days = 7;
+  const colors = [
+    "bg-gray-800",
+    "bg-green-900",
+    "bg-green-700",
+    "bg-green-500",
+    "bg-green-300"
+  ];
+
+  // generate realistic contributions pattern
+  const activity = Array.from({ length: days }, () =>
+    Array.from({ length: weeks }, () => {
+      const rand = Math.random();
+      if (rand < 0.5) return 0;        // many empty days
+      else if (rand < 0.7) return 1;
+      else if (rand < 0.85) return 2;
+      else if (rand < 0.95) return 3;
+      else return 4;
+    })
+  );
 
   return (
     <div className="mt-20 text-center">
       <h3 className="text-2xl font-bold text-white mb-4">Yearly Activity</h3>
-      <div className="flex justify-center flex-wrap gap-1">
-        {activityData.map((d, idx) => <div key={idx} className={`w-4 h-4 rounded-sm ${colors[d.level]}`} />)}
+      <div className="flex gap-[4px] justify-center">
+        {Array.from({ length: weeks }, (_, week) => (
+          <div key={week} className="flex flex-col gap-[4px]">
+            {Array.from({ length: days }, (_, day) => (
+              <div
+                key={day}
+                className={`w-4 h-4 rounded-sm ${colors[activity[day][week]]}`}
+              />
+            ))}
+          </div>
+        ))}
       </div>
     </div>
   );

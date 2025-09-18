@@ -34,45 +34,78 @@ export default function Certifications() {
     </div>
   );
 
-  // === Background Animation: Grid + Twinkling Stars ===
+  /* === BACKGROUND ANIMATION ===
+     1. Twinkling static stars
+     2. Shooting stars that originate randomly from all sides and cross the screen diagonally
+  */
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     let w = (canvas.width = window.innerWidth);
     let h = (canvas.height = window.innerHeight);
 
-    // === Grid Settings ===
-    const gridSize = 40;
-
-    // === Stars ===
-    const stars = Array.from({ length: 120 }, () => ({
+    // ---- Twinkling stars ----
+    const stars = Array.from({ length: 150 }, () => ({
       x: Math.random() * w,
       y: Math.random() * h,
-      radius: Math.random() * 1.5 + 0.5,
+      radius: Math.random() * 1.2 + 0.4,
       alpha: Math.random(),
-      delta: Math.random() * 0.02 + 0.005, // twinkle speed
+      delta: Math.random() * 0.02 + 0.005,
     }));
 
-    function drawGrid() {
-      ctx.strokeStyle = "rgba(255,255,255,0.05)";
-      ctx.lineWidth = 1;
-      for (let x = 0; x < w; x += gridSize) {
-        ctx.beginPath();
-        ctx.moveTo(x, 0);
-        ctx.lineTo(x, h);
-        ctx.stroke();
+    // ---- Shooting stars (falling stars) ----
+    const maxShooting = 6;
+    const shootingStars = Array.from({ length: maxShooting }, () => createShootingStar());
+
+    function createShootingStar() {
+      // Choose a random side to spawn from
+      const side = Math.floor(Math.random() * 4); // 0: top, 1: bottom, 2: left, 3: right
+      let x, y, dx, dy;
+
+      const speed = 4 + Math.random() * 4;
+      const length = 150 + Math.random() * 150;
+
+      switch (side) {
+        case 0: // top
+          x = Math.random() * w;
+          y = -50;
+          dx = (Math.random() - 0.5) * speed;
+          dy = speed;
+          break;
+        case 1: // bottom
+          x = Math.random() * w;
+          y = h + 50;
+          dx = (Math.random() - 0.5) * speed;
+          dy = -speed;
+          break;
+        case 2: // left
+          x = -50;
+          y = Math.random() * h;
+          dx = speed;
+          dy = (Math.random() - 0.5) * speed;
+          break;
+        case 3: // right
+          x = w + 50;
+          y = Math.random() * h;
+          dx = -speed;
+          dy = (Math.random() - 0.5) * speed;
+          break;
       }
-      for (let y = 0; y < h; y += gridSize) {
-        ctx.beginPath();
-        ctx.moveTo(0, y);
-        ctx.lineTo(w, y);
-        ctx.stroke();
-      }
+
+      return {
+        x,
+        y,
+        dx,
+        dy,
+        length,
+        speed,
+        size: 2 + Math.random() * 2,
+        active: Math.random() < 0.3,
+      };
     }
 
-    function drawStars() {
+    function drawTwinklingStars() {
       stars.forEach((s) => {
-        // Update alpha to create twinkling
         s.alpha += s.delta;
         if (s.alpha > 1) s.alpha = 0;
         ctx.beginPath();
@@ -82,13 +115,42 @@ export default function Certifications() {
       });
     }
 
+    function drawShootingStars() {
+      shootingStars.forEach((s, i) => {
+        if (!s.active) {
+          if (Math.random() < 0.002) s.active = true;
+          return;
+        }
+
+        const xEnd = s.x + s.dx * s.length / s.speed;
+        const yEnd = s.y + s.dy * s.length / s.speed;
+
+        const gradient = ctx.createLinearGradient(s.x, s.y, xEnd, yEnd);
+        gradient.addColorStop(0, "rgba(255,255,255,1)");
+        gradient.addColorStop(1, "rgba(255,255,255,0)");
+
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = s.size;
+        ctx.beginPath();
+        ctx.moveTo(s.x, s.y);
+        ctx.lineTo(xEnd, yEnd);
+        ctx.stroke();
+
+        s.x += s.dx;
+        s.y += s.dy;
+
+        if (s.x < -200 || s.x > w + 200 || s.y < -200 || s.y > h + 200) {
+          shootingStars[i] = createShootingStar();
+        }
+      });
+    }
+
     function animate() {
-      // Clear canvas
       ctx.fillStyle = "#0b0b3a";
       ctx.fillRect(0, 0, w, h);
 
-      drawGrid();
-      drawStars();
+      drawTwinklingStars();
+      drawShootingStars();
 
       requestAnimationFrame(animate);
     }
@@ -104,7 +166,7 @@ export default function Certifications() {
 
   return (
     <section className="relative min-h-screen overflow-hidden text-white">
-      {/* Background Canvas */}
+      {/* Night-sky canvas */}
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full -z-10"></canvas>
 
       <div className="relative max-w-7xl mx-auto py-16 px-6 md:px-12">
