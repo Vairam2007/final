@@ -143,6 +143,23 @@ export function Skills() {
     show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
   };
 
+  // ---- Split into 3 groups, each must have at least 8 items ----
+  const MIN_PER_BOX = 8;
+  const skillGroups = [];
+  const perBox = Math.max(Math.ceil(skills.length / 3), MIN_PER_BOX);
+  let index = 0;
+
+  for (let i = 0; i < 3; i++) {
+    const slice = skills.slice(index, index + perBox);
+    index += perBox;
+
+    // If fewer than 8 items, fill with placeholders
+    while (slice.length < MIN_PER_BOX) {
+      slice.push({ name: "Coming Soon", icon: "https://cdn-icons-png.flaticon.com/512/565/565655.png" });
+    }
+    skillGroups.push(slice);
+  }
+
   return (
     <section id="skills" className="relative bg-black text-white py-20 px-6 md:px-12 font-mono overflow-hidden">
       {/* Animated Background */}
@@ -174,23 +191,31 @@ export function Skills() {
           ))}
         </div>
 
-        {/* Skills */}
+        {/* === 3 Large Skill Boxes, each with at least 8 sub-boxes === */}
         <h2 className="text-4xl md:text-5xl font-bold mb-12">
           Professional <span className="text-purple-400">Skillset</span>
         </h2>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8">
-          {skills.map((skill) => (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+          {skillGroups.map((group, i) => (
             <motion.div
-              key={skill.name}
+              key={i}
               variants={rowFadeUp}
               initial="hidden"
               whileInView="show"
               viewport={{ once: true, amount: 0.2 }}
-              className="relative group flex flex-col items-center justify-center p-6 bg-gradient-to-br from-gray-900 to-gray-800 border border-purple-600 rounded-xl shadow-lg hover:scale-105 transition duration-300"
+              className="bg-gradient-to-br from-gray-900 to-gray-800 border border-purple-600 rounded-xl shadow-lg p-6 flex flex-col items-center hover:scale-105 transition duration-300"
             >
-              <span className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 group-hover:animate-ripple pointer-events-none"></span>
-              <img src={skill.icon} alt={skill.name} className="w-16 h-16 object-contain mb-4" />
-              <span className="text-lg font-semibold">{skill.name}</span>
+              <div className="grid grid-cols-2 gap-6 w-full">
+                {group.map((skill, idx) => (
+                  <div
+                    key={idx}
+                    className="flex flex-col items-center justify-center p-4 bg-gradient-to-br from-gray-800 to-gray-700 border border-purple-500 rounded-xl shadow-md"
+                  >
+                    <img src={skill.icon} alt={skill.name} className="w-12 h-12 object-contain mb-2" />
+                    <span className="text-md font-semibold text-center">{skill.name}</span>
+                  </div>
+                ))}
+              </div>
             </motion.div>
           ))}
         </div>

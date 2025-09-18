@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 
 export default function About() {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -16,25 +16,28 @@ export default function About() {
                 About Me
               </span>
             </h2>
-            <p>👋 Hi, I’m <span className="text-cyan-400 font-semibold">VETTRIVEL U</span>, Offensive Security Expert based in India 🇮🇳.</p>
-            <p>🛡 Gained <span className="text-purple-400 font-medium">root access</span> on high-value systems and uncovered <span className="text-red-400 font-medium">business-critical flaws</span>.</p>
-            <p>👨‍💻 Freelance on <span className="text-green-400 font-medium">outsourced security projects</span> and mentor via workshops & webinars.</p>
-            <p>💡 Support <span className="text-orange-400 font-semibold">bug bounty hunters</span> with content & training.</p>
+
+            <p>👋 Greetings, Cyber Guardians! I’m <span className="text-cyan-400 font-semibold">VETTRIVEL U</span>, a passionate <span className="text-purple-400 font-medium">Offensive Security Expert</span> from <span className="text-green-400 font-medium">Cuddalore, Tamil Nadu, India 🇮🇳</span>.</p>
+
+            <p>🛡️ Specialized in <span className="text-yellow-400 font-semibold">Vulnerability Assessment & Penetration Testing (VAPT)</span>, <span className="text-pink-400 font-semibold">Red Teaming</span>, and <span className="text-blue-400 font-semibold">Offensive Security Operations</span> — with a proven track record of ethically breaching systems to secure them.</p>
+
+            <p>🏆 Earned multiple <span className="text-purple-400 font-semibold">Hall of Fame recognitions</span> from MNCs for responsibly disclosing critical vulnerabilities, including <span className="text-red-400 font-medium">root access</span> and <span className="text-red-400 font-medium">server pwning</span>.</p>
+
+            <p>🎁 Bagged exclusive <span className="text-yellow-400 font-medium">swags and rewards</span>; listed as a <span className="text-green-400 font-semibold">Top Voice in Information Security</span> on LinkedIn.</p>
+
+            <p>🧑‍💼 Freelancing on <span className="text-blue-400 font-medium">outsourced security projects</span> for top-tier companies.</p>
+
+            <p>🧠 Giving back to the community: conducting <span className="text-pink-400 font-medium">classes, webinars, and mentorship sessions</span> for juniors and aspiring bug bounty hunters.</p>
+
+            <p>✍️ Sharing deep dives and writeups on <span className="text-purple-400 font-medium">Medium</span>, covering everything from <span className="text-red-400 font-medium">0-day findings</span> to beginner tips.</p>
+
+            <p>🚀 Recently qualified for finals of a <span className="text-yellow-400 font-semibold">national-level Hackathon x CTF</span>, proving the ability to <span className="text-green-400 font-medium">think under pressure and hack smart</span>.</p>
           </div>
 
           <div className="flex flex-col items-center gap-6">
-            {/* ✅ TryHackMe Badge iframe — height halved */}
-            <iframe
-              src="https://tryhackme.com/api/v2/badges/public-profile?userPublicId=4840710"
-              title="TryHackMe Badge"
-              className="w-[360px] h-[90px] border-0 rounded-lg shadow-lg mb-6 "
-            ></iframe>
-
             <div
               className="rounded-xl overflow-hidden shadow-xl border border-gray-700 w-[360px] cursor-pointer hover:scale-105 transition"
-              onClick={() =>
-                setSelectedImage("/ALL IMAGES/OTHER/Screenshot 2024-09-10 194937.png")
-              }
+              onClick={() => setSelectedImage("/ALL IMAGES/OTHER/Screenshot 2024-09-10 194937.png")}
             >
               <img
                 src="/ALL IMAGES/OTHER/Screenshot 2024-09-10 194937.png"
@@ -45,7 +48,7 @@ export default function About() {
           </div>
         </div>
 
-        {/* Company Banner / Scrolling Logos */}
+        {/* Company Banner */}
         <CompanyBanner />
 
         {/* Mac-style Terminal */}
@@ -81,7 +84,7 @@ export default function About() {
   );
 }
 
-/* ✅ Improved Company Banner with perfectly spaced logos */
+/* Company Banner Component */
 export function CompanyBanner() {
   const logos = [
     "https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png",
@@ -119,7 +122,7 @@ export function CompanyBanner() {
   );
 }
 
-/* Mac-style Terminal (unchanged) */
+/* Mac-style Terminal Component */
 function MacTerminal() {
   const [logs, setLogs] = React.useState([{ type: "system", text: "Welcome! Type 'help' to see commands." }]);
   const [currentInput, setCurrentInput] = React.useState("");
@@ -203,7 +206,7 @@ function MacTerminal() {
   );
 }
 
-/* ✅ Yearly Activity — realistic GitHub-style 7x53 grid */
+/* Yearly Activity Component */
 function YearlyActivity() {
   const weeks = 53;
   const days = 7;
@@ -215,11 +218,10 @@ function YearlyActivity() {
     "bg-green-300"
   ];
 
-  // generate realistic contributions pattern
   const activity = Array.from({ length: days }, () =>
     Array.from({ length: weeks }, () => {
       const rand = Math.random();
-      if (rand < 0.5) return 0;        // many empty days
+      if (rand < 0.5) return 0;
       else if (rand < 0.7) return 1;
       else if (rand < 0.85) return 2;
       else if (rand < 0.95) return 3;

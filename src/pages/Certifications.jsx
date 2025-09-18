@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 export default function Certifications() {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -12,39 +12,13 @@ export default function Certifications() {
     { src: "/ALL IMAGES/CERTIFICATES/Screenshot 2025-04-30 222811.png", alt: "Certified in Cybersecurity" },
   ];
 
-  const Card = ({ src, alt }) => (
-    <div
-      onClick={() => setSelectedImage(src)}
-      className="relative group cursor-pointer rounded-2xl shadow-2xl shadow-blue-700/50
-                 transition-transform duration-300 hover:scale-[1.03] hover:-translate-y-1
-                 bg-[#0a0a2a] border border-gray-700 p-4 flex justify-center items-center"
-    >
-      <div className="bg-black/80 rounded-xl overflow-hidden shadow-lg w-full h-full">
-        <img
-          src={src}
-          alt={alt}
-          className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
-        />
-      </div>
-      <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2
-                      px-4 py-1 text-white text-sm font-semibold
-                      bg-gradient-to-t from-black/90 to-transparent rounded-md">
-        {alt}
-      </div>
-    </div>
-  );
-
-  /* === BACKGROUND ANIMATION ===
-     1. Twinkling static stars
-     2. Shooting stars that originate randomly from all sides and cross the screen diagonally
-  */
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     let w = (canvas.width = window.innerWidth);
     let h = (canvas.height = window.innerHeight);
 
-    // ---- Twinkling stars ----
+    // Twinkling stars
     const stars = Array.from({ length: 150 }, () => ({
       x: Math.random() * w,
       y: Math.random() * h,
@@ -53,55 +27,23 @@ export default function Certifications() {
       delta: Math.random() * 0.02 + 0.005,
     }));
 
-    // ---- Shooting stars (falling stars) ----
+    // Shooting stars
     const maxShooting = 6;
     const shootingStars = Array.from({ length: maxShooting }, () => createShootingStar());
 
     function createShootingStar() {
-      // Choose a random side to spawn from
-      const side = Math.floor(Math.random() * 4); // 0: top, 1: bottom, 2: left, 3: right
+      const side = Math.floor(Math.random() * 4);
       let x, y, dx, dy;
-
       const speed = 4 + Math.random() * 4;
       const length = 150 + Math.random() * 150;
 
       switch (side) {
-        case 0: // top
-          x = Math.random() * w;
-          y = -50;
-          dx = (Math.random() - 0.5) * speed;
-          dy = speed;
-          break;
-        case 1: // bottom
-          x = Math.random() * w;
-          y = h + 50;
-          dx = (Math.random() - 0.5) * speed;
-          dy = -speed;
-          break;
-        case 2: // left
-          x = -50;
-          y = Math.random() * h;
-          dx = speed;
-          dy = (Math.random() - 0.5) * speed;
-          break;
-        case 3: // right
-          x = w + 50;
-          y = Math.random() * h;
-          dx = -speed;
-          dy = (Math.random() - 0.5) * speed;
-          break;
+        case 0: x = Math.random() * w; y = -50; dx = (Math.random() - 0.5) * speed; dy = speed; break;
+        case 1: x = Math.random() * w; y = h + 50; dx = (Math.random() - 0.5) * speed; dy = -speed; break;
+        case 2: x = -50; y = Math.random() * h; dx = speed; dy = (Math.random() - 0.5) * speed; break;
+        case 3: x = w + 50; y = Math.random() * h; dx = -speed; dy = (Math.random() - 0.5) * speed; break;
       }
-
-      return {
-        x,
-        y,
-        dx,
-        dy,
-        length,
-        speed,
-        size: 2 + Math.random() * 2,
-        active: Math.random() < 0.3,
-      };
+      return { x, y, dx, dy, length, speed, size: 1, active: Math.random() < 0.3 }; // Thinner stars (size:1)
     }
 
     function drawTwinklingStars() {
@@ -117,86 +59,87 @@ export default function Certifications() {
 
     function drawShootingStars() {
       shootingStars.forEach((s, i) => {
-        if (!s.active) {
-          if (Math.random() < 0.002) s.active = true;
-          return;
-        }
-
-        const xEnd = s.x + s.dx * s.length / s.speed;
-        const yEnd = s.y + s.dy * s.length / s.speed;
-
+        if (!s.active) { if (Math.random() < 0.002) s.active = true; return; }
+        const xEnd = s.x + (s.dx * s.length) / s.speed;
+        const yEnd = s.y + (s.dy * s.length) / s.speed;
         const gradient = ctx.createLinearGradient(s.x, s.y, xEnd, yEnd);
         gradient.addColorStop(0, "rgba(255,255,255,1)");
         gradient.addColorStop(1, "rgba(255,255,255,0)");
-
         ctx.strokeStyle = gradient;
-        ctx.lineWidth = s.size;
+        ctx.lineWidth = 1; // Decreased width
         ctx.beginPath();
         ctx.moveTo(s.x, s.y);
         ctx.lineTo(xEnd, yEnd);
         ctx.stroke();
-
-        s.x += s.dx;
-        s.y += s.dy;
-
-        if (s.x < -200 || s.x > w + 200 || s.y < -200 || s.y > h + 200) {
-          shootingStars[i] = createShootingStar();
-        }
+        s.x += s.dx; s.y += s.dy;
+        if (s.x < -200 || s.x > w + 200 || s.y < -200 || s.y > h + 200) shootingStars[i] = createShootingStar();
       });
     }
 
     function animate() {
-      ctx.fillStyle = "#0b0b3a";
+      // Background with subtle gradient overlay for depth
+      const gradient = ctx.createLinearGradient(0, 0, w, h);
+      gradient.addColorStop(0, "#0b0b3a");
+      gradient.addColorStop(1, "#02020d");
+      ctx.fillStyle = gradient;
       ctx.fillRect(0, 0, w, h);
 
       drawTwinklingStars();
       drawShootingStars();
-
       requestAnimationFrame(animate);
     }
     animate();
 
-    const handleResize = () => {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
-    };
+    const handleResize = () => { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; };
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   return (
     <section className="relative min-h-screen overflow-hidden text-white">
-      {/* Night-sky canvas */}
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full -z-10"></canvas>
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full -z-10" />
 
-      <div className="relative max-w-7xl mx-auto py-16 px-6 md:px-12">
+      <div className="relative max-w-7xl mx-auto py-16 px-6 md:px-12 space-y-16">
         <h1 className="text-4xl md:text-5xl font-extrabold text-center mb-12
                        text-transparent bg-clip-text
                        bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-500
-                       drop-shadow-[0_0_20px_rgba(0,150,255,0.6)]">
+                       drop-shadow-[0_0_25px_rgba(0,150,255,0.6)]">
           Certifications Gallery
         </h1>
 
-        {/* First Row: Staggered Large Images */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 m-12">
-          <div className="relative -translate-y-8">
-            <div className="w-full max-w-xl mx-auto">
-              <Card {...certificates[0]} />
+        {certificates.map((cert, idx) => (
+          <div
+            key={idx}
+            className={`flex flex-col md:flex-row items-center gap-8 ${
+              idx % 2 !== 0 ? "md:flex-row-reverse" : ""
+            }`}
+          >
+            {/* Image */}
+            <div
+              className="w-full md:w-1/2 cursor-pointer transition-transform duration-300 hover:scale-[1.03] hover:shadow-[0_0_25px_rgba(0,200,255,0.6)]"
+              onClick={() => setSelectedImage(cert.src)}
+            >
+              <div className="rounded-2xl overflow-hidden shadow-2xl shadow-blue-700/40">
+                <img
+                  src={cert.src}
+                  alt={cert.alt}
+                  className="w-full h-full object-contain"
+                />
+              </div>
             </div>
-          </div>
-          <div className="relative translate-y-8">
-            <div className="w-full max-w-xl mx-auto">
-              <Card {...certificates[1]} />
-            </div>
-          </div>
-        </div>
 
-        {/* Remaining Certificates */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-12">
-          {certificates.slice(2).map((c, i) => (
-            <Card key={i + 2} {...c} />
-          ))}
-        </div>
+            {/* Text Content */}
+            <div className="w-full md:w-1/2 space-y-4">
+              <h3 className="text-2xl md:text-3xl font-bold text-transparent bg-clip-text
+                             bg-gradient-to-r from-yellow-400 to-lime-400 transition-transform duration-300 hover:scale-105">
+                {cert.alt}
+              </h3>
+              <p className="text-gray-300 text-lg">
+                This certificate verifies your knowledge and proficiency in {cert.alt}. Click the image to view it larger.
+              </p>
+            </div>
+          </div>
+        ))}
 
         {/* Zoom Modal */}
         {selectedImage && (

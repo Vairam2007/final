@@ -25,6 +25,7 @@
     "rsuite": "^5.83.3",
     "slick-carousel": "^1.8.1",
     "tailwind-merge": "^3.3.1",
+    "tsparticles": "^3.9.1",
     "tsparticles-engine": "^2.12.0",
     "tsparticles-slim": "^2.12.0"
   },

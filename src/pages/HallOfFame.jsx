@@ -29,12 +29,14 @@ const hofItems = [
       "Public recognition by Chime security team",
     ],
   },
+  // 👉 You can add more items – left side will scroll automatically
 ];
 
 export default function HallOfFamePage() {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [progressKey, setProgressKey] = useState(0);
 
+  // Auto-switch every 5s
   useEffect(() => {
     const interval = setInterval(() => {
       setSelectedIndex((prev) => (prev + 1) % hofItems.length);
@@ -42,14 +44,16 @@ export default function HallOfFamePage() {
     return () => clearInterval(interval);
   }, []);
 
+  // restart the progress bar animation
   useEffect(() => {
     setProgressKey((k) => k + 1);
   }, [selectedIndex]);
 
   const handleClick = (i) => {
-    setSelectedIndex(i);
-    setProgressKey((k) => k + 1);
-  };
+  setSelectedIndex(i);
+  setProgressKey((k) => k + 1);
+};
+
 
   return (
     <section className="relative min-h-screen w-full bg-gradient-to-br from-[#0a0a1f] via-[#0a0a2f] to-[#0f0f30] text-white pt-28 px-4 md:px-12 lg:px-20 overflow-hidden">
@@ -64,8 +68,8 @@ export default function HallOfFamePage() {
       </h2>
 
       <div className="relative z-10 flex flex-col md:flex-row gap-12 max-w-7xl mx-auto">
-        {/* -------- Left: Topic Boxes -------- */}
-        <aside className="md:w-1/4 flex flex-col space-y-8">
+        {/* -------- Left: Scrollable Topic Boxes -------- */}
+        <aside className="md:w-1/4 max-h-[60vh] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent space-y-8">
           {hofItems.map((item, i) => (
             <button
               key={item.title}
@@ -102,7 +106,7 @@ export default function HallOfFamePage() {
           ))}
         </aside>
 
-        {/* -------- Right: Info Card -------- */}
+        {/* -------- Right: Info Card (fixed) -------- */}
         <main className="md:w-3/4">
           <div className="bg-[#11112a]/80 border border-gray-700 rounded-2xl p-8 shadow-xl backdrop-blur-sm">
             <h3 className="text-2xl md:text-3xl font-semibold mb-4">
@@ -159,23 +163,14 @@ export default function HallOfFamePage() {
         }
 
         @keyframes lightningBaseline {
-          0% {
-            background-position: 0% 0%;
-            width: 0%;
-          }
-          100% {
-            background-position: 200% 0%;
-            width: 100%;
-          }
+          0% { background-position: 0% 0%; width: 0%; }
+          100% { background-position: 200% 0%; width: 100%; }
         }
 
         /* === Twinkling Starfield === */
         .stars {
           position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          bottom: 0;
+          top: 0; left: 0; right: 0; bottom: 0;
           background: transparent;
           z-index: 0;
         }
@@ -189,20 +184,16 @@ export default function HallOfFamePage() {
           background-size: 200px 200px;
           animation: moveStars 60s linear infinite;
         }
-        .stars2 {
-          background-size: 300px 300px;
-          opacity: 0.6;
-          animation-duration: 90s;
-        }
-        .stars3 {
-          background-size: 400px 400px;
-          opacity: 0.4;
-          animation-duration: 120s;
-        }
+        .stars2 { background-size: 300px 300px; opacity: 0.6; animation-duration: 90s; }
+        .stars3 { background-size: 400px 400px; opacity: 0.4; animation-duration: 120s; }
         @keyframes moveStars {
           from {transform: translateY(0);}
           to {transform: translateY(-2000px);}
         }
+
+        /* Optional: thin custom scrollbar */
+        .scrollbar-thin::-webkit-scrollbar { width: 6px; }
+        .scrollbar-thin::-webkit-scrollbar-thumb { background: #555; border-radius: 3px; }
       `}</style>
     </section>
   );
