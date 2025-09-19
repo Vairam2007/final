@@ -1,8 +1,15 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function About() {
   const [selectedImage, setSelectedImage] = useState(null);
+
+  // Close modal on ESC
+  useEffect(() => {
+    const handleEsc = (e) => e.key === "Escape" && setSelectedImage(null);
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, []);
 
   return (
     <section className="relative text-white min-h-screen bg-gradient-to-b from-[#0a0a2f] to-[#000000]">
@@ -10,11 +17,10 @@ export default function About() {
 
         {/* About Section */}
         <div className="grid grid-cols-1 md:grid-cols-[60%_40%] gap-16 items-start">
-          <div className="space-y-6 text-lg md:text-xl leading-relaxed">
-            <h2 className="text-4xl md:text-5xl font-extrabold mb-6 text-center md:text-left">
-              <span className="bg-gradient-to-r from-cyan-400 via-purple-500 to-blue-500 bg-clip-text text-transparent">
-                About Me
-              </span>
+          <div className="space-y-6 text-lg md:text-xl leading-relaxed max-w-3xl">
+            <h2 className="text-4xl md:text-5xl font-extrabold mb-6 text-center md:text-left
+                           text-cyan-300 drop-shadow-[0_0_4px_#00ffff80]">
+              About Me
             </h2>
 
             <p>👋 Greetings, Cyber Guardians! I’m <span className="text-cyan-400 font-semibold">VETTRIVEL U</span>, a passionate <span className="text-purple-400 font-medium">Offensive Security Expert</span> from <span className="text-green-400 font-medium">Cuddalore, Tamil Nadu, India 🇮🇳</span>.</p>
@@ -48,15 +54,15 @@ export default function About() {
           </div>
         </div>
 
+        <div className="border-b border-gray-700/50 my-12" />
+
         {/* Company Banner */}
         <CompanyBanner />
 
-        {/* Mac-style Terminal */}
-        <MacTerminal />
+        <div className="border-b border-gray-700/50 my-12" />
 
         {/* Yearly Activity */}
         <YearlyActivity />
-
       </div>
 
       {/* Modal for Image */}
@@ -103,7 +109,7 @@ export function CompanyBanner() {
             key={idx}
             src={logo}
             alt={`Logo ${idx}`}
-            className="h-16 w-auto filter brightness-0 invert"
+            className="h-16 w-auto filter grayscale hover:grayscale-0 transition duration-300"
           />
         ))}
       </div>
@@ -118,90 +124,6 @@ export function CompanyBanner() {
           animation: scroll 25s linear infinite;
         }
       `}</style>
-    </div>
-  );
-}
-
-/* Mac-style Terminal Component */
-function MacTerminal() {
-  const [logs, setLogs] = React.useState([{ type: "system", text: "Welcome! Type 'help' to see commands." }]);
-  const [currentInput, setCurrentInput] = React.useState("");
-  const [cursorVisible, setCursorVisible] = React.useState(true);
-  const terminalRef = React.useRef(null);
-
-  React.useEffect(() => {
-    const interval = setInterval(() => setCursorVisible((prev) => !prev), 500);
-    return () => clearInterval(interval);
-  }, []);
-
-  React.useEffect(() => {
-    terminalRef.current?.scrollTo({
-      top: terminalRef.current.scrollHeight,
-      behavior: "smooth",
-    });
-  }, [logs, currentInput]);
-
-  const handleKeyDown = (e) => {
-    e.preventDefault();
-    if (e.key === "Backspace") setCurrentInput((prev) => prev.slice(0, -1));
-    else if (e.key === "Enter") {
-      executeCommand(currentInput.trim());
-      setCurrentInput("");
-    } else if (e.key.length === 1) setCurrentInput((prev) => prev + e.key);
-  };
-
-  const executeCommand = (cmd) => {
-    if (!cmd) return;
-    let response = "";
-    switch (cmd.toLowerCase()) {
-      case "help":
-        response = "Available commands: about, skills, contact, clear";
-        break;
-      case "about":
-        response = "Hi! I'm VETTRIVEL U, Offensive Security Expert from India.";
-        break;
-      case "skills":
-        response = "Skills: Penetration Testing, Bug Bounty, Web Security, Linux";
-        break;
-      case "contact":
-        response = "Contact: uvettrivel007@gmail.com";
-        break;
-      case "clear":
-        setLogs([]);
-        return;
-      default:
-        response = `Command not found: ${cmd}`;
-    }
-    setLogs((prev) => [...prev, { type: "command", text: cmd }, { type: "response", text: response }]);
-  };
-
-  return (
-    <div
-      className="mt-12 max-w-4xl mx-auto rounded-xl shadow-2xl border border-gray-700 bg-[#1e1e1e] font-mono text-green-400 focus:outline-none"
-      tabIndex={0}
-      onKeyDown={handleKeyDown}
-    >
-      <div className="flex items-center gap-2 px-3 py-2 bg-gray-800 rounded-t-xl">
-        <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-        <div className="w-3 h-3 bg-yellow-300 rounded-full"></div>
-        <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-        <span className="ml-2 text-gray-300 text-sm">Terminal</span>
-      </div>
-
-      <div ref={terminalRef} className="p-4 max-h-[400px] overflow-y-auto whitespace-pre-wrap">
-        {logs.map((log, idx) => (
-          <div key={idx}>
-            {log.type === "command" && <span>&gt; {log.text}</span>}
-            {log.type === "response" && <div className="ml-4 text-gray-300">{log.text}</div>}
-            {log.type === "system" && <div className="text-gray-400">{log.text}</div>}
-          </div>
-        ))}
-        <div className="flex">
-          <span>&gt; </span>
-          <span>{currentInput}</span>
-          {cursorVisible && <span className="animate-pulse">█</span>}
-        </div>
-      </div>
     </div>
   );
 }
@@ -238,6 +160,7 @@ function YearlyActivity() {
             {Array.from({ length: days }, (_, day) => (
               <div
                 key={day}
+                title={`Activity level: ${activity[day][week]}`}
                 className={`w-4 h-4 rounded-sm ${colors[activity[day][week]]}`}
               />
             ))}
