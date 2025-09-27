@@ -98,10 +98,10 @@ export default function ExperiencePage() {
 
   // Predefined heights for boxes to vary
   const boxHeights = ["180px", "220px", "200px", "240px", "210px"];
+  const boxWidth = "280px"; // fixed width for all boxes
 
   return (
     <div className="relative w-full min-h-screen overflow-hidden bg-[#0a0a0f]">
-      {/* SVG grid background */}
       <svg ref={svgRef} width="100%" height="100%" className="absolute inset-0">
         <defs>
           <pattern id="smallGrid" width={cellSize} height={cellSize} patternUnits="userSpaceOnUse">
@@ -153,16 +153,16 @@ export default function ExperiencePage() {
               </h3>
             </div>
 
-            {/* Single row, staggered vertically with different heights */}
-            <div className="flex justify-center mt-16 gap-x-8">
+            {/* Single row, staggered vertically with different heights and fixed width */}
+            <div className="flex justify-center mt-16 gap-x-8 flex-wrap">
               {freelanceBranches.map((branch, idx) => (
                 <div
                   key={idx}
-                  className="timeline-box bg-gray-900/80 backdrop-blur hover:bg-gray-800 transition-shadow shadow-md rounded-3xl p-6 text-lg"
+                  className="timeline-box bg-gray-900/80 backdrop-blur hover:bg-gray-800 transition-shadow shadow-md rounded-3xl p-6 text-lg flex-shrink-0"
                   style={{
                     marginTop: idx % 2 === 0 ? "0px" : "40px",
                     height: boxHeights[idx],
-                    width: "240px",
+                    width: boxWidth,
                   }}
                 >
                   <p className="text-gray-200">{branch}</p>

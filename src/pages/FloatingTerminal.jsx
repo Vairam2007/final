@@ -24,16 +24,22 @@ export default function FloatingTerminal() {
     });
   }, [logs, currentInput]);
 
-  const handleKeyDown = (e) => {
-    if (!open) return;
-    e.preventDefault();
-    if (e.key === "Backspace") setCurrentInput(prev => prev.slice(0, -1));
-    else if (e.key === "Enter") {
-      executeCommand(currentInput.trim());
-      setCurrentInput("");
-    } else if (e.key.length === 1) setCurrentInput(prev => prev + e.key);
-    else if (e.key === "Escape") setOpen(false);
-  };
+  // Handle keyboard input globally when terminal is open
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (!open) return;
+      e.preventDefault();
+      if (e.key === "Backspace") setCurrentInput(prev => prev.slice(0, -1));
+      else if (e.key === "Enter") {
+        executeCommand(currentInput.trim());
+        setCurrentInput("");
+      } else if (e.key.length === 1) setCurrentInput(prev => prev + e.key);
+      else if (e.key === "Escape") setOpen(false);
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [open, currentInput]);
 
   const executeCommand = (cmd) => {
     if (!cmd) return;
@@ -66,6 +72,14 @@ export default function FloatingTerminal() {
     ]);
   };
 
+  // Close terminal when clicking outside
+  const overlayRef = useRef(null);
+  const handleOverlayClick = (e) => {
+    if (terminalRef.current && !terminalRef.current.contains(e.target)) {
+      setOpen(false);
+    }
+  };
+
   return (
     <>
       {/* Floating round button */}
@@ -81,71 +95,68 @@ export default function FloatingTerminal() {
         <span className="text-blue-300 text-2xl font-bold">&gt;_</span>
       </button>
 
-      {/* Slide-in terminal panel */}
-      <div
-        className={`fixed inset-y-0 left-0 z-50 w-full sm:w-[480px]
-                    bg-gradient-to-b from-[#0d1117] to-[#000]
-                    text-green-500 shadow-2xl
-                    rounded-r-lg border-r border-gray-700/40
-                    transform transition-transform duration-300
-                    ${open ? "translate-x-0" : "-translate-x-full"}`}
-        tabIndex={0}
-        onKeyDown={handleKeyDown}
-      >
-        {/* Header bar */}
-        <div className="flex items-center gap-2 px-4 py-2
-                        bg-[#1a1f24] border-b border-gray-700/50
-                        rounded-tr-lg">
-          <div className="w-3.5 h-3.5 bg-red-500 rounded-full"></div>
-          <div className="w-3.5 h-3.5 bg-yellow-400 rounded-full"></div>
-          <div className="w-3.5 h-3.5 bg-green-500 rounded-full"></div>
-          <span className="ml-3 text-gray-300 text-sm font-semibold">
-            kali@user:~ 
-          </span>
-          <button
-            onClick={() => setOpen(false)}
-            className="ml-auto text-gray-400 hover:text-white
-                       text-lg font-bold px-2 focus:outline-none"
-          >
-            ×
-          </button>
-        </div>
-
-        {/* Terminal output */}
+      {/* Centered terminal modal */}
+      {open && (
         <div
-          ref={terminalRef}
-          className="p-6 max-h-[calc(100vh-60px)] overflow-y-auto
-                     whitespace-pre-wrap font-mono text-base leading-relaxed"
+          ref={overlayRef}
+          className="fixed inset-0 z-50 flex items-center justify-center 
+                     bg-black/60 backdrop-blur-sm"
+          onClick={handleOverlayClick}
         >
-          {logs.map((log, idx) => (
-            <div key={idx} className="mb-1">
-              {log.type === "command" && (
-                <span className="text-green-400">
-                  kali@user:~$ {log.text}
-                </span>
-              )}
-              {log.type === "response" && (
-                <div className="ml-4 text-green-300">{log.text}</div>
-              )}
-              {log.type === "system" && (
-                <div className="text-gray-400">{log.text}</div>
-              )}
-              {log.type === "error" && (
-                <div className="ml-4 text-red-400">{log.text}</div>
-              )}
+          <div
+            ref={terminalRef}
+            className="w-[90%] max-w-3xl h-[70%] 
+                       bg-gradient-to-br from-[#0f111a] to-[#1a1f3a] 
+                       border border-gray-700 rounded-lg shadow-2xl 
+                       flex flex-col ring-2 ring-blue-500/30"
+            onClick={(e) => e.stopPropagation()} // prevent closing when clicking inside
+          >
+            {/* Header */}
+            <div className="flex items-center gap-2 px-4 py-2 bg-[#1a1f24] border-b border-gray-700 rounded-t-lg">
+              <div className="w-3.5 h-3.5 bg-red-500 rounded-full"></div>
+              <div className="w-3.5 h-3.5 bg-yellow-400 rounded-full"></div>
+              <div className="w-3.5 h-3.5 bg-green-500 rounded-full"></div>
+              <span className="ml-3 text-gray-300 text-sm font-semibold">kali@user:~</span>
+              <button
+                onClick={() => setOpen(false)}
+                className="ml-auto text-gray-400 hover:text-white text-lg font-bold px-2 focus:outline-none"
+              >
+                ×
+              </button>
             </div>
-          ))}
 
-          {/* Prompt */}
-          <div className="flex mt-2">
-            <span className="text-green-400">kali@user:~$ </span>
-            <span className="text-green-200">{currentInput}</span>
-            {cursorVisible && (
-              <span className="animate-pulse text-green-300">█</span>
-            )}
+            {/* Terminal output */}
+            <div
+              ref={terminalRef}
+              className="p-4 flex-1 overflow-y-auto font-mono text-green-400 text-sm whitespace-pre-wrap"
+            >
+              {logs.map((log, idx) => (
+                <div key={idx} className="mb-1">
+                  {log.type === "command" && (
+                    <span className="text-green-300">kali@user:~$ {log.text}</span>
+                  )}
+                  {log.type === "response" && (
+                    <div className="ml-4 text-green-400">{log.text}</div>
+                  )}
+                  {log.type === "system" && (
+                    <div className="text-gray-400">{log.text}</div>
+                  )}
+                  {log.type === "error" && (
+                    <div className="ml-4 text-red-500">{log.text}</div>
+                  )}
+                </div>
+              ))}
+
+              {/* Prompt */}
+              <div className="flex mt-2">
+                <span className="text-green-300">kali@user:~$ </span>
+                <span className="text-green-200">{currentInput}</span>
+                {cursorVisible && <span className="animate-pulse text-green-300">█</span>}
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 }

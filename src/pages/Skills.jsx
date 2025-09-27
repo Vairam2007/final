@@ -1,34 +1,57 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 
 // ---------------------
-// Data
+// Expertise Content
 // ---------------------
-const skills = [
-  { name: "Python", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" },
-  { name: "JavaScript", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" },
-  { name: "Java", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg" },
-  { name: "C++", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" },
-  { name: "Solidity", icon: "https://cryptologos.cc/logos/solidity-solidity-logo.svg" },
-  { name: "Ethereum", icon: "https://cryptologos.cc/logos/ethereum-eth-logo.svg" },
-  { name: "Node.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" },
-  { name: "React", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" },
-  { name: "Flask", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flask/flask-original.svg" },
-  { name: "Express", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" },
-  { name: "MongoDB", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" },
-  { name: "PHP", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg" },
+const expertiseBoxes = [
+  { title: "Vulnerability Assessment & Pentesting", desc: "Web, Network, API, and LLM AI security testing and pentesting.", img: "https://source.unsplash.com/400x250/?cybersecurity,hacking" },
+  { title: "Red Team Engagements & Threat Emulation", desc: "Simulating real-world attacks and adversary emulation.", img: "https://source.unsplash.com/400x250/?redteam,cybersecurity" },
+  { title: "Bug Bounty Hunting", desc: "Web, API, and Network vulnerabilities identification and reporting.", img: "https://source.unsplash.com/400x250/?bug,bounty,hacking" },
+  { title: "Post-Exploitation & Privilege Escalation", desc: "Linux & Windows environments, lateral movement, and escalation.", img: "https://source.unsplash.com/400x250/?exploit,security" },
+  { title: "Offensive Security Operations", desc: "SAST/DAST, CTF strategy, and real-world attack simulations.", img: "https://source.unsplash.com/400x250/?penetration,testing" },
+  { title: "Network Exploitation & Lateral Movement", desc: "Network scanning, enumeration, and lateral attacks.", img: "https://source.unsplash.com/400x250/?network,security" },
+  { title: "CTF Strategy & Real-World Simulations", desc: "Capture-the-flag strategies and simulated cyber exercises.", img: "https://source.unsplash.com/400x250/?ctf,cybersecurity" },
+  { title: "Static/Dynamic Application Security Testing", desc: "SAST & DAST for web and API applications.", img: "https://source.unsplash.com/400x250/?web,security" },
 ];
 
-const contentBoxes = [
-  { title: "Web Development", desc: "Building modern web applications with clean UI and strong backend.", img: "https://source.unsplash.com/400x250/?technology,code" },
-  { title: "Blockchain", desc: "Smart contracts and decentralized solutions on Ethereum & Solidity.", img: "https://source.unsplash.com/400x250/?blockchain,crypto" },
-  { title: "AI & ML", desc: "Leveraging Python and ML frameworks to solve real-world problems.", img: "https://source.unsplash.com/400x250/?artificial-intelligence,machine-learning" },
-  { title: "Cybersecurity", desc: "Pentesting, vulnerability assessments, and security automation.", img: "https://source.unsplash.com/400x250/?cybersecurity,hacking" },
-  { title: "Cloud", desc: "Deploying scalable applications with cloud-native technologies.", img: "https://source.unsplash.com/400x250/?cloud,server" },
-  { title: "Mobile Apps", desc: "Cross-platform mobile applications using React Native & Flutter.", img: "https://source.unsplash.com/400x250/?mobile,app" },
-  { title: "Data Science", desc: "Transforming data into actionable insights with visualization tools.", img: "https://source.unsplash.com/400x250/?data,analytics" },
-  { title: "DevOps", desc: "CI/CD, automation pipelines, and infrastructure as code.", img: "https://source.unsplash.com/400x250/?devops,automation" },
+// ---------------------
+// Professional Skillset
+// ---------------------
+const skillGroups = [
+  {
+    title: "Tools & Frameworks Mastery",
+    skills: [
+      { name: "Burp Suite Pro", icon: "https://assets.streamlinehq.com/image/private/w_34,h_34,ar_1/f_auto/v1/icons/logos/burpsuite-w3f4g0vh9opupo2g5ek92.png/burpsuite-xw0lw7maj1h72v6kbk0104.png" },
+      { name: "Nmap", icon: "https://nmap.org/images/sitelogo-nmap-1680x900.png" },
+      { name: "Metasploit", icon: "https://assets.streamlinehq.com/image/private/w_34,h_34,ar_1/f_auto/v1/icons/logos/metasploit-h33wivgvlvgtk3wmoejxq.png/metasploit-rkuireddk3p5vdgf5mil5.png" },
+      { name: "Postman", icon: "https://www.svgrepo.com/show/354202/postman-icon.svg" },
+      { name: "OWASP ZAP", icon: "https://www.zaproxy.org/img/logo.png" },
+      { name: "Hydra", icon: "https://www.flaticon.com/svg/static/icons/svg/3065/3065643.svg" },
+      { name: "SQLmap", icon: "https://sqlmap.org/images/sqlmap_logo.png" },
+      { name: "XSS Hunter", icon: "https://www.xsshunter.com/favicon.ico" },
+    ],
+  },
+  {
+    title: "Scripting & Automation",
+    skills: [
+      { name: "Python", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" },
+      { name: "Bash", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg" },
+      { name: "Tool Wrapping", icon: "https://cdn-icons-png.flaticon.com/512/565/565655.png" },
+      { name: "Automation Scripts", icon: "https://source.unsplash.com/100x100/?automation,coding" },
+    ],
+  },
+  {
+    title: "Knowledge & Methodologies",
+    skills: [
+      { name: "OWASP Top 10", icon: "https://owasp.org/assets/images/logo.png" },
+      { name: "MITRE ATT&CK", icon: "https://attack.mitre.org/images/attack_logo.png" },
+      { name: "NIST Methodologies", icon: "https://www.nist.gov/sites/default/files/styles/medium/public/images/2021/06/14/nist-logo.png" },
+      { name: "Secure Code Review", icon: "https://source.unsplash.com/100x100/?code,security" },
+      { name: "Linux & Windows Internals", icon: "https://upload.wikimedia.org/wikipedia/commons/3/3f/Linux_and_Windows.png" },
+    ],
+  },
 ];
 
 // ---------------------
@@ -54,7 +77,6 @@ function AnimatedBackground() {
     resizeCanvas();
     window.addEventListener("resize", resizeCanvas);
 
-    // Particles
     const particles = [];
     const PARTICLE_COUNT = 80;
     for (let i = 0; i < PARTICLE_COUNT; i++) {
@@ -71,7 +93,6 @@ function AnimatedBackground() {
       ctx.fillStyle = "#0a0a0a";
       ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
-      // Draw particles
       particles.forEach((p) => {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
@@ -79,15 +100,12 @@ function AnimatedBackground() {
         ctx.shadowBlur = 10;
         ctx.shadowColor = "#00ffff";
         ctx.fill();
-
         p.x += p.dx;
         p.y += p.dy;
-
         if (p.x < 0 || p.x > window.innerWidth) p.dx *= -1;
         if (p.y < 0 || p.y > window.innerHeight) p.dy *= -1;
       });
 
-      // Connect particles
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
@@ -108,7 +126,6 @@ function AnimatedBackground() {
     };
 
     draw();
-
     return () => {
       cancelAnimationFrame(animationId);
       window.removeEventListener("resize", resizeCanvas);
@@ -122,68 +139,33 @@ function AnimatedBackground() {
 // Skills Component
 // ---------------------
 export function Skills() {
-  const [offset, setOffset] = useState({ x: 0, y: 0 });
-
-  useEffect(() => window.scrollTo({ top: 0, behavior: "smooth" }), []);
-
-  // Parallax effect
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      const { innerWidth, innerHeight } = window;
-      const x = (e.clientX / innerWidth - 0.5) * 20;
-      const y = (e.clientY / innerHeight - 0.5) * 20;
-      setOffset({ x, y });
-    };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
-
   const rowFadeUp = {
     hidden: { opacity: 0, y: 60 },
     show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
   };
 
-  // ---- Split into 3 groups, each must have at least 8 items ----
-  const MIN_PER_BOX = 8;
-  const skillGroups = [];
-  const perBox = Math.max(Math.ceil(skills.length / 3), MIN_PER_BOX);
-  let index = 0;
-
-  for (let i = 0; i < 3; i++) {
-    const slice = skills.slice(index, index + perBox);
-    index += perBox;
-
-    // If fewer than 8 items, fill with placeholders
-    while (slice.length < MIN_PER_BOX) {
-      slice.push({ name: "Coming Soon", icon: "https://cdn-icons-png.flaticon.com/512/565/565655.png" });
-    }
-    skillGroups.push(slice);
-  }
-
   return (
-    <section id="skills" className="relative bg-black text-white py-20 px-6 md:px-12 font-mono overflow-hidden">
-      {/* Animated Background */}
+    <section className="relative bg-black text-white py-20 px-6 md:px-12 font-mono overflow-hidden">
       <AnimatedBackground />
 
       <div className="relative z-10 max-w-7xl mx-auto text-center">
-        <h2 className="text-4xl md:text-5xl font-bold mb-12">
-          My <span className="text-purple-400">Expertise</span>
+        {/* My Expertise */}
+        <h2 className="text-4xl md:text-5xl font-bold mb-12 text-purple-400">
+          My Expertise
         </h2>
 
-        {/* Content Boxes */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 mb-20">
-          {contentBoxes.map((box, index) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
+          {expertiseBoxes.map((box, idx) => (
             <motion.div
-              key={index}
+              key={idx}
               variants={rowFadeUp}
               initial="hidden"
               whileInView="show"
               viewport={{ once: true, amount: 0.2 }}
-              className="relative group bg-gradient-to-br from-gray-900 to-gray-800 border border-purple-600 rounded-xl shadow-lg overflow-hidden hover:scale-105 transition duration-300 flex flex-col h-[350px]"
+              className="group bg-gray-900 border border-purple-600 rounded-xl shadow-lg overflow-hidden hover:scale-105 transition duration-300 cursor-pointer"
             >
-              <span className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 group-hover:animate-ripple pointer-events-none"></span>
               <img src={box.img} alt={box.title} className="w-full h-44 object-cover" />
-              <div className="p-5 flex flex-col justify-between flex-grow text-left">
+              <div className="p-5 text-left">
                 <h3 className="text-xl font-semibold text-purple-300">{box.title}</h3>
                 <p className="text-gray-400 text-sm mt-2">{box.desc}</p>
               </div>
@@ -191,11 +173,12 @@ export function Skills() {
           ))}
         </div>
 
-        {/* === 3 Large Skill Boxes, each with at least 8 sub-boxes === */}
-        <h2 className="text-4xl md:text-5xl font-bold mb-12">
-          Professional <span className="text-purple-400">Skillset</span>
+        {/* Professional Skillset */}
+        <h2 className="text-4xl md:text-5xl font-bold mb-12 text-purple-400">
+          Professional Skillset
         </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+
+        <div className="flex flex-wrap gap-6 justify-center">
           {skillGroups.map((group, i) => (
             <motion.div
               key={i}
@@ -203,16 +186,16 @@ export function Skills() {
               initial="hidden"
               whileInView="show"
               viewport={{ once: true, amount: 0.2 }}
-              className="bg-gradient-to-br from-gray-900 to-gray-800 border border-purple-600 rounded-xl shadow-lg p-6 flex flex-col items-center hover:scale-105 transition duration-300"
+              className="bg-gray-900 border border-purple-600 rounded-xl shadow-lg p-6 w-full md:w-[32%] flex flex-col gap-4"
             >
-              <div className="grid grid-cols-2 gap-6 w-full">
-                {group.map((skill, idx) => (
+              <h3 className="text-purple-300 font-semibold mb-4">{group.title}</h3>
+              <div className="flex flex-wrap gap-4 justify-center">
+                {group.skills.map((skill, idx) => (
                   <div
                     key={idx}
-                    className="flex flex-col items-center justify-center p-4 bg-gradient-to-br from-gray-800 to-gray-700 border border-purple-500 rounded-xl shadow-md"
+                    className="flex items-center justify-center bg-gray-800 border border-purple-500 rounded-xl p-4 w-20 h-20"
                   >
-                    <img src={skill.icon} alt={skill.name} className="w-12 h-12 object-contain mb-2" />
-                    <span className="text-md font-semibold text-center">{skill.name}</span>
+                    <img src={skill.icon} alt={skill.name} className="w-12 h-12 object-contain" />
                   </div>
                 ))}
               </div>
@@ -220,15 +203,6 @@ export function Skills() {
           ))}
         </div>
       </div>
-
-      <style jsx>{`
-        @keyframes ripple {
-          0% { opacity: 0; transform: scale(0.9); }
-          50% { opacity: 0.6; transform: scale(1.05); }
-          100% { opacity: 0; transform: scale(1.2); }
-        }
-        .animate-ripple { animation: ripple 1.5s ease-out infinite; }
-      `}</style>
     </section>
   );
 }

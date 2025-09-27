@@ -1,99 +1,178 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 const hofItems = [
   {
     title: "Hall of Fame – Flipkart",
-    about:
-      "Cobalt offers an on-demand penetration testing platform that connects businesses to freelance security researchers. It is a strong choice for companies needing faster test cycles and cloud-based application security. However, Cobalt focuses more on speed and convenience than deep manual testing, making it better suited for smaller or mid-sized environments.",
-    features: [
-      "On-demand pentesting marketplace",
-      "Faster test cycles for smaller environments",
-      "Focus on cloud-native and web applications",
-      "Less manual, deep-dive security compared to AppSecure",
-    ],
+    image: "https://picsum.photos/800/400?1",
+    about: "Positioned First Place in Hall of Fame",
+    features: [],
   },
   {
     title: "Swags from BugCrowd",
-    about:
-      "BugCrowd rewards outstanding researchers with exclusive swags for critical findings.",
-    features: ["StormTech Backpack", "Beanie", "Exclusive recognition items"],
+    image: "https://picsum.photos/800/400?2",
+    about: "",
+    features: ["1x – StormTech Backpack", "1x – Beanie"],
   },
   {
     title: "Hall of Fame – Chime United States",
-    about:
-      "Recognized for discovering a critical P1 vulnerability and securing first position in Chime’s Hall of Fame.",
-    features: [
-      "Critical P1 vulnerability discovery",
-      "Top placement in Hall of Fame",
-      "Public recognition by Chime security team",
-    ],
+    image: "https://picsum.photos/800/400?3",
+    about: "Critical P1 Vulnerability & placed in 1st Position",
+    features: [],
   },
-  // 👉 You can add more items – left side will scroll automatically
+  {
+    title: "Hall of Fame - Mina Protocol",
+    image: "https://picsum.photos/800/400?4",
+    about: "Identified vulnerabilities in Blockchain Based Web Application",
+    features: [],
+  },
+  {
+    title: "Hall of Fame – HACKEN",
+    image: "https://picsum.photos/800/400?5",
+    about: "Identified Critical vulnerabilities in HACKEN Web and Apps",
+    features: [],
+  },
+  {
+    title: "Hall of Fame – Swaggle",
+    image: "https://picsum.photos/800/400?6",
+    about: "Identified 3+ vulnerabilities in Swaggle website",
+    features: ["2x High", "1x Low"],
+  },
+  {
+    title: "Hall of Fame – US. Small Business Administration",
+    image: "https://picsum.photos/800/400?7",
+    about: "Identified 2+ vulnerabilities in US. SBA",
+    features: ["1x Medium", "1x Low"],
+  },
+  {
+    title: "Hall of Fame - Westpac Banking Corporation VDP",
+    image: "https://picsum.photos/800/400?8",
+    about: "Identified High and Medium severity vulnerabilities in Banking Infrastructure",
+    features: [],
+  },
+  {
+    title: "Hall of Fame – Zoopla",
+    image: "https://picsum.photos/800/400?9",
+    about: "Identified vulnerabilities on web application",
+    features: [],
+  },
+  {
+    title: "Hall of Fame – Roobet",
+    image: "https://picsum.photos/800/400?10",
+    about: "Identified one High severity vulnerability",
+    features: [],
+  },
 ];
 
 export default function HallOfFamePage() {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [progressKey, setProgressKey] = useState(0);
 
+  const listRef = useRef(null);
+  const itemRefs = useRef([]);
+  itemRefs.current = [];
+
   // Auto-switch every 5s
   useEffect(() => {
     const interval = setInterval(() => {
       setSelectedIndex((prev) => (prev + 1) % hofItems.length);
+      setProgressKey((k) => k + 1);
+
+      if (listRef.current && itemRefs.current[selectedIndex]) {
+        itemRefs.current[selectedIndex].scrollIntoView({
+          block: "center",
+          behavior: "smooth",
+        });
+      }
     }, 5000);
     return () => clearInterval(interval);
-  }, []);
+  }, [selectedIndex]);
 
-  // restart the progress bar animation
+  // IntersectionObserver for scroll-based selection
   useEffect(() => {
-    setProgressKey((k) => k + 1);
+    if (!listRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        let closestIndex = selectedIndex;
+        let minDistance = Infinity;
+        const listRect = listRef.current.getBoundingClientRect();
+        const listCenter = listRect.top + listRect.height / 2;
+
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const cardRect = entry.boundingClientRect;
+          const cardCenter = cardRect.top + cardRect.height / 2;
+          const distance = Math.abs(cardCenter - listCenter);
+          if (distance < minDistance) {
+            minDistance = distance;
+            closestIndex = Number(entry.target.dataset.index);
+          }
+        });
+
+        if (closestIndex !== selectedIndex) {
+          setSelectedIndex(closestIndex);
+          setProgressKey((k) => k + 1);
+        }
+      },
+      {
+        root: listRef.current,
+        threshold: 0.1,
+        rootMargin: "50px 0px 50px 0px",
+      }
+    );
+
+    itemRefs.current.forEach((el) => el && observer.observe(el));
+    return () => observer.disconnect();
   }, [selectedIndex]);
 
   const handleClick = (i) => {
-  setSelectedIndex(i);
-  setProgressKey((k) => k + 1);
-};
-
+    setSelectedIndex(i);
+    setProgressKey((k) => k + 1);
+    if (listRef.current && itemRefs.current[i]) {
+      itemRefs.current[i].scrollIntoView({
+        block: "center",
+        behavior: "smooth",
+      });
+    }
+  };
 
   return (
-    <section className="relative min-h-screen w-full bg-gradient-to-br from-[#0a0a1f] via-[#0a0a2f] to-[#0f0f30] text-white pt-28 px-4 md:px-12 lg:px-20 overflow-hidden">
-      {/* ===== Twinkling Star Layers ===== */}
+    <section className="relative min-h-screen w-full bg-gradient-to-br from-[#0a0a1f] via-[#0a0a2f] to-[#0f0f30] text-white pt-24 px-4 md:px-12 lg:px-20 overflow-hidden">
       <div className="stars stars1"></div>
       <div className="stars stars2"></div>
       <div className="stars stars3"></div>
 
-      {/* ===== Heading ===== */}
-      <h2 className="relative z-10 text-center text-3xl md:text-5xl font-extrabold text-gray-100 mb-16">
+      <h2 className="relative z-10 text-center text-3xl md:text-5xl font-extrabold text-gray-100 mb-10">
         HALL OF FAME
       </h2>
 
-      <div className="relative z-10 flex flex-col md:flex-row gap-12 max-w-7xl mx-auto">
-        {/* -------- Left: Scrollable Topic Boxes -------- */}
-        <aside className="md:w-1/4 max-h-[60vh] overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent space-y-8">
+      <div className="relative z-10 flex flex-col md:flex-row gap-10 max-w-7xl mx-auto">
+        {/* Left Topic List */}
+        <aside
+          ref={listRef}
+          className="md:w-1/4 max-h-[60vh] overflow-y-auto pr-2 no-scrollbar space-y-6"
+        >
           {hofItems.map((item, i) => (
             <button
               key={item.title}
+              data-index={i}
+              ref={(el) => (itemRefs.current[i] = el)}
               onClick={() => handleClick(i)}
-              className={`relative w-full text-left px-6 py-6 rounded-xl border
-                          backdrop-blur-sm transition-all duration-300
-                          ${
-                            selectedIndex === i
-                              ? "border-yellow-400/60 bg-white/5 shadow-[0_0_20px_rgba(255,255,0,0.4)]"
-                              : "border-gray-700 bg-white/5 hover:bg-white/10 hover:border-gray-500"
-                          }`}
+              className={`relative w-full text-left px-6 py-5 rounded-xl border backdrop-blur-sm transition-all duration-300
+                ${selectedIndex === i
+                  ? "border-yellow-400/60 bg-white/5 shadow-[0_0_20px_rgba(255,255,0,0.4)]"
+                  : "border-gray-700 bg-white/5 hover:bg-white/10 hover:border-gray-500"}`}
             >
               <span
                 className={`block text-lg md:text-xl font-semibold transition-colors duration-300
-                ${
-                  selectedIndex === i
+                  ${selectedIndex === i
                     ? "text-yellow-400"
-                    : "text-gray-300 hover:text-gray-100"
-                }`}
+                    : "text-gray-300 hover:text-gray-100"}`}
               >
                 {item.title}
               </span>
 
-              {/* ⚡ Lightning baseline progress bar */}
               {selectedIndex === i && (
                 <div className="absolute bottom-0 left-0 w-full h-[3px] overflow-hidden">
                   <div
@@ -106,45 +185,40 @@ export default function HallOfFamePage() {
           ))}
         </aside>
 
-        {/* -------- Right: Info Card (fixed) -------- */}
+        {/* Right Big Box */}
         <main className="md:w-3/4">
-          <div className="bg-[#11112a]/80 border border-gray-700 rounded-2xl p-8 shadow-xl backdrop-blur-sm">
+          <div className="bg-[#11112a]/80 border border-gray-700 rounded-2xl p-6 md:p-8 shadow-xl backdrop-blur-sm max-h-[60vh] overflow-hidden">
+            <img
+              src={hofItems[selectedIndex].image}
+              alt={hofItems[selectedIndex].title}
+              className="w-full h-48 object-cover rounded-xl mb-4"
+            />
             <h3 className="text-2xl md:text-3xl font-semibold mb-4">
-              About company
+              {hofItems[selectedIndex].title}
             </h3>
             <p className="text-gray-300 leading-relaxed mb-6">
               {hofItems[selectedIndex].about}
             </p>
-
-            <h4 className="text-xl md:text-2xl font-semibold mb-3">
-              Key Features:
-            </h4>
-            <ul className="list-disc list-inside space-y-2 text-gray-300">
-              {hofItems[selectedIndex].features.map((f) => (
-                <li key={f}>{f}</li>
-              ))}
-            </ul>
+            {hofItems[selectedIndex].features.length > 0 && (
+              <>
+                <h4 className="text-xl md:text-2xl font-semibold mb-3">
+                  Key Features:
+                </h4>
+                <ul className="list-disc list-inside space-y-2 text-gray-300">
+                  {hofItems[selectedIndex].features.map((f) => (
+                    <li key={f}>{f}</li>
+                  ))}
+                </ul>
+              </>
+            )}
           </div>
         </main>
       </div>
 
       <style>{`
-        /* Subtle grid only in top-left corner */
-        section::before {
-          content: "";
-          position: absolute;
-          top: 0; left: 0;
-          width: 50%;
-          height: 50%;
-          background-image:
-            linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
-          background-size: 40px 40px;
-          pointer-events: none;
-          z-index: 1;
-        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-        /* Lightning baseline progress bar */
         .progress-baseline {
           background: linear-gradient(
             90deg,
@@ -161,13 +235,11 @@ export default function HallOfFamePage() {
             0 0 20px rgba(255,255,0,0.5),
             0 0 30px rgba(255,255,0,0.3);
         }
-
         @keyframes lightningBaseline {
           0% { background-position: 0% 0%; width: 0%; }
           100% { background-position: 200% 0%; width: 100%; }
         }
 
-        /* === Twinkling Starfield === */
         .stars {
           position: absolute;
           top: 0; left: 0; right: 0; bottom: 0;
@@ -190,10 +262,6 @@ export default function HallOfFamePage() {
           from {transform: translateY(0);}
           to {transform: translateY(-2000px);}
         }
-
-        /* Optional: thin custom scrollbar */
-        .scrollbar-thin::-webkit-scrollbar { width: 6px; }
-        .scrollbar-thin::-webkit-scrollbar-thumb { background: #555; border-radius: 3px; }
       `}</style>
     </section>
   );
