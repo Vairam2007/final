@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 export default function About() {
   const [selectedImage, setSelectedImage] = useState(null);
 
-  // Close modal on ESC
   useEffect(() => {
     const handleEsc = (e) => e.key === "Escape" && setSelectedImage(null);
     window.addEventListener("keydown", handleEsc);
@@ -18,26 +17,25 @@ export default function About() {
         {/* About Section */}
         <div className="grid grid-cols-1 md:grid-cols-[60%_40%] gap-16 items-start">
           <div className="space-y-6 text-lg md:text-xl leading-relaxed max-w-3xl">
-            <h2 className="text-4xl md:text-5xl font-extrabold mb-6 text-center md:text-left
-                           text-cyan-300 drop-shadow-[0_0_4px_#00ffff80]">
-              About Me
+            <h2 className="text-4xl md:text-5xl font-extrabold mb-6 text-center md:text-left text-green-400">
+              💻 About Me
             </h2>
 
-            <p>👋 Greetings, Cyber Guardians! I’m <span className="text-cyan-400 font-semibold">VETTRIVEL U</span>, a passionate <span className="text-purple-400 font-medium">Offensive Security Expert</span> from <span className="text-green-400 font-medium">Cuddalore, Tamil Nadu, India 🇮🇳</span>.</p>
+            <p>👋 Greetings, Cyber Guardians! I’m <span className="text-green-400 font-semibold">VETTRIVEL U</span>, a passionate <span className="text-amber-400 font-semibold">Offensive Security Expert</span> from <span className="text-green-400 font-semibold">Cuddalore, Tamil Nadu, India 🇮🇳</span>.</p>
 
-            <p>🛡️ Specialized in <span className="text-yellow-400 font-semibold">Vulnerability Assessment & Penetration Testing (VAPT)</span>, <span className="text-pink-400 font-semibold">Red Teaming</span>, and <span className="text-blue-400 font-semibold">Offensive Security Operations</span> — with a proven track record of ethically breaching systems to secure them.</p>
+            <p>I'm specialized in <span className="text-green-400 font-semibold">Vulnerability Assessment & Penetration Testing (VAPT)</span>, <span className="text-amber-400 font-semibold">Red Teaming</span>, and <span className="text-green-400 font-semibold">Offensive Security Operations</span> — with a proven track record of <span className="text-amber-400 font-semibold">breaching systems to secure them</span>.</p>
 
-            <p>🏆 Earned multiple <span className="text-purple-400 font-semibold">Hall of Fame recognitions</span> from MNCs for responsibly disclosing critical vulnerabilities, including <span className="text-red-400 font-medium">root access</span> and <span className="text-red-400 font-medium">server pwning</span>.</p>
+            <p>🛡️ I’ve earned multiple <span className="text-green-400 font-semibold">Hall of Fame recognitions from MNCs</span> for responsibly disclosing <span className="text-amber-400 font-semibold">critical vulnerabilities</span>. From gaining root access to high-level systems to pwning servers, I’ve had the thrill of ethically exploiting and helping secure both <span className="text-green-400 font-semibold">Indian and US government infrastructures</span>.</p>
 
-            <p>🎁 Bagged exclusive <span className="text-yellow-400 font-medium">swags and rewards</span>; listed as a <span className="text-green-400 font-semibold">Top Voice in Information Security</span> on LinkedIn.</p>
+            <p>🎁 Along the way, I’ve bagged exclusive <span className="text-amber-400 font-semibold">swags and rewards</span>, and I’m proudly listed as a <span className="text-green-400 font-semibold">Top Voice in Information Security on LinkedIn</span>.</p>
 
-            <p>🧑‍💼 Freelancing on <span className="text-blue-400 font-medium">outsourced security projects</span> for top-tier companies.</p>
+            <p>🧑‍💼 As a freelancer, I collaborate with companies to work on <span className="text-green-400 font-semibold">outsourced security projects</span> — and have been paid by top-tier organizations for my findings.</p>
 
-            <p>🧠 Giving back to the community: conducting <span className="text-pink-400 font-medium">classes, webinars, and mentorship sessions</span> for juniors and aspiring bug bounty hunters.</p>
+            <p>🧠 I also love giving back to the community: conducting <span className="text-amber-400 font-semibold">classes, webinars, and mentorship sessions</span> for juniors and aspiring bug bounty hunters.</p>
 
-            <p>✍️ Sharing deep dives and writeups on <span className="text-purple-400 font-medium">Medium</span>, covering everything from <span className="text-red-400 font-medium">0-day findings</span> to beginner tips.</p>
+            <p>🏆 I recently qualified for the finals of a <span className="text-green-400 font-semibold">national-level Hackathon x CTF</span>, proving my ability to think under pressure and hack smart.</p>
 
-            <p>🚀 Recently qualified for finals of a <span className="text-yellow-400 font-semibold">national-level Hackathon x CTF</span>, proving the ability to <span className="text-green-400 font-medium">think under pressure and hack smart</span>.</p>
+            <p>✍️ You’ll often find me sharing deep dives and writeups on <span className="text-amber-400 font-semibold">Medium</span>, covering everything from <span className="text-green-400 font-semibold">0-day findings</span> to <span className="text-amber-400 font-semibold">beginner tips</span>.</p>
           </div>
 
           <div className="flex flex-col items-center gap-6">
@@ -47,7 +45,7 @@ export default function About() {
             >
               <img
                 src="/ALL IMAGES/OTHER/Screenshot 2024-09-10 194937.png"
-                alt="LinkedIn Profile"
+                alt="Profile"
                 className="w-full h-auto object-cover"
               />
             </div>
@@ -61,11 +59,32 @@ export default function About() {
 
         <div className="border-b border-gray-700/50 my-12" />
 
-        {/* Yearly Activity */}
-        <YearlyActivity />
+        {/* Title + Iframe on top, Yearly Activity box below */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+          {/* Left Column: Title */}
+          <div className="flex items-center">
+            <h3 className="text-2xl font-bold text-white">Yearly Activity</h3>
+          </div>
+
+          {/* Right Column: Iframe */}
+          <div className="flex justify-center items-center">
+            <iframe
+              src="https://tryhackme.com/api/v2/badges/public-profile?userPublicId=4840710"
+              title="TryHackMe Badges"
+              className="w-full max-w-md rounded-lg shadow-xl"
+              style={{ border: "none", height: "250px" }}
+            />
+          </div>
+        </div>
+
+        {/* Yearly Activity Box Below */}
+        <div className="bg-gray-900 rounded-xl shadow-xl p-6 mt-6">
+          <YearlyActivity />
+        </div>
+
       </div>
 
-      {/* Modal for Image */}
+      {/* Modal for Profile Image */}
       {selectedImage && (
         <div
           className="fixed inset-0 bg-black bg-opacity-90 flex items-center justify-center z-50"
@@ -74,14 +93,14 @@ export default function About() {
           <div className="relative max-w-4xl w-full px-4" onClick={(e) => e.stopPropagation()}>
             <button
               onClick={() => setSelectedImage(null)}
-              className="absolute top-2 right-2 h-10 w-10 text-black text-2xl font-bold bg-purple-500 hover:bg-purple-400 rounded-full flex items-center justify-center transition focus:outline-none"
+              className="absolute top-2 right-2 h-10 w-10 text-black text-2xl font-bold bg-green-400 hover:bg-green-300 rounded-full flex items-center justify-center transition focus:outline-none"
             >
               ×
             </button>
             <img
               src={selectedImage}
               alt="Selected"
-              className="w-full max-h-[80vh] object-contain rounded-lg border border-purple-500 shadow-xl"
+              className="w-full max-h-[80vh] object-contain rounded-lg border border-green-400 shadow-xl"
             />
           </div>
         </div>
@@ -113,7 +132,7 @@ export function CompanyBanner() {
           />
         ))}
       </div>
-      <style jsx>{`
+      <style>{`
         @keyframes scroll {
           0% { transform: translateX(0); }
           100% { transform: translateX(-50%); }
@@ -132,13 +151,7 @@ export function CompanyBanner() {
 function YearlyActivity() {
   const weeks = 53;
   const days = 7;
-  const colors = [
-    "bg-gray-800",
-    "bg-green-900",
-    "bg-green-700",
-    "bg-green-500",
-    "bg-green-300"
-  ];
+  const colors = ["bg-gray-900", "bg-green-700", "bg-green-600", "bg-green-500", "bg-green-400"];
 
   const activity = Array.from({ length: days }, () =>
     Array.from({ length: weeks }, () => {
@@ -152,9 +165,8 @@ function YearlyActivity() {
   );
 
   return (
-    <div className="mt-20 text-center">
-      <h3 className="text-2xl font-bold text-white mb-4">Yearly Activity</h3>
-      <div className="flex gap-[4px] justify-center">
+    <div className="text-center">
+      <div className="flex justify-center flex-wrap gap-[4px]">
         {Array.from({ length: weeks }, (_, week) => (
           <div key={week} className="flex flex-col gap-[4px]">
             {Array.from({ length: days }, (_, day) => (
