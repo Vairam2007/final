@@ -73,7 +73,7 @@ export default function About() {
               src="https://tryhackme.com/api/v2/badges/public-profile?userPublicId=4840710"
               title="TryHackMe Badges"
               className="w-full max-w-md rounded-lg shadow-xl"
-              style={{ border: "none", height: "250px" }}
+              style={{ border: "none", height: "90px" }}
             />
           </div>
         </div>
@@ -114,27 +114,30 @@ export default function About() {
 /* Company Banner Component */
 export function CompanyBanner() {
   const logos = [
-    "https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png",
-    "https://upload.wikimedia.org/wikipedia/commons/a/ab/Apple-logo.png",
-    "https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg",
-    "https://upload.wikimedia.org/wikipedia/commons/5/51/Google.svg",
-    "https://upload.wikimedia.org/wikipedia/commons/f/fa/Amazon_logo.svg",
-    "https://upload.wikimedia.org/wikipedia/commons/2/2f/Intel-logo.svg",
+    "https://bonkku.com/wp-content/uploads/2024/02/roobet-casino-logo.png",
+    "https://upload.wikimedia.org/wikipedia/commons/8/84/Government_of_India_logo.svg",
+    "https://commons.wikimedia.org/wiki/File:Hacken_logo.svg",
+    "https://www.securities.io/wp-content/uploads/2021/06/mina-protocol-1000x600.jpeg",
+    "https://www.chime.com/wp-content/themes/project-sscms-2025-09-29T15-31-51/images/brand/chime-logo.svg",
+    "https://assets.bugcrowdusercontent.com/assets/shared/bugcrowd-logo-b90c52e691ace97f54db4d459c246639e26907e862b4c58b39173d2fac146fd0.svg",
+    "https://www.sba.gov/themes/custom/sba/dist/img/logo-horizontal.svg",
   ];
 
   return (
-    <div className="w-full overflow-hidden relative py-10 bg-gray-900">
-      <div className="flex gap-20 animate-scroll hover:[animation-play-state:paused] justify-around items-center">
+    <div className="relative w-full overflow-hidden py-10 bg-transparent company-banner">
+      {/* Logos scroll container */}
+      <div className="flex gap-20 animate-scroll">
         {[...logos, ...logos].map((logo, idx) => (
           <img
             key={idx}
             src={logo}
             alt={`Logo ${idx}`}
-            className="h-16 w-auto filter grayscale hover:grayscale-0 transition duration-300"
+            className="h-16 w-auto"
           />
         ))}
       </div>
-      <style>{`
+
+      <style jsx>{`
         @keyframes scroll {
           0% { transform: translateX(0); }
           100% { transform: translateX(-50%); }
@@ -144,10 +147,21 @@ export function CompanyBanner() {
           width: calc(200%);
           animation: scroll 25s linear infinite;
         }
+
+        /* Fade at start and end of container */
+        .company-banner {
+          mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+          -webkit-mask-image: linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%);
+          mask-repeat: no-repeat;
+          -webkit-mask-repeat: no-repeat;
+          mask-size: 100% 100%;
+          -webkit-mask-size: 100% 100%;
+        }
       `}</style>
     </div>
   );
 }
+
 
 /* Yearly Activity Component */
 function YearlyActivity() {
