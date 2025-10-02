@@ -103,7 +103,7 @@ export default function HallOfFamePage() {
 
         {/* Right ElectricBorder full height box */}
         <ElectricBorder
-          color="#7df9ff"
+          color="#d4d40cff"
           speed={1}
           chaos={0.5}
           thickness={2}
