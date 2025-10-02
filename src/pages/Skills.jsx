@@ -67,12 +67,12 @@ const skillGroups = [
   {
     title: "Tools & Frameworks Mastery",
     skills: [
-      { name: "Burp Suite Pro", icon: "https://assets.streamlinehq.com/image/private/w_34,h_34,ar_1/f_auto/v1/icons/logos/burpsuite-w3f4g0vh9opupo2g5ek92.png/burpsuite-xw0lw7maj1h72v6kbk0104.png" },
+      { name: "Burp Suite Pro", icon: "https://assets.streamlinehq.com/image/private/w_64,h_64/f_auto/v1/icons/logos/burpsuite.png" },
       { name: "Nmap", icon: "https://nmap.org/images/sitelogo-nmap-1680x900.png" },
-      { name: "Metasploit", icon: "https://assets.streamlinehq.com/image/private/w_34,h_34,ar_1/f_auto/v1/icons/logos/metasploit-h33wivgvlvgtk3wmoejxq.png/metasploit-rkuireddk3p5vdgf5mil5.png" },
+      { name: "Metasploit", icon: "https://assets.streamlinehq.com/image/private/w_64,h_64/f_auto/v1/icons/logos/metasploit.png" },
       { name: "Postman", icon: "https://www.svgrepo.com/show/354202/postman-icon.svg" },
       { name: "OWASP ZAP", icon: "https://www.zaproxy.org/img/logo.png" },
-      { name: "Hydra", icon: "https://www.flaticon.com/svg/static/icons/svg/3065/3065643.svg" },
+      { name: "Hydra", icon: "https://cdn-icons-png.flaticon.com/512/565/565655.png" },
       { name: "SQLmap", icon: "https://sqlmap.org/images/sqlmap_logo.png" },
       { name: "XSS Hunter", icon: "https://www.xsshunter.com/favicon.ico" },
     ]
@@ -102,15 +102,18 @@ export function Skills() {
   const canvasRef = useRef(null);
   const rowFadeUp = {
     hidden: { opacity: 0, y: 60 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
+    show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
   };
 
-  // Particle background
+  // Optimized Particle Background
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     const dpr = window.devicePixelRatio || 1;
     let animationId;
+    let lastTime = 0;
+    const fps = 50; // limit FPS for smoothness
+    const interval = 1000 / fps;
 
     const resizeCanvas = () => {
       canvas.width = window.innerWidth * dpr;
@@ -124,26 +127,34 @@ export function Skills() {
     window.addEventListener("resize", resizeCanvas);
 
     const particles = [];
-    const PARTICLE_COUNT = 80;
+    const PARTICLE_COUNT = 50; // reduced for perf
     for (let i = 0; i < PARTICLE_COUNT; i++) {
       particles.push({
         x: Math.random() * window.innerWidth,
         y: Math.random() * window.innerHeight,
         radius: Math.random() * 2 + 1,
-        dx: (Math.random() - 0.5) * 0.7,
-        dy: (Math.random() - 0.5) * 0.7,
+        dx: (Math.random() - 0.5) * 0.6,
+        dy: (Math.random() - 0.5) * 0.6,
       });
     }
 
-    const draw = () => {
-      ctx.fillStyle = "#0a0a0a";
+    const draw = (time) => {
+      const delta = time - lastTime;
+      if (delta < interval) {
+        animationId = requestAnimationFrame(draw);
+        return;
+      }
+      lastTime = time;
+
+      // semi-transparent background (trail effect, less fill calls)
+      ctx.fillStyle = "rgba(10,10,10,0.35)";
       ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
       particles.forEach((p) => {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
         ctx.fillStyle = "rgba(0,200,255,0.9)";
-        ctx.shadowBlur = 10;
+        ctx.shadowBlur = 8;
         ctx.shadowColor = "#00ffff";
         ctx.fill();
         p.x += p.dx;
@@ -152,13 +163,15 @@ export function Skills() {
         if (p.y < 0 || p.y > window.innerHeight) p.dy *= -1;
       });
 
+      // draw fewer connections
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
+          if (j % 2 === 0) continue; // skip some pairs
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 120) {
-            ctx.strokeStyle = `rgba(0,200,255,${0.25 - dist / 480})`;
+          const dist = dx * dx + dy * dy;
+          if (dist < 150 * 150) {
+            ctx.strokeStyle = "rgba(0,200,255,0.15)";
             ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
@@ -171,7 +184,7 @@ export function Skills() {
       animationId = requestAnimationFrame(draw);
     };
 
-    draw();
+    animationId = requestAnimationFrame(draw);
     return () => {
       cancelAnimationFrame(animationId);
       window.removeEventListener("resize", resizeCanvas);
@@ -187,13 +200,13 @@ export function Skills() {
         <h2 className="text-4xl md:text-5xl font-bold mb-12 text-purple-400">
           My Expertise
         </h2>
-        <div style={{ height: '600px', position: 'relative' }}>
+        <div style={{ height: "550px", position: "relative", willChange: "transform" }}>
           <ChromaGrid 
             items={chromaItems}
-            radius={300}
-            damping={0.45}
-            fadeOut={0.6}
-            ease="power3.out"
+            radius={280}
+            damping={0.5}
+            fadeOut={0.55}
+            ease="power2.out"
           />
         </div>
 
@@ -210,22 +223,21 @@ export function Skills() {
               initial="hidden"
               whileInView="show"
               viewport={{ once: true, amount: 0.2 }}
-              className="bg-gray-900 border border-purple-600 rounded-xl shadow-lg p-8"
+              className="bg-gray-900 border border-purple-600 rounded-xl shadow-lg p-8 will-change-transform"
             >
               <h3 className="text-purple-300 font-semibold text-2xl mb-6 border-b border-purple-500 pb-3">
                 {group.title}
               </h3>
               <div className="flex flex-wrap gap-6 justify-center">
-  {group.skills.map((skill, idx) => (
-    <div
-      key={idx}
-      className="flex items-center justify-center bg-gray-800 border border-purple-500 rounded-xl p-6 w-[200px] h-28 hover:scale-105 transition transform duration-300"
-    >
-      <img src={skill.icon} alt={skill.name} className="w-16 h-16 object-contain" />
-    </div>
-  ))}
-</div>
-
+                {group.skills.map((skill, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-center justify-center bg-gray-800 border border-purple-500 rounded-xl p-6 w-[200px] h-28 hover:scale-105 transition-transform duration-300 will-change-transform"
+                  >
+                    <img src={skill.icon} alt={skill.name} className="w-16 h-16 object-contain" />
+                  </div>
+                ))}
+              </div>
             </motion.div>
           ))}
         </div>
