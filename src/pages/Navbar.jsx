@@ -9,7 +9,6 @@ const items = [
   { label: "Skills", to: "/skills" },
   { label: "Projects", to: "/projects" },
   { label: "Certifications", to: "/certifications" },
-  { label: "Achievements", to: "/achievements" },
 ];
 
 

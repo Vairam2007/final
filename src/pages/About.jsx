@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import Achievements from "./Achievements.jsx";
 
 export default function About() {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -105,6 +106,7 @@ export default function About() {
           </div>
         </div>
       )}
+      <Achievements />
     </section>
   );
 }

@@ -8,7 +8,6 @@ import Experience from "./pages/Experience.jsx";
 import HallOfFame from "./pages/HallOfFame.jsx";
 import { Contact } from "./pages/Contact.jsx";
 import FloatingTerminal from "./pages/FloatingTerminal.jsx";
-import Achievements from "./pages/Achievements.jsx";
 import Certifications from "./pages/Certifications.jsx";
 import "./App.css";
 
@@ -25,7 +24,6 @@ function App() {
           <Route path="/skills" element={<Skills />} />
           <Route path="/projects" element={<Project />} />
           <Route path="/certifications" element={<Certifications />} />
-          <Route path="/achievements" element={<Achievements />} />
           <Route path="/contact" element={<Contact />} />
         </Routes>
 

@@ -1,20 +1,64 @@
 "use client";
 import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import ChromaGrid from "./ChromaGrid";
 
 // ---------------------
-// Expertise Content
+// Expertise Boxes
 // ---------------------
 const expertiseBoxes = [
-  { title: "Vulnerability Assessment & Pentesting", desc: "Web, Network, API, and LLM AI security testing and pentesting.", img: "https://source.unsplash.com/400x250/?cybersecurity,hacking" },
-  { title: "Red Team Engagements & Threat Emulation", desc: "Simulating real-world attacks and adversary emulation.", img: "https://source.unsplash.com/400x250/?redteam,cybersecurity" },
-  { title: "Bug Bounty Hunting", desc: "Web, API, and Network vulnerabilities identification and reporting.", img: "https://source.unsplash.com/400x250/?bug,bounty,hacking" },
-  { title: "Post-Exploitation & Privilege Escalation", desc: "Linux & Windows environments, lateral movement, and escalation.", img: "https://source.unsplash.com/400x250/?exploit,security" },
-  { title: "Offensive Security Operations", desc: "SAST/DAST, CTF strategy, and real-world attack simulations.", img: "https://source.unsplash.com/400x250/?penetration,testing" },
-  { title: "Network Exploitation & Lateral Movement", desc: "Network scanning, enumeration, and lateral attacks.", img: "https://source.unsplash.com/400x250/?network,security" },
-  { title: "CTF Strategy & Real-World Simulations", desc: "Capture-the-flag strategies and simulated cyber exercises.", img: "https://source.unsplash.com/400x250/?ctf,cybersecurity" },
-  { title: "Static/Dynamic Application Security Testing", desc: "SAST & DAST for web and API applications.", img: "https://source.unsplash.com/400x250/?web,security" },
+  {
+    title: "Vulnerability Assessment & Pentesting",
+    desc: "Web, Network, API, and LLM AI security testing and pentesting.",
+    img: "https://images.unsplash.com/photo-1581092580509-57c0613c7f28?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    title: "Red Team Engagements & Threat Emulation",
+    desc: "Simulating real-world attacks and adversary emulation.",
+    img: "https://images.unsplash.com/photo-1605902711622-cfb43c443f5a?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    title: "Bug Bounty Hunting",
+    desc: "Web, API, and Network vulnerabilities identification and reporting.",
+    img: "https://images.unsplash.com/photo-1591696205602-0c3bb21e7d45?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    title: "Post-Exploitation & Privilege Escalation",
+    desc: "Linux & Windows environments, lateral movement, and escalation.",
+    img: "https://images.unsplash.com/photo-1581091012182-2b5e2e9a8c8b?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    title: "Offensive Security Operations",
+    desc: "SAST/DAST, CTF strategy, and real-world attack simulations.",
+    img: "https://images.unsplash.com/photo-1591696205569-cb61cda3d48b?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    title: "Network Exploitation & Lateral Movement",
+    desc: "Network scanning, enumeration, and lateral attacks.",
+    img: "https://images.unsplash.com/photo-1581092580507-5c28e8c7f71c?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    title: "CTF Strategy & Real-World Simulations",
+    desc: "Capture-the-flag strategies and simulated cyber exercises.",
+    img: "https://images.unsplash.com/photo-1605902711581-13d99edcbf41?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    title: "Static/Dynamic Application Security Testing",
+    desc: "SAST & DAST for web and API applications.",
+    img: "https://images.unsplash.com/photo-1605902711620-8a1d8a0cabc2?auto=format&fit=crop&w=800&q=80"
+  }
 ];
+
+// Map expertiseBoxes to ChromaGrid items
+const chromaItems = expertiseBoxes.map((box, i) => ({
+  image: box.img,
+  title: box.title,
+  subtitle: box.desc,
+  handle: `@expertise${i}`,
+  borderColor: "#1552d6ff",
+  gradient: "linear-gradient(135deg, #4000ffff, #1547c7ff)",
+  url: "#"
+}));
 
 // ---------------------
 // Professional Skillset
@@ -31,7 +75,7 @@ const skillGroups = [
       { name: "Hydra", icon: "https://www.flaticon.com/svg/static/icons/svg/3065/3065643.svg" },
       { name: "SQLmap", icon: "https://sqlmap.org/images/sqlmap_logo.png" },
       { name: "XSS Hunter", icon: "https://www.xsshunter.com/favicon.ico" },
-    ],
+    ]
   },
   {
     title: "Scripting & Automation",
@@ -40,7 +84,7 @@ const skillGroups = [
       { name: "Bash", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg" },
       { name: "Tool Wrapping", icon: "https://cdn-icons-png.flaticon.com/512/565/565655.png" },
       { name: "Automation Scripts", icon: "https://source.unsplash.com/100x100/?automation,coding" },
-    ],
+    ]
   },
   {
     title: "Knowledge & Methodologies",
@@ -50,16 +94,18 @@ const skillGroups = [
       { name: "NIST Methodologies", icon: "https://www.nist.gov/sites/default/files/styles/medium/public/images/2021/06/14/nist-logo.png" },
       { name: "Secure Code Review", icon: "https://source.unsplash.com/100x100/?code,security" },
       { name: "Linux & Windows Internals", icon: "https://upload.wikimedia.org/wikipedia/commons/3/3f/Linux_and_Windows.png" },
-    ],
-  },
+    ]
+  }
 ];
 
-// ---------------------
-// Animated Background
-// ---------------------
-function AnimatedBackground() {
+export function Skills() {
   const canvasRef = useRef(null);
+  const rowFadeUp = {
+    hidden: { opacity: 0, y: 60 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
+  };
 
+  // Particle background
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
@@ -132,53 +178,31 @@ function AnimatedBackground() {
     };
   }, []);
 
-  return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full z-0" />;
-}
-
-// ---------------------
-// Skills Component
-// ---------------------
-export function Skills() {
-  const rowFadeUp = {
-    hidden: { opacity: 0, y: 60 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
-  };
-
   return (
     <section className="relative bg-black text-white py-20 px-6 md:px-12 font-mono overflow-hidden">
-      <AnimatedBackground />
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full -z-10" />
 
       <div className="relative z-10 max-w-7xl mx-auto text-center">
-        {/* My Expertise */}
+        {/* Expertise Section */}
         <h2 className="text-4xl md:text-5xl font-bold mb-12 text-purple-400">
           My Expertise
         </h2>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
-          {expertiseBoxes.map((box, idx) => (
-            <motion.div
-              key={idx}
-              variants={rowFadeUp}
-              initial="hidden"
-              whileInView="show"
-              viewport={{ once: true, amount: 0.2 }}
-              className="group bg-gray-900 border border-purple-600 rounded-xl shadow-lg overflow-hidden hover:scale-105 transition duration-300 cursor-pointer"
-            >
-              <img src={box.img} alt={box.title} className="w-full h-44 object-cover" />
-              <div className="p-5 text-left">
-                <h3 className="text-xl font-semibold text-purple-300">{box.title}</h3>
-                <p className="text-gray-400 text-sm mt-2">{box.desc}</p>
-              </div>
-            </motion.div>
-          ))}
+        <div style={{ height: '600px', position: 'relative' }}>
+          <ChromaGrid 
+            items={chromaItems}
+            radius={300}
+            damping={0.45}
+            fadeOut={0.6}
+            ease="power3.out"
+          />
         </div>
 
-        {/* Professional Skillset */}
-        <h2 className="text-4xl md:text-5xl font-bold mb-12 text-purple-400">
+        {/* Professional Skillset Section */}
+        <h2 className="text-4xl md:text-5xl font-bold my-12 text-purple-400">
           Professional Skillset
         </h2>
 
-        <div className="flex flex-wrap gap-6 justify-center">
+        <div className="flex flex-col gap-8">
           {skillGroups.map((group, i) => (
             <motion.div
               key={i}
@@ -186,19 +210,22 @@ export function Skills() {
               initial="hidden"
               whileInView="show"
               viewport={{ once: true, amount: 0.2 }}
-              className="bg-gray-900 border border-purple-600 rounded-xl shadow-lg p-6 w-full md:w-[32%] flex flex-col gap-4"
+              className="bg-gray-900 border border-purple-600 rounded-xl shadow-lg p-8"
             >
-              <h3 className="text-purple-300 font-semibold mb-4">{group.title}</h3>
-              <div className="flex flex-wrap gap-4 justify-center">
-                {group.skills.map((skill, idx) => (
-                  <div
-                    key={idx}
-                    className="flex items-center justify-center bg-gray-800 border border-purple-500 rounded-xl p-4 w-20 h-20"
-                  >
-                    <img src={skill.icon} alt={skill.name} className="w-12 h-12 object-contain" />
-                  </div>
-                ))}
-              </div>
+              <h3 className="text-purple-300 font-semibold text-2xl mb-6 border-b border-purple-500 pb-3">
+                {group.title}
+              </h3>
+              <div className="flex flex-wrap gap-6 justify-center">
+  {group.skills.map((skill, idx) => (
+    <div
+      key={idx}
+      className="flex items-center justify-center bg-gray-800 border border-purple-500 rounded-xl p-6 w-[200px] h-28 hover:scale-105 transition transform duration-300"
+    >
+      <img src={skill.icon} alt={skill.name} className="w-16 h-16 object-contain" />
+    </div>
+  ))}
+</div>
+
             </motion.div>
           ))}
         </div>
