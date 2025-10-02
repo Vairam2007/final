@@ -20,14 +20,10 @@ export default function HallOfFamePage() {
   itemRefs.current = [];
   const scrollTimeout = useRef(null);
 
-  useEffect(() => {
-    setShowContent(false);
-  }, [selectedIndex]);
+  useEffect(() => setShowContent(false), [selectedIndex]);
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      changeIndex(selectedIndex + 1);
-    }, 5000);
+    const timeout = setTimeout(() => changeIndex(selectedIndex + 1), 5000);
     return () => clearTimeout(timeout);
   }, [selectedIndex]);
 
@@ -46,9 +42,7 @@ export default function HallOfFamePage() {
     (e) => {
       e.preventDefault();
       if (scrollTimeout.current) return;
-      scrollTimeout.current = setTimeout(() => {
-        scrollTimeout.current = null;
-      }, 300);
+      scrollTimeout.current = setTimeout(() => (scrollTimeout.current = null), 300);
       if (e.deltaY > 0) changeIndex(selectedIndex + 1);
       else changeIndex(selectedIndex - 1 + hofItems.length);
     },
@@ -56,21 +50,17 @@ export default function HallOfFamePage() {
   );
 
   return (
-    <section className="relative h-screen w-full bg-gradient-to-br from-[#0a0a1f] via-[#0a0a2f] to-[#0f0f30] text-white pt-24 px-4 md:px-12 lg:px-20 overflow-hidden flex flex-col">
-      {/* Floating Stars */}
+    <section className="relative h-screen w-full py-10 bg-gradient-to-br from-[#0a0a1f] via-[#0a0a2f] to-[#0f0f30] text-white pt-24 px-4 md:px-12 lg:px-20 overflow-hidden flex flex-col">
       <div className="stars stars1"></div>
       <div className="stars stars2"></div>
       <div className="stars stars3"></div>
 
-      <h2 className="relative z-10 text-center text-3xl md:text-5xl font-extrabold text-gray-100 mb-6">
-        HALL OF FAME
-      </h2>
 
-      <div className="relative z-10 flex flex-1 gap-10 max-w-7xl mx-auto h-full">
-        {/* Left Topic List full height */}
+      <div className="relative z-10 flex flex-1 gap-6 max-w-7xl mx-auto h-full flex-col md:flex-row">
+        {/* Left List */}
         <aside
           ref={leftListRef}
-          className="md:w-1/4 h-full overflow-y-auto pr-2 no-scrollbar space-y-6"
+          className="md:w-1/4 h-60 md:h-full overflow-y-auto pr-2 no-scrollbar space-y-4 md:space-y-6 flex-shrink-0"
         >
           {hofItems.map((item, i) => (
             <button
@@ -78,18 +68,13 @@ export default function HallOfFamePage() {
               data-index={i}
               ref={(el) => (itemRefs.current[i] = el)}
               onClick={() => handleClick(i)}
-              className={`relative w-full text-left px-6 py-5 rounded-xl border backdrop-blur-sm transition-all duration-500
-                ${
-                  selectedIndex === i
-                    ? "border-yellow-400/60 bg-white/5 shadow-[0_0_20px_rgba(255,255,0,0.4)]"
-                    : "border-gray-700 bg-white/5 hover:bg-white/10 hover:border-gray-500"
+              className={`relative w-full text-left px-4 md:px-6 py-3 md:py-5 rounded-xl border backdrop-blur-sm transition-all duration-500
+                ${selectedIndex === i
+                  ? "border-yellow-400/60 bg-white/5 shadow-[0_0_20px_rgba(255,255,0,0.4)]"
+                  : "border-gray-700 bg-white/5 hover:bg-white/10 hover:border-gray-500"
                 }`}
             >
-              <span
-                className={`block text-lg md:text-xl font-semibold transition-colors duration-300 ${
-                  selectedIndex === i ? "text-yellow-400" : "text-gray-300 hover:text-gray-100"
-                }`}
-              >
+              <span className={`block text-sm md:text-lg font-semibold transition-colors duration-300 ${selectedIndex === i ? "text-yellow-400" : "text-gray-300 hover:text-gray-100"}`}>
                 {item.title}
               </span>
               {selectedIndex === i && (
@@ -101,44 +86,66 @@ export default function HallOfFamePage() {
           ))}
         </aside>
 
-        {/* Right ElectricBorder full height box */}
+        {/* Right ElectricBorder */}
         <ElectricBorder
-          color="#d4d40cff"
+          color="#7df9ff"
           speed={1}
           chaos={0.5}
           thickness={2}
           style={{ borderRadius: 16 }}
-          className="md:w-3/4 h-full flex"
+          className="w-full md:w-3/4 h-full flex mt-6 md:mt-0"
         >
           <div
             onWheel={handleScroll}
-            className="flex flex-row md:flex-col gap-4 w-[950px]  h-full bg-[#11112a]/80 p-6 rounded-2xl"
+            className="w-full h-full p-4 md:p-6 bg-[#11112a]/80 rounded-2xl overflow-y-auto flex flex-col"
           >
             {!showContent ? (
               <>
-                <img
-                  key={hofItems[selectedIndex].image}
-                  src={hofItems[selectedIndex].image}
-                  alt={hofItems[selectedIndex].title}
-                  className="w-full h-80 object-cover rounded-xl mb-4 transition-all duration-700"
-                />
-                <button
-                  onClick={() => setShowContent(true)}
-                  className="mb-3 w-[150px] px-3 py-1.5 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold rounded-md text-sm transition"
-                >
-                  Show Details
-                </button>
-                <h3 className="text-2xl md:text-3xl font-semibold">
-                  {hofItems[selectedIndex].title}
-                </h3>
+                {/* Laptop/Desktop fixed width */}
+                <div className="hidden lg:flex w-[900px] h-full flex-col justify-center items-start gap-4 mx-auto">
+                  <img
+                    key={hofItems[selectedIndex].image}
+                    src={hofItems[selectedIndex].image}
+                    alt={hofItems[selectedIndex].title}
+                    className="w-full h-64 md:h-80 object-cover rounded-xl transition-all duration-700"
+                  />
+                  <button
+                    onClick={() => setShowContent(true)}
+                    className="w-36 px-3 py-1.5 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold rounded-md text-sm transition"
+                  >
+                    Show Details
+                  </button>
+                  <h3 className="text-2xl md:text-3xl font-semibold">
+                    {hofItems[selectedIndex].title}
+                  </h3>
+                </div>
+
+                {/* Mobile/Tablet full width */}
+                <div className="flex lg:hidden w-full h-full flex-col justify-center items-center gap-4">
+                  <img
+                    key={hofItems[selectedIndex].image}
+                    src={hofItems[selectedIndex].image}
+                    alt={hofItems[selectedIndex].title}
+                    className="w-full h-64 object-cover rounded-xl transition-all duration-700"
+                  />
+                  <button
+                    onClick={() => setShowContent(true)}
+                    className="w-32 px-3 py-1.5 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold rounded-md text-sm transition"
+                  >
+                    Show Details
+                  </button>
+                  <h3 className="text-xl font-semibold text-center">
+                    {hofItems[selectedIndex].title}
+                  </h3>
+                </div>
               </>
             ) : (
-              <div className="flex flex-col md:flex-row gap-4 h-full">
+              <div className="w-full h-full flex flex-col md:flex-row gap-4">
                 <img
                   key={hofItems[selectedIndex].image}
                   src={hofItems[selectedIndex].image}
                   alt={hofItems[selectedIndex].title}
-                  className="w-full md:w-1/3 h-full object-cover rounded-xl transition-all duration-500"
+                  className="w-full md:w-1/3 h-64 md:h-full object-cover rounded-xl transition-all duration-500"
                 />
                 <div className="flex-1 flex flex-col justify-between">
                   <div>
@@ -175,7 +182,12 @@ export default function HallOfFamePage() {
       <style>{`
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .progress-baseline { background: linear-gradient(90deg, rgba(255,255,0,0.1) 0%, rgba(255,255,0,0.3) 20%, rgba(255,255,0,0.8) 50%, rgba(255,255,0,0.3) 80%, rgba(255,255,0,0.1) 100%); background-size: 200% 100%; animation: lightningBaseline 5s linear forwards; box-shadow:0 0 10px rgba(255,255,0,0.8),0 0 20px rgba(255,255,0,0.5),0 0 30px rgba(255,255,0,0.3);}
+        .progress-baseline { 
+          background: linear-gradient(90deg, rgba(255,255,0,0.1) 0%, rgba(255,255,0,0.3) 20%, rgba(255,255,0,0.8) 50%, rgba(255,255,0,0.3) 80%, rgba(255,255,0,0.1) 100%); 
+          background-size: 200% 100%; 
+          animation: lightningBaseline 5s linear forwards; 
+          box-shadow:0 0 10px rgba(255,255,0,0.8),0 0 20px rgba(255,255,0,0.5),0 0 30px rgba(255,255,0,0.3);
+        }
         @keyframes lightningBaseline {0% {background-position:0% 0%; width:0%;} 100% {background-position:200% 0%; width:100%;}}
 
         .stars { position:absolute; top:0; left:0; right:0; bottom:0; background:transparent; z-index:0;}
