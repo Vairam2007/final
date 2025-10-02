@@ -2,18 +2,17 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 
 const hofItems = [
-  { title: "Hall of Fame – Flipkart", image: "https://picsum.photos/800/400?1", about: "Positioned First Place in Hall of Fame", features: [] },
-  { title: "Swags from BugCrowd", image: "https://picsum.photos/800/400?2", about: "", features: ["1x – StormTech Backpack", "1x – Beanie"] },
-  { title: "Hall of Fame – Chime United States", image: "https://picsum.photos/800/400?3", about: "Critical P1 Vulnerability & placed in 1st Position", features: [] },
-  { title: "Hall of Fame - Mina Protocol", image: "https://picsum.photos/800/400?4", about: "Identified vulnerabilities in Blockchain Based Web Application", features: [] },
-  { title: "Hall of Fame – HACKEN", image: "https://picsum.photos/800/400?5", about: "Identified Critical vulnerabilities in HACKEN Web and Apps", features: [] },
-  { title: "Hall of Fame – Swaggle", image: "https://picsum.photos/800/400?6", about: "Identified 3+ vulnerabilities in Swaggle website", features: ["2x High", "1x Low"] },
+  { title: "Hall of Fame – Flipkart", image: "https://picsum.photos/800/400?1", about: "Positioned First Place in Hall of Fame", features: ["Critical P1 vulnerability", "Team Recognition", "Certificate Awarded"] },
+  { title: "Swags from BugCrowd", image: "https://picsum.photos/800/400?2", about: "", features: ["1x – StormTech Backpack", "1x – Beanie", "BugCrowd Swag Pack"] },
+  { title: "Hall of Fame – Chime United States", image: "https://picsum.photos/800/400?3", about: "Critical P1 Vulnerability & placed in 1st Position", features: ["Cash Reward", "Recognition Badge"] },
+  { title: "Hall of Fame - Mina Protocol", image: "https://picsum.photos/800/400?4", about: "Identified vulnerabilities in Blockchain Based Web Application", features: ["Report Submitted", "Acknowledged by Team"] },
+  { title: "Hall of Fame – HACKEN", image: "https://picsum.photos/800/400?5", about: "Identified Critical vulnerabilities in HACKEN Web and Apps", features: ["High severity bugs", "Certificate of Achievement"] },
+  { title: "Hall of Fame – Swaggle", image: "https://picsum.photos/800/400?6", about: "Identified 3+ vulnerabilities in Swaggle website", features: ["2x High", "1x Low", "Bug Bounty Reward"] },
   { title: "Hall of Fame – US. Small Business Administration", image: "https://picsum.photos/800/400?7", about: "Identified 2+ vulnerabilities in US. SBA", features: ["1x Medium", "1x Low"] },
-  { title: "Hall of Fame - Westpac Banking Corporation VDP", image: "https://picsum.photos/800/400?8", about: "Identified High and Medium severity vulnerabilities in Banking Infrastructure", features: [] },
-  { title: "Hall of Fame – Zoopla", image: "https://picsum.photos/800/400?9", about: "Identified vulnerabilities on web application", features: [] },
-  { title: "Hall of Fame – Roobet", image: "https://picsum.photos/800/400?10", about: "Identified one High severity vulnerability", features: [] },
+  { title: "Hall of Fame - Westpac Banking Corporation VDP", image: "https://picsum.photos/800/400?8", about: "Identified High and Medium severity vulnerabilities in Banking Infrastructure", features: ["Acknowledged by Security Team"] },
+  { title: "Hall of Fame – Zoopla", image: "https://picsum.photos/800/400?9", about: "Identified vulnerabilities on web application", features: ["Security Fixes Implemented"] },
+  { title: "Hall of Fame – Roobet", image: "https://picsum.photos/800/400?10", about: "Identified one High severity vulnerability", features: ["Reported & Rewarded"] },
 ];
-
 export default function HallOfFamePage() {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [progressKey, setProgressKey] = useState(0);
@@ -24,7 +23,6 @@ export default function HallOfFamePage() {
   itemRefs.current = [];
   const scrollTimeout = useRef(null);
 
-  // Auto-progress every 5s
   useEffect(() => {
     const timeout = setTimeout(() => {
       changeIndex(selectedIndex + 1);
@@ -46,21 +44,16 @@ export default function HallOfFamePage() {
     setShowContent(false);
   };
 
-  // Smooth scroll on right box
   const handleScroll = useCallback(
     (e) => {
       e.preventDefault();
-      if (scrollTimeout.current) return; // throttle
-
+      if (scrollTimeout.current) return;
       scrollTimeout.current = setTimeout(() => {
         scrollTimeout.current = null;
       }, 300);
 
-      if (e.deltaY > 0) {
-        changeIndex(selectedIndex + 1);
-      } else {
-        changeIndex(selectedIndex - 1 + hofItems.length);
-      }
+      if (e.deltaY > 0) changeIndex(selectedIndex + 1);
+      else changeIndex(selectedIndex - 1 + hofItems.length);
     },
     [selectedIndex]
   );
@@ -77,7 +70,7 @@ export default function HallOfFamePage() {
 
       <div className="relative z-10 flex flex-col md:flex-row gap-10 max-w-7xl mx-auto">
         {/* Left Topic List */}
-        <aside ref={leftListRef} className="md:w-1/4 max-h-[60vh] overflow-y-auto pr-2 no-scrollbar space-y-6">
+        <aside ref={leftListRef} className="md:w-1/4 max-h-[70vh] overflow-y-auto pr-2 no-scrollbar space-y-6">
           {hofItems.map((item, i) => (
             <button
               key={item.title}
@@ -99,28 +92,54 @@ export default function HallOfFamePage() {
           ))}
         </aside>
 
-        {/* Right Single Box */}
+        {/* Right Fixed Box */}
         <main
           ref={rightBoxRef}
           onWheel={handleScroll}
-          className="md:w-3/4 bg-[#11112a]/80 border border-gray-700 rounded-2xl p-6 md:p-8 shadow-xl backdrop-blur-sm max-h-[70vh] flex flex-col justify-start transition-all duration-500 ease-in-out"
+          className="md:w-3/4 bg-[#11112a]/80 border border-gray-700 rounded-2xl p-4 md:p-6 shadow-xl backdrop-blur-sm max-h-[70vh] flex flex-col transition-all duration-500 ease-in-out"
+          style={{ minHeight: "450px", maxHeight: "500px" }}
         >
-          <img src={hofItems[selectedIndex].image} alt={hofItems[selectedIndex].title} className="w-full h-48 object-cover rounded-xl mb-4 transition-all duration-700" />
-          <h3 className="text-2xl md:text-3xl font-semibold mb-4 transition-all duration-700">{hofItems[selectedIndex].title}</h3>
-          <button
-            onClick={() => setShowContent((prev) => !prev)}
-            className="mt-2 mb-4 px-5 py-2 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold rounded-lg transition"
-          >
-            {showContent ? "Hide Details" : "Show Details"}
-          </button>
-          {showContent && (
+          {!showContent ? (
+            // Before button click: full-width image + button + title
             <>
-              <p className="text-gray-300 leading-relaxed mb-6">{hofItems[selectedIndex].about || "No description available."}</p>
-              {hofItems[selectedIndex].features.length > 0 && (
-                <ul className="list-disc list-inside space-y-2 text-gray-300">
-                  {hofItems[selectedIndex].features.map((f) => (<li key={f}>{f}</li>))}
-                </ul>
-              )}
+              <img src={hofItems[selectedIndex].image} alt={hofItems[selectedIndex].title} className="w-full h-80 object-cover rounded-xl mb-4 transition-all duration-700" />
+              <button
+                onClick={() => setShowContent(true)}
+                className="mb-3 w-[150px] px-3 py-1.5 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold rounded-md text-sm transition"
+              >
+                Show Details
+              </button>
+              <h3 className="text-2xl md:text-3xl p-5 font-semibold">{hofItems[selectedIndex].title}</h3>
+            </>
+          ) : (
+            // After button click: image left + content right + title below
+            <>
+              <div className="flex flex-col md:flex-row gap-4 mb-4 h-[calc(100%-2.5rem)]">
+                <img src={hofItems[selectedIndex].image} alt={hofItems[selectedIndex].title} className="w-full md:w-1/3 h-full object-cover rounded-xl" />
+                <div className="flex-1 flex flex-col justify-between">
+                  <div>
+                    <p className="text-gray-300 leading-relaxed mb-3">{hofItems[selectedIndex].about || "No description available."}</p>
+                    {hofItems[selectedIndex].features.length > 0 && (
+                      <ul className="list-disc list-inside space-y-1 text-gray-300 mb-3">
+                        {hofItems[selectedIndex].features.map((f) => (<li key={f}>{f}</li>))}
+                      </ul>
+                    )}
+                    <div className="mt-2 p-2 bg-gray-800/50 rounded-lg text-gray-200 text-sm">
+                      <p>Extra Information: Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                      <p>More Details: Fusce vehicula dolor arcu, sit amet blandit dolor mollis nec.</p>
+                    </div>
+                  </div>
+                  <div className="mt-3">
+                    <button
+                      onClick={() => setShowContent(false)}
+                      className="px-3 py-1.5 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold rounded-md text-sm transition"
+                    >
+                      Hide Details
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <h3 className="text-2xl md:text-3xl font-semibold">{hofItems[selectedIndex].title}</h3>
             </>
           )}
         </main>
