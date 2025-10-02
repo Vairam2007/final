@@ -67,68 +67,47 @@ const hofItems = [
 export default function HallOfFamePage() {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [progressKey, setProgressKey] = useState(0);
+  const [userClicked, setUserClicked] = useState(false);
+  const [showContent, setShowContent] = useState(false);
 
   const listRef = useRef(null);
   const itemRefs = useRef([]);
   itemRefs.current = [];
 
-  // Auto-switch every 5s
+  // Progress-driven auto switch
   useEffect(() => {
-    const interval = setInterval(() => {
-      setSelectedIndex((prev) => (prev + 1) % hofItems.length);
+    if (userClicked) return; // pause if user clicked
+
+    const timeout = setTimeout(() => {
+      const nextIndex = (selectedIndex + 1) % hofItems.length;
+      setSelectedIndex(nextIndex);
       setProgressKey((k) => k + 1);
 
-      if (listRef.current && itemRefs.current[selectedIndex]) {
-        itemRefs.current[selectedIndex].scrollIntoView({
+      if (listRef.current && itemRefs.current[nextIndex]) {
+        itemRefs.current[nextIndex].scrollIntoView({
           block: "center",
           behavior: "smooth",
         });
       }
-    }, 5000);
-    return () => clearInterval(interval);
-  }, [selectedIndex]);
+    }, 5000); // sync with progress animation duration
 
-  // IntersectionObserver for scroll-based selection
+    return () => clearTimeout(timeout);
+  }, [selectedIndex, userClicked]);
+
+  // Reset userClicked after 7s so auto-play resumes
   useEffect(() => {
-    if (!listRef.current) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        let closestIndex = selectedIndex;
-        let minDistance = Infinity;
-        const listRect = listRef.current.getBoundingClientRect();
-        const listCenter = listRect.top + listRect.height / 2;
-
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          const cardRect = entry.boundingClientRect;
-          const cardCenter = cardRect.top + cardRect.height / 2;
-          const distance = Math.abs(cardCenter - listCenter);
-          if (distance < minDistance) {
-            minDistance = distance;
-            closestIndex = Number(entry.target.dataset.index);
-          }
-        });
-
-        if (closestIndex !== selectedIndex) {
-          setSelectedIndex(closestIndex);
-          setProgressKey((k) => k + 1);
-        }
-      },
-      {
-        root: listRef.current,
-        threshold: 0.1,
-        rootMargin: "50px 0px 50px 0px",
-      }
-    );
-
-    itemRefs.current.forEach((el) => el && observer.observe(el));
-    return () => observer.disconnect();
-  }, [selectedIndex]);
+    if (userClicked) {
+      const timeout = setTimeout(() => setUserClicked(false), 7000);
+      return () => clearTimeout(timeout);
+    }
+  }, [userClicked]);
 
   const handleClick = (i) => {
+    setUserClicked(true);
     setSelectedIndex(i);
     setProgressKey((k) => k + 1);
+    setShowContent(false);
+
     if (listRef.current && itemRefs.current[i]) {
       itemRefs.current[i].scrollIntoView({
         block: "center",
@@ -139,6 +118,7 @@ export default function HallOfFamePage() {
 
   return (
     <section className="relative min-h-screen w-full bg-gradient-to-br from-[#0a0a1f] via-[#0a0a2f] to-[#0f0f30] text-white pt-24 px-4 md:px-12 lg:px-20 overflow-hidden">
+      {/* Animated stars background */}
       <div className="stars stars1"></div>
       <div className="stars stars2"></div>
       <div className="stars stars3"></div>
@@ -187,7 +167,7 @@ export default function HallOfFamePage() {
 
         {/* Right Big Box */}
         <main className="md:w-3/4">
-          <div className="bg-[#11112a]/80 border border-gray-700 rounded-2xl p-6 md:p-8 shadow-xl backdrop-blur-sm max-h-[60vh] overflow-hidden">
+          <div className="bg-[#11112a]/80 border border-gray-700 rounded-2xl p-6 md:p-8 shadow-xl backdrop-blur-sm max-h-[70vh] overflow-hidden">
             <img
               src={hofItems[selectedIndex].image}
               alt={hofItems[selectedIndex].title}
@@ -196,19 +176,33 @@ export default function HallOfFamePage() {
             <h3 className="text-2xl md:text-3xl font-semibold mb-4">
               {hofItems[selectedIndex].title}
             </h3>
-            <p className="text-gray-300 leading-relaxed mb-6">
-              {hofItems[selectedIndex].about}
-            </p>
-            {hofItems[selectedIndex].features.length > 0 && (
+
+            {/* Toggle Button */}
+            <button
+              onClick={() => setShowContent((prev) => !prev)}
+              className="mt-2 mb-4 px-5 py-2 bg-yellow-500 hover:bg-yellow-600 text-black font-semibold rounded-lg transition"
+            >
+              {showContent ? "Hide Details" : "Show Details"}
+            </button>
+
+            {/* Conditional Content */}
+            {showContent && (
               <>
-                <h4 className="text-xl md:text-2xl font-semibold mb-3">
-                  Key Features:
-                </h4>
-                <ul className="list-disc list-inside space-y-2 text-gray-300">
-                  {hofItems[selectedIndex].features.map((f) => (
-                    <li key={f}>{f}</li>
-                  ))}
-                </ul>
+                <p className="text-gray-300 leading-relaxed mb-6">
+                  {hofItems[selectedIndex].about || "No description available."}
+                </p>
+                {hofItems[selectedIndex].features.length > 0 && (
+                  <>
+                    <h4 className="text-xl md:text-2xl font-semibold mb-3">
+                      Key Features:
+                    </h4>
+                    <ul className="list-disc list-inside space-y-2 text-gray-300">
+                      {hofItems[selectedIndex].features.map((f) => (
+                        <li key={f}>{f}</li>
+                      ))}
+                    </ul>
+                  </>
+                )}
               </>
             )}
           </div>
