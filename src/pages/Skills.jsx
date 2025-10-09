@@ -3,66 +3,59 @@ import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import ChromaGrid from "./ChromaGrid";
 
-// ---------------------
-// Expertise Boxes
-// ---------------------
 const expertiseBoxes = [
   {
     title: "Vulnerability Assessment & Pentesting",
     desc: "Web, Network, API, and LLM AI security testing and pentesting.",
-    img: "https://images.unsplash.com/photo-1581092580509-57c0613c7f28?auto=format&fit=crop&w=800&q=80"
+    img: "https://images.unsplash.com/photo-1581092580509-57c0613c7f28?auto=format&fit=crop&w=800&q=80",
   },
   {
     title: "Red Team Engagements & Threat Emulation",
     desc: "Simulating real-world attacks and adversary emulation.",
-    img: "https://images.unsplash.com/photo-1605902711622-cfb43c443f5a?auto=format&fit=crop&w=800&q=80"
+    img: "https://images.unsplash.com/photo-1605902711622-cfb43c443f5a?auto=format&fit=crop&w=800&q=80",
   },
   {
     title: "Bug Bounty Hunting",
     desc: "Web, API, and Network vulnerabilities identification and reporting.",
-    img: "https://images.unsplash.com/photo-1591696205602-0c3bb21e7d45?auto=format&fit=crop&w=800&q=80"
+    img: "https://images.unsplash.com/photo-1591696205602-0c3bb21e7d45?auto=format&fit=crop&w=800&q=80",
   },
   {
     title: "Post-Exploitation & Privilege Escalation",
     desc: "Linux & Windows environments, lateral movement, and escalation.",
-    img: "https://images.unsplash.com/photo-1581091012182-2b5e2e9a8c8b?auto=format&fit=crop&w=800&q=80"
+    img: "https://images.unsplash.com/photo-1581091012182-2b5e2e9a8c8b?auto=format&fit=crop&w=800&q=80",
   },
   {
     title: "Offensive Security Operations",
     desc: "SAST/DAST, CTF strategy, and real-world attack simulations.",
-    img: "https://images.unsplash.com/photo-1591696205569-cb61cda3d48b?auto=format&fit=crop&w=800&q=80"
+    img: "https://images.unsplash.com/photo-1591696205569-cb61cda3d48b?auto=format&fit=crop&w=800&q=80",
   },
   {
     title: "Network Exploitation & Lateral Movement",
     desc: "Network scanning, enumeration, and lateral attacks.",
-    img: "https://images.unsplash.com/photo-1581092580507-5c28e8c7f71c?auto=format&fit=crop&w=800&q=80"
+    img: "https://images.unsplash.com/photo-1581092580507-5c28e8c7f71c?auto=format&fit=crop&w=800&q=80",
   },
   {
     title: "CTF Strategy & Real-World Simulations",
     desc: "Capture-the-flag strategies and simulated cyber exercises.",
-    img: "https://images.unsplash.com/photo-1605902711581-13d99edcbf41?auto=format&fit=crop&w=800&q=80"
+    img: "https://images.unsplash.com/photo-1605902711581-13d99edcbf41?auto=format&fit=crop&w=800&q=80",
   },
   {
     title: "Static/Dynamic Application Security Testing",
     desc: "SAST & DAST for web and API applications.",
-    img: "https://images.unsplash.com/photo-1605902711620-8a1d8a0cabc2?auto=format&fit=crop&w=800&q=80"
-  }
+    img: "https://images.unsplash.com/photo-1605902711620-8a1d8a0cabc2?auto=format&fit=crop&w=800&q=80",
+  },
 ];
 
-// Map expertiseBoxes to ChromaGrid items
 const chromaItems = expertiseBoxes.map((box, i) => ({
   image: box.img,
   title: box.title,
   subtitle: box.desc,
   handle: `@expertise${i}`,
-  borderColor: "#1552d6ff",
-  gradient: "linear-gradient(135deg, #4000ffff, #1547c7ff)",
-  url: "#"
+  borderColor: "#3b82f6",
+  gradient: "linear-gradient(135deg, #1e3a8a, #0f172a)",
+  url: "#",
 }));
 
-// ---------------------
-// Professional Skillset
-// ---------------------
 const skillGroups = [
   {
     title: "Tools & Frameworks Mastery",
@@ -75,7 +68,7 @@ const skillGroups = [
       { name: "Hydra", icon: "https://cdn-icons-png.flaticon.com/512/565/565655.png" },
       { name: "SQLmap", icon: "https://sqlmap.org/images/sqlmap_logo.png" },
       { name: "XSS Hunter", icon: "https://www.xsshunter.com/favicon.ico" },
-    ]
+    ],
   },
   {
     title: "Scripting & Automation",
@@ -84,7 +77,7 @@ const skillGroups = [
       { name: "Bash", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/bash/bash-original.svg" },
       { name: "Tool Wrapping", icon: "https://cdn-icons-png.flaticon.com/512/565/565655.png" },
       { name: "Automation Scripts", icon: "https://source.unsplash.com/100x100/?automation,coding" },
-    ]
+    ],
   },
   {
     title: "Knowledge & Methodologies",
@@ -94,8 +87,8 @@ const skillGroups = [
       { name: "NIST Methodologies", icon: "https://www.nist.gov/sites/default/files/styles/medium/public/images/2021/06/14/nist-logo.png" },
       { name: "Secure Code Review", icon: "https://source.unsplash.com/100x100/?code,security" },
       { name: "Linux & Windows Internals", icon: "https://upload.wikimedia.org/wikipedia/commons/3/3f/Linux_and_Windows.png" },
-    ]
-  }
+    ],
+  },
 ];
 
 export function Skills() {
@@ -105,14 +98,14 @@ export function Skills() {
     show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
   };
 
-  // Optimized Particle Background
+  // Background particle animation
   useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
     const dpr = window.devicePixelRatio || 1;
     let animationId;
     let lastTime = 0;
-    const fps = 50; // limit FPS for smoothness
+    const fps = 50;
     const interval = 1000 / fps;
 
     const resizeCanvas = () => {
@@ -127,7 +120,7 @@ export function Skills() {
     window.addEventListener("resize", resizeCanvas);
 
     const particles = [];
-    const PARTICLE_COUNT = 50; // reduced for perf
+    const PARTICLE_COUNT = 60;
     for (let i = 0; i < PARTICLE_COUNT; i++) {
       particles.push({
         x: Math.random() * window.innerWidth,
@@ -146,15 +139,14 @@ export function Skills() {
       }
       lastTime = time;
 
-      // semi-transparent background (trail effect, less fill calls)
-      ctx.fillStyle = "rgba(10,10,10,0.35)";
+      ctx.fillStyle = "rgba(5,5,10,0.4)";
       ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
       particles.forEach((p) => {
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(0,200,255,0.9)";
-        ctx.shadowBlur = 8;
+        ctx.fillStyle = "rgba(0,180,255,0.9)";
+        ctx.shadowBlur = 10;
         ctx.shadowColor = "#00ffff";
         ctx.fill();
         p.x += p.dx;
@@ -163,15 +155,14 @@ export function Skills() {
         if (p.y < 0 || p.y > window.innerHeight) p.dy *= -1;
       });
 
-      // draw fewer connections
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
-          if (j % 2 === 0) continue; // skip some pairs
+          if (j % 2 === 0) continue;
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
           const dist = dx * dx + dy * dy;
           if (dist < 150 * 150) {
-            ctx.strokeStyle = "rgba(0,200,255,0.15)";
+            ctx.strokeStyle = "rgba(0,200,255,0.12)";
             ctx.lineWidth = 1;
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
@@ -197,21 +188,15 @@ export function Skills() {
 
       <div className="relative z-10 max-w-7xl mx-auto text-center">
         {/* Expertise Section */}
-        <h2 className="text-4xl md:text-5xl font-bold mb-12 text-purple-400">
+        <h2 className="text-4xl md:text-5xl font-bold mb-12 text-sky-400">
           My Expertise
         </h2>
-        <div style={{ height: "550px", position: "relative", willChange: "transform" }}>
-          <ChromaGrid 
-            items={chromaItems}
-            radius={280}
-            damping={0.5}
-            fadeOut={0.55}
-            ease="power2.out"
-          />
+        <div className="relative min-h-[600px]">
+          <ChromaGrid items={chromaItems} fadeIn={true} />
         </div>
 
         {/* Professional Skillset Section */}
-        <h2 className="text-4xl md:text-5xl font-bold my-12 text-purple-400">
+        <h2 className="text-4xl md:text-5xl font-bold my-12 text-sky-400">
           Professional Skillset
         </h2>
 
@@ -223,18 +208,23 @@ export function Skills() {
               initial="hidden"
               whileInView="show"
               viewport={{ once: true, amount: 0.2 }}
-              className="bg-gray-900 border border-purple-600 rounded-xl shadow-lg p-8 will-change-transform"
+              className="bg-gray-900/60 border border-sky-600 rounded-2xl shadow-lg p-8 backdrop-blur-md"
             >
-              <h3 className="text-purple-300 font-semibold text-2xl mb-6 border-b border-purple-500 pb-3">
+              <h3 className="text-sky-300 font-semibold text-2xl mb-6 border-b border-sky-500 pb-3">
                 {group.title}
               </h3>
               <div className="flex flex-wrap gap-6 justify-center">
                 {group.skills.map((skill, idx) => (
                   <div
                     key={idx}
-                    className="flex items-center justify-center bg-gray-800 border border-purple-500 rounded-xl p-6 w-[200px] h-28 hover:scale-105 transition-transform duration-300 will-change-transform"
+                    className="relative flex flex-col items-center justify-center bg-gray-800/80 border border-sky-500 rounded-xl p-6 w-[200px] h-28 transition-all duration-300 hover:scale-110 hover:border-white hover:shadow-[0_0_18px_#38bdf855]"
                   >
-                    <img src={skill.icon} alt={skill.name} className="w-16 h-16 object-contain" />
+                    <img
+                      src={skill.icon}
+                      alt={skill.name}
+                      className="w-14 h-14 object-contain filter brightness-0 invert"
+                    />
+                    <p className="text-sm mt-2 text-gray-300">{skill.name}</p>
                   </div>
                 ))}
               </div>

@@ -1,9 +1,12 @@
 "use client";
-import React, { useRef } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { motion, useScroll, useSpring } from "framer-motion";
 
 export default function ProfessionalTimeline() {
   const containerRef = useRef(null);
+  const firstBoxRef = useRef(null);
+  const lastBoxRef = useRef(null);
+  const [progressStyle, setProgressStyle] = useState({ top: 0, height: 0 });
 
   const timelineItems = [
     {
@@ -42,21 +45,69 @@ export default function ProfessionalTimeline() {
   });
   const scaleY = useSpring(scrollYProgress, { stiffness: 200, damping: 30 });
 
+  // Calculate top and height of progress bar
+  useEffect(() => {
+    if (firstBoxRef.current && lastBoxRef.current) {
+      const firstTop = firstBoxRef.current.offsetTop + 80; // 🔽 Shift down slightly
+      const lastBottom =
+        lastBoxRef.current.offsetTop + lastBoxRef.current.offsetHeight;
+      setProgressStyle({ top: firstTop, height: lastBottom - firstTop });
+    }
+  }, [containerRef.current]);
+
   return (
     <div
       ref={containerRef}
-      className="relative w-full min-h-screen overflow-hidden"
+      className="relative w-full min-h-screen overflow-hidden text-gray-100"
       style={{
-        background: "linear-gradient(135deg, #0a0a0f, #1a1a2e, #0f0f1f, #1a1a2e)",
-        backgroundSize: "600% 600%",
+        background:
+          "linear-gradient(135deg, #0a0a2f, #0a0a2f, #000000, #0a0a2f)",
+        backgroundSize: "400% 400%",
         animation: "gradientShift 40s ease infinite",
       }}
     >
-      {/* Animated Grid Background */}
-      <div className="absolute inset-0 opacity-20">
+      {/* Star Background */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        {[...Array(3)].map((_, layer) => (
+          <div
+            key={layer}
+            className="absolute inset-0"
+            style={{
+              backgroundImage: `radial-gradient(${2 + layer}px ${
+                2 + layer
+              }px at 20% 30%, #fff, transparent),
+                                radial-gradient(${1 + layer}px ${
+                1 + layer
+              }px at 80% 40%, #fff, transparent),
+                                radial-gradient(${1.5 + layer}px ${
+                1.5 + layer
+              }px at 50% 80%, #fff, transparent),
+                                radial-gradient(${2 + layer}px ${
+                2 + layer
+              }px at 10% 60%, #fff, transparent),
+                                radial-gradient(${1 + layer}px ${
+                1 + layer
+              }px at 70% 20%, #fff, transparent)`,
+              backgroundSize: `${200 + layer * 100}px ${
+                200 + layer * 100
+              }px`,
+              opacity: `${0.4 + layer * 0.3}`,
+              animation: `moveStars ${60 + layer * 30}s linear infinite`,
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Grid Overlay */}
+      <div className="absolute inset-0 opacity-20 z-10">
         <svg width="100%" height="100%">
           <defs>
-            <pattern id="gridPattern" width="40" height="40" patternUnits="userSpaceOnUse">
+            <pattern
+              id="gridPattern"
+              width="40"
+              height="40"
+              patternUnits="userSpaceOnUse"
+            >
               <rect width="40" height="40" fill="none" />
               <path
                 d="M 40 0 L 0 0 0 40"
@@ -70,25 +121,23 @@ export default function ProfessionalTimeline() {
         </svg>
       </div>
 
-      {/* Central Scroll Line */}
-      <div className="absolute left-1/2 w-1 top-0 bottom-0 bg-gray-700/30 rounded">
-        <motion.div
-          style={{ scaleY, originY: 0 }}
-          className="absolute left-0 top-0 w-full bg-cyan-400/80 rounded"
-        />
-      </div>
-
-      {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-8 py-20 space-y-32 text-gray-100">
+      {/* Timeline Content */}
+      <div className="relative z-20 max-w-7xl mx-auto px-8 py-20 space-y-32">
         <h2 className="text-6xl font-extrabold text-center mb-20 bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 to-blue-500 tracking-wide drop-shadow-lg">
           Work Experience
         </h2>
 
         <div className="relative space-y-32">
-          {/* Timeline Items */}
           {timelineItems.map((item, idx) => (
             <motion.div
               key={idx}
+              ref={
+                idx === 0
+                  ? firstBoxRef
+                  : idx === timelineItems.length - 1
+                  ? lastBoxRef
+                  : null
+              }
               className={`timeline-item ${item.side} relative flex items-start`}
               initial={{ opacity: 0, y: 80 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -96,14 +145,22 @@ export default function ProfessionalTimeline() {
               viewport={{ once: true }}
             >
               <div
-                className={`timeline-box mt-6 p-10 rounded-3xl shadow-xl bg-gray-900/70 backdrop-blur-lg border border-gray-700 hover:scale-[1.02] transition max-w-2xl ${
-                  item.side === "left" ? "ml-auto text-right" : "mr-auto text-left"
+                className={`timeline-box mt-6 p-10 rounded-3xl shadow-xl bg-gray-900/70 backdrop-blur-lg border border-gray-700 hover:scale-[1.02] transition max-w-2xl relative overflow-hidden ${
+                  item.side === "left"
+                    ? "ml-auto text-right"
+                    : "mr-auto text-left"
                 }`}
               >
-                <h3 className="text-3xl font-bold text-cyan-300">{item.position}</h3>
-                <p className="italic text-gray-300">{item.title}</p>
-                <p className="italic text-gray-400 mb-6">{item.period}</p>
-                <ul className="list-disc list-inside text-gray-200 space-y-2 text-lg">
+                <h3 className="text-3xl font-bold text-cyan-300 relative z-10">
+                  {item.position}
+                </h3>
+                <p className="italic text-gray-300 relative z-10">
+                  {item.title}
+                </p>
+                <p className="italic text-gray-400 mb-6 relative z-10">
+                  {item.period}
+                </p>
+                <ul className="list-disc list-inside text-gray-200 space-y-2 text-lg relative z-10">
                   {item.desc.map((d, i) => (
                     <li key={i}>{d}</li>
                   ))}
@@ -119,20 +176,20 @@ export default function ProfessionalTimeline() {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
             viewport={{ once: true }}
+            ref={lastBoxRef}
           >
-            <div className="timeline-box mx-auto max-w-3xl text-center p-12 rounded-3xl shadow-xl bg-gray-900/70 backdrop-blur-lg border border-gray-700">
-              <h3 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 to-lime-400 drop-shadow">
+            <div className="timeline-box mx-auto max-w-3xl text-center p-12 rounded-3xl shadow-xl bg-gray-900/70 backdrop-blur-lg border border-gray-700 relative overflow-hidden">
+              <h3 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-yellow-300 to-lime-400 drop-shadow relative z-10">
                 Freelance Penetration Tester | Self-Employed
               </h3>
-              <p className="italic text-gray-300 mt-2">Present</p>
+              <p className="italic text-gray-300 mt-2 relative z-10">Present</p>
             </div>
 
-            {/* Sub Boxes */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 justify-center items-start">
               {freelanceBranches.map((branch, idx) => (
                 <motion.div
                   key={idx}
-                  className="bg-gray-900/70 backdrop-blur-lg border border-gray-700 shadow-lg rounded-2xl p-6 text-gray-200 hover:scale-[1.05] transition flex items-center justify-center text-center"
+                  className="bg-gray-900/70 backdrop-blur-lg border border-gray-700 shadow-lg rounded-2xl p-6 text-gray-200 hover:scale-[1.05] transition relative overflow-hidden flex items-center justify-center text-center"
                   style={{ minHeight: "150px", minWidth: "300px" }}
                   initial={{ opacity: 0, y: 60 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -147,6 +204,19 @@ export default function ProfessionalTimeline() {
         </div>
       </div>
 
+      {/* Scroll progress bar (moved slightly down, behind content) */}
+      <div
+        className="absolute left-1/2 w-2 -translate-x-1/2 bg-gray-700/30 rounded-full z-0"
+        style={{ top: progressStyle.top, height: progressStyle.height }}
+      >
+        <motion.div
+          style={{ scaleY, originY: 0 }}
+          className="absolute top-0 left-0 w-full h-full rounded-full overflow-hidden"
+        >
+          <div className="w-full h-full bg-gradient-to-b from-cyan-400 via-purple-500 to-pink-500 rounded-full shadow-[0_0_20px_rgba(0,255,255,0.6)]" />
+        </motion.div>
+      </div>
+
       <style>{`
         .timeline-item { width: 50%; }
         .timeline-item.left { left: 0; text-align: right; padding-right: 2rem; }
@@ -157,6 +227,11 @@ export default function ProfessionalTimeline() {
           0% { background-position: 0% 50%; }
           50% { background-position: 100% 50%; }
           100% { background-position: 0% 50%; }
+        }
+
+        @keyframes moveStars {
+          0% { transform: translateY(0); }
+          100% { transform: translateY(-2000px); }
         }
       `}</style>
     </div>

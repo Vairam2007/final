@@ -17,11 +17,11 @@ export function Hero() {
           </h1>
 
           <h2 className="text-lg md:text-2xl lg:text-3xl font-medium leading-snug bg-gradient-to-r from-green-400 via-yellow-300 to-red-400 bg-clip-text text-transparent">
-            Cyber Security Researcher · VAPT Specialist · Offensive Security Analyst
+            Cyber Security Researcher | Vulnerability Assessment & Penetration Tester | Offensive Security Operations
           </h2>
 
           <p className="text-sm md:text-lg font-semibold uppercase tracking-wide bg-gradient-to-r from-green-400 via-yellow-300 to-red-400 bg-clip-text text-transparent">
-            Web · API · Network · Mobile · Cloud · LLM/AI · Active Directory
+            Web | API | Network | Mobile | Cloud | LLM/AI | AD
           </p>
 
           {/* Buttons */}

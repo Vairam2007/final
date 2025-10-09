@@ -17,24 +17,23 @@ export default function HallOfFamePage() {
   const [showContent, setShowContent] = useState(false);
   const leftListRef = useRef(null);
   const itemRefs = useRef([]);
-  itemRefs.current = [];
-  const scrollTimeout = useRef(null);
+  const scrollTimeout = useRef(false);
 
-  useEffect(() => setShowContent(false), [selectedIndex]);
-
-  useEffect(() => {
-    const timeout = setTimeout(() => changeIndex(selectedIndex + 1), 5000);
-    return () => clearTimeout(timeout);
-  }, [selectedIndex]);
-
-  const changeIndex = (nextIndex) => {
+  // Auto cycle every 6s
+  const changeIndex = useCallback((nextIndex) => {
     const index = ((nextIndex % hofItems.length) + hofItems.length) % hofItems.length;
     setSelectedIndex(index);
     setProgressKey((k) => k + 1);
-    if (leftListRef.current && itemRefs.current[index]) {
-      itemRefs.current[index].scrollIntoView({ block: "center", behavior: "smooth" });
-    }
-  };
+    itemRefs.current[index]?.scrollIntoView({ block: "center", behavior: "smooth" });
+  }, []);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => changeIndex(selectedIndex + 1), 6000);
+    return () => clearTimeout(timeout);
+  }, [selectedIndex, changeIndex]);
+
+  // Reset content view on index change
+  useEffect(() => setShowContent(false), [selectedIndex]);
 
   const handleClick = (i) => changeIndex(i);
 
@@ -42,20 +41,25 @@ export default function HallOfFamePage() {
     (e) => {
       e.preventDefault();
       if (scrollTimeout.current) return;
-      scrollTimeout.current = setTimeout(() => (scrollTimeout.current = null), 300);
+      scrollTimeout.current = true;
+      requestAnimationFrame(() => (scrollTimeout.current = false));
       if (e.deltaY > 0) changeIndex(selectedIndex + 1);
       else changeIndex(selectedIndex - 1 + hofItems.length);
     },
-    [selectedIndex]
+    [selectedIndex, changeIndex]
   );
 
   return (
-    <section className="relative h-screen w-full py-10 bg-gradient-to-br from-[#0a0a1f] via-[#0a0a2f] to-[#0f0f30] text-white pt-24 px-4 md:px-12 lg:px-20 overflow-hidden flex flex-col">
-      <div className="stars stars1"></div>
-      <div className="stars stars2"></div>
-      <div className="stars stars3"></div>
+    <section className="relative h-screen w-full py-10 overflow-hidden flex flex-col text-white bg-gradient-to-br from-[#0a0a2f] via-[#0a0a2f] to-[#000000] pt-20 px-6 md:px-12 lg:px-20">
+      {/* Star Background Layers */}
+      <div className="stars">
+        <div className="stars1"></div>
+        <div className="stars2"></div>
+        <div className="stars3"></div>
+        <div className="fade-mask"></div>
+      </div>
 
-
+      {/* Page Content */}
       <div className="relative z-10 flex flex-1 gap-6 max-w-7xl mx-auto h-full flex-col md:flex-row">
         {/* Left List */}
         <aside
@@ -70,11 +74,11 @@ export default function HallOfFamePage() {
               onClick={() => handleClick(i)}
               className={`relative w-full text-left px-4 md:px-6 py-3 md:py-5 rounded-xl border backdrop-blur-sm transition-all duration-500
                 ${selectedIndex === i
-                  ? "border-yellow-400/60 bg-white/5 shadow-[0_0_20px_rgba(255,255,0,0.4)]"
+                  ? "border-blue-400/60 bg-white/5 shadow-[0_0_20px_rgba(0,225,255,0.5)]"
                   : "border-gray-700 bg-white/5 hover:bg-white/10 hover:border-gray-500"
                 }`}
             >
-              <span className={`block text-sm md:text-lg font-semibold transition-colors duration-300 ${selectedIndex === i ? "text-yellow-400" : "text-gray-300 hover:text-gray-100"}`}>
+              <span className={`block text-sm md:text-lg font-semibold ${selectedIndex === i ? "text-blue-400" : "text-gray-300 hover:text-gray-100"}`}>
                 {item.title}
               </span>
               {selectedIndex === i && (
@@ -86,11 +90,11 @@ export default function HallOfFamePage() {
           ))}
         </aside>
 
-        {/* Right ElectricBorder */}
+        {/* Right Box with Electric Border */}
         <ElectricBorder
           color="#7df9ff"
           speed={1}
-          chaos={0.5}
+          chaos={0.4}
           thickness={2}
           style={{ borderRadius: 16 }}
           className="w-full md:w-3/4 h-full flex mt-6 md:mt-0"
@@ -101,13 +105,12 @@ export default function HallOfFamePage() {
           >
             {!showContent ? (
               <>
-                {/* Laptop/Desktop fixed width */}
                 <div className="hidden lg:flex w-[900px] h-full flex-col justify-center items-start gap-4 mx-auto">
                   <img
-                    key={hofItems[selectedIndex].image}
                     src={hofItems[selectedIndex].image}
                     alt={hofItems[selectedIndex].title}
-                    className="w-full h-64 md:h-80 object-cover rounded-xl transition-all duration-700"
+                    className="w-full h-72 object-cover rounded-xl transition-all duration-500"
+                    loading="lazy"
                   />
                   <button
                     onClick={() => setShowContent(true)}
@@ -120,13 +123,12 @@ export default function HallOfFamePage() {
                   </h3>
                 </div>
 
-                {/* Mobile/Tablet full width */}
                 <div className="flex lg:hidden w-full h-full flex-col justify-center items-center gap-4">
                   <img
-                    key={hofItems[selectedIndex].image}
                     src={hofItems[selectedIndex].image}
                     alt={hofItems[selectedIndex].title}
-                    className="w-full h-64 object-cover rounded-xl transition-all duration-700"
+                    className="w-full h-64 object-cover rounded-xl transition-all duration-500"
+                    loading="lazy"
                   />
                   <button
                     onClick={() => setShowContent(true)}
@@ -142,27 +144,21 @@ export default function HallOfFamePage() {
             ) : (
               <div className="w-full h-full flex flex-col md:flex-row gap-4">
                 <img
-                  key={hofItems[selectedIndex].image}
                   src={hofItems[selectedIndex].image}
                   alt={hofItems[selectedIndex].title}
                   className="w-full md:w-1/3 h-64 md:h-full object-cover rounded-xl transition-all duration-500"
+                  loading="lazy"
                 />
                 <div className="flex-1 flex flex-col justify-between">
                   <div>
                     <p className="text-gray-300 leading-relaxed mb-3">
                       {hofItems[selectedIndex].about || "No description available."}
                     </p>
-                    {hofItems[selectedIndex].features.length > 0 && (
-                      <ul className="list-disc list-inside space-y-1 text-gray-300 mb-3">
-                        {hofItems[selectedIndex].features.map((f) => (
-                          <li key={f}>{f}</li>
-                        ))}
-                      </ul>
-                    )}
-                    <div className="mt-2 p-2 bg-gray-800/50 rounded-lg text-gray-200 text-sm">
-                      <p>Extra Information: Lorem ipsum dolor sit amet.</p>
-                      <p>More Details: Fusce vehicula dolor arcu.</p>
-                    </div>
+                    <ul className="list-disc list-inside space-y-1 text-gray-300 mb-3">
+                      {hofItems[selectedIndex].features.map((f) => (
+                        <li key={f}>{f}</li>
+                      ))}
+                    </ul>
                   </div>
                   <div className="mt-3">
                     <button
@@ -179,26 +175,44 @@ export default function HallOfFamePage() {
         </ElectricBorder>
       </div>
 
+      {/* Styles */}
       <style>{`
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
         .progress-baseline { 
-          background: linear-gradient(90deg, rgba(255,255,0,0.1) 0%, rgba(255,255,0,0.3) 20%, rgba(255,255,0,0.8) 50%, rgba(255,255,0,0.3) 80%, rgba(255,255,0,0.1) 100%); 
+          background: linear-gradient(90deg, rgba(0,225,255,0.7) 0%, rgba(0,225,255,0.7) 100%); 
           background-size: 200% 100%; 
-          animation: lightningBaseline 5s linear forwards; 
-          box-shadow:0 0 10px rgba(255,255,0,0.8),0 0 20px rgba(255,255,0,0.5),0 0 30px rgba(255,255,0,0.3);
+          animation: lightningBaseline 6s linear forwards; 
         }
         @keyframes lightningBaseline {0% {background-position:0% 0%; width:0%;} 100% {background-position:200% 0%; width:100%;}}
 
-        .stars { position:absolute; top:0; left:0; right:0; bottom:0; background:transparent; z-index:0;}
+        /* STAR ANIMATION */
+        .stars { position:absolute; inset:0; overflow:hidden; z-index:0;}
         .stars1, .stars2, .stars3 { 
-          background-image: radial-gradient(2px 2px at 20% 30%, #fff, transparent), radial-gradient(1px 1px at 80% 40%, #fff, transparent), radial-gradient(1.5px 1.5px at 50% 80%, #fff, transparent), radial-gradient(2px 2px at 10% 60%, #fff, transparent), radial-gradient(1px 1px at 70% 20%, #fff, transparent); 
+          position:absolute; inset:0;
+          background-image: 
+            radial-gradient(2px 2px at 20% 30%, #fff, transparent),
+            radial-gradient(1px 1px at 80% 40%, #fff, transparent),
+            radial-gradient(1.5px 1.5px at 50% 80%, #fff, transparent),
+            radial-gradient(2px 2px at 10% 60%, #fff, transparent),
+            radial-gradient(1px 1px at 70% 20%, #fff, transparent); 
           background-size:200px 200px; 
           animation: moveStars 60s linear infinite;
+          will-change: transform;
         }
         .stars2 { background-size: 300px 300px; opacity: 0.6; animation-duration: 90s; }
         .stars3 { background-size: 400px 400px; opacity: 0.4; animation-duration: 120s; }
-        @keyframes moveStars { from {transform: translateY(0);} to {transform: translateY(-2000px);} }
+        @keyframes moveStars { from {transform: translateY(0);} to {transform: translateY(-1000px);} }
+
+        /* 45° Diagonal Fade Mask */
+        .fade-mask {
+          position:absolute;
+          inset:0;
+          pointer-events:none;
+          background: linear-gradient(45deg, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 25%, rgba(0,0,0,0) 75%, rgba(0,0,0,0.9) 100%);
+          z-index:1;
+        }
       `}</style>
     </section>
   );
